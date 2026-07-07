@@ -575,9 +575,7 @@ h1.hand{font-size:1.5rem;font-weight:700;line-height:1.5}
     <div class="polaroid">
       <div class="tape tc"></div>
       <div class="ph" id="couplePhoto">
-        <!-- 🖼 เปลี่ยนเป็นรูปคู่: ลบข้อความข้างล่างแล้วใส่ <img src="รูปคู่.jpg"> แทน -->
-        <span style="font-size:2rem">👩‍❤️‍👨</span>
-        <span>วางรูปคู่ของเราตรงนี้นะ</span>
+        <img src="assets/couple_pics.jpg" style="width:100%;height:100%;object-fit:cover" alt="รูปคู่ของเรา">
       </div>
       <div class="cap">เราสองคน ♡</div>
     </div>
@@ -726,9 +724,9 @@ const CONFIG = {
 
   // ความทรงจำ — ใส่ img:"ชื่อไฟล์รูป.jpg" ได้เลย (วางรูปไว้โฟลเดอร์เดียวกับไฟล์นี้)
   memories: [
-    { img:null, cap:"วันแรกที่เจอกัน 💘", note:"ยังจำได้เลยว่าเขินแค่ไหน" },
-    { img:null, cap:"ทริปแรกของเรา ✈️", note:"เหนื่อยแต่สนุกมากกก" },
-    { img:null, cap:"วันครบรอบปีที่แล้ว 🎂", note:"ปีนี้ก็ขอให้น่ารักแบบนี้ตลอดไปนะ" },
+    { img: "assets/first_date.jpg", cap: "เดทแรกของเรา 💘", note: "ยังจำได้เลยว่าเขินแค่ไหน" },
+    { img: "assets/first_trip.jpg", cap: "ทริปแรกของเรา ✈️", note: "เหนื่อยแต่สนุกมากกก" },
+    { img: "assets/our_memories.jpg", cap: "ความทรงจำของเรา 🎂", note: "ปีนี้ก็ขอให้น่ารักแบบนี้ตลอดไปนะ" },
   ],
 
   // รางวัลในตู้กาชา
