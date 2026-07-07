@@ -1,1010 +1,1868 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Love Simulator ♥ ตลับเกมของเรา</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Itim&family=Press+Start+2P&display=swap" rel="stylesheet">
-<style>
-/* ============================================================
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Love Simulator ♥ ตลับเกมของเรา</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Itim&family=Press+Start+2P&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ============================================================
    LOVE SIMULATOR — diary × retro game
    โทน: กระดาษครีม + หมึกน้ำตาลซีเปีย + ชมพูบลัช + มินต์เกมบอย
    ============================================================ */
-:root{
-  --paper:#F7EEDD;
-  --paper-dark:#EFE2C8;
-  --ink:#4A3527;
-  --ink-soft:#7A6350;
-  --blush:#E8849B;
-  --blush-deep:#D45C7C;
-  --mint:#8FBFA8;
-  --mint-deep:#5E9C82;
-  --sun:#F2C14E;
-  --tape-pink:rgba(240,170,190,.55);
-  --tape-mint:rgba(160,210,190,.55);
-  --tape-sun:rgba(245,205,120,.55);
-  --line:rgba(120,140,190,.25);
-  --shadow:0 6px 18px rgba(74,53,39,.18);
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{
-  font-family:'Itim',cursive;
-  color:var(--ink);
-  background:#CBB89A;
-  display:flex;justify-content:center;align-items:stretch;
-  overflow:hidden;
-}
+    :root {
+      --paper: #F7EEDD;
+      --paper-dark: #EFE2C8;
+      --ink: #4A3527;
+      --ink-soft: #7A6350;
+      --blush: #E8849B;
+      --blush-deep: #D45C7C;
+      --mint: #8FBFA8;
+      --mint-deep: #5E9C82;
+      --sun: #F2C14E;
+      --tape-pink: rgba(240, 170, 190, .55);
+      --tape-mint: rgba(160, 210, 190, .55);
+      --tape-sun: rgba(245, 205, 120, .55);
+      --line: rgba(120, 140, 190, .25);
+      --shadow: 0 6px 18px rgba(74, 53, 39, .18);
+    }
 
-/* ---------- โต๊ะไม้ + สมุด ---------- */
-.desk{
-  width:100%;max-width:430px;height:100dvh;position:relative;
-  background:var(--paper);
-  box-shadow:0 0 60px rgba(0,0,0,.35);
-  overflow:hidden;
-}
-/* เท็กซ์เจอร์กระดาษ (noise) */
-.desk::before{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.29 0 0 0 0 0.21 0 0 0 0 0.15 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-/* เส้นบรรทัดสมุด + เส้นขอบแดง */
-.desk::after{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:
-    linear-gradient(to right, transparent 34px, rgba(214,90,90,.35) 34px, rgba(214,90,90,.35) 35px, transparent 35px),
-    repeating-linear-gradient(to bottom, transparent 0 27px, var(--line) 27px 28px);
-  background-position:0 12px;
-}
-/* รูเจาะสันสมุด */
-.holes{position:absolute;left:9px;top:0;bottom:0;width:14px;z-index:2;pointer-events:none;
-  display:flex;flex-direction:column;justify-content:space-evenly}
-.holes i{width:13px;height:13px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%, #B9A585, #8f7c5e 70%);
-  box-shadow:inset 0 2px 3px rgba(0,0,0,.35)}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent
+    }
 
-/* ---------- หน้าจอ (screens) ---------- */
-.screen{
-  position:absolute;inset:0;z-index:3;
-  display:none;flex-direction:column;align-items:center;
-  padding:26px 20px 24px 46px;
-  overflow-y:auto;overscroll-behavior:contain;
-}
-.screen.active{display:flex;animation:pageIn .55s cubic-bezier(.2,.8,.3,1) both}
-@keyframes pageIn{
-  from{opacity:0;transform:translateY(14px) rotate(.4deg)}
-  to{opacity:1;transform:none}
-}
+    html,
+    body {
+      height: 100%
+    }
 
-/* ---------- ตัวอักษร ---------- */
-.hand{font-family:'Mali',cursive}
-.pixel{font-family:'Press Start 2P',monospace}
-h1.hand{font-size:1.5rem;font-weight:700;line-height:1.5}
-.eyebrow{
-  font-family:'Press Start 2P',monospace;font-size:.5rem;letter-spacing:.12em;
-  color:var(--mint-deep);margin-bottom:8px;
-}
+    body {
+      font-family: 'Itim', cursive;
+      color: var(--ink);
+      background: #CBB89A;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      overflow: hidden;
+    }
 
-/* ---------- การ์ดกระดาษฉีก ---------- */
-.paper-card{
-  position:relative;background:#FFFDF6;border-radius:4px;
-  box-shadow:var(--shadow);
-  padding:22px 18px 20px;width:100%;
-  --tear:8px;
-  clip-path:polygon(0 4px,3% 0,7% 5px,12% 1px,18% 6px,24% 2px,31% 6px,38% 1px,45% 5px,52% 2px,59% 6px,66% 1px,73% 5px,80% 2px,87% 6px,93% 1px,100% 4px,100% calc(100% - 4px),96% 100%,90% calc(100% - 5px),83% 100%,76% calc(100% - 4px),68% 100%,60% calc(100% - 5px),52% 100%,44% calc(100% - 4px),36% 100%,28% calc(100% - 5px),20% 100%,13% calc(100% - 4px),6% 100%,0 calc(100% - 5px));
-}
-/* เทป washi */
-.tape{
-  position:absolute;width:88px;height:26px;z-index:5;
-  background:
-    repeating-linear-gradient(45deg, rgba(255,255,255,.35) 0 6px, transparent 6px 12px),
-    var(--tape-pink);
-  box-shadow:0 2px 5px rgba(74,53,39,.18);
-  opacity:.95;
-}
-.tape.mint{background:repeating-linear-gradient(45deg, rgba(255,255,255,.35) 0 6px, transparent 6px 12px), var(--tape-mint)}
-.tape.sun{background:repeating-linear-gradient(45deg, rgba(255,255,255,.35) 0 6px, transparent 6px 12px), var(--tape-sun)}
-.tape.tl{top:-12px;left:-16px;transform:rotate(-38deg)}
-.tape.tr{top:-12px;right:-16px;transform:rotate(38deg)}
-.tape.tc{top:-13px;left:50%;transform:translateX(-50%) rotate(-3deg)}
+    /* ---------- โต๊ะไม้ + สมุด ---------- */
+    .desk {
+      width: 100%;
+      max-width: 430px;
+      height: 100dvh;
+      position: relative;
+      background: var(--paper);
+      box-shadow: 0 0 60px rgba(0, 0, 0, .35);
+      overflow: hidden;
+    }
 
-/* ---------- ปุ่ม ---------- */
-.btn{
-  font-family:'Mali',cursive;font-weight:700;font-size:1.05rem;
-  color:#fff;background:var(--blush-deep);
-  border:none;border-radius:14px;padding:13px 30px;cursor:pointer;
-  box-shadow:0 5px 0 #A93F5E, 0 8px 14px rgba(74,53,39,.25);
-  transition:transform .12s, box-shadow .12s;
-  position:relative;
-}
-.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #A93F5E, 0 3px 6px rgba(74,53,39,.25)}
-.btn.mint{background:var(--mint-deep);box-shadow:0 5px 0 #40745F,0 8px 14px rgba(74,53,39,.25)}
-.btn.mint:active{box-shadow:0 1px 0 #40745F,0 3px 6px rgba(74,53,39,.25)}
-.btn.ghost{background:#FFFDF6;color:var(--ink);box-shadow:0 4px 0 #D8C9A8,0 7px 12px rgba(74,53,39,.18);border:2px dashed var(--ink-soft)}
-.btn.ghost:active{box-shadow:0 1px 0 #D8C9A8}
-.btn:disabled{opacity:.45;filter:grayscale(.4);cursor:not-allowed}
+    /* เท็กซ์เจอร์กระดาษ (noise) */
+    .desk::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.29 0 0 0 0 0.21 0 0 0 0 0.15 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
 
-/* ---------- ดูเดิลลอย ---------- */
-.doodle{position:absolute;z-index:2;pointer-events:none;opacity:.85;animation:floaty 5s ease-in-out infinite}
-@keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-7px) rotate(var(--r,0deg))}}
-.stain{
-  position:absolute;width:110px;height:110px;border-radius:50%;z-index:1;pointer-events:none;
-  border:10px solid rgba(160,120,70,.12);
-  filter:blur(.6px);
-}
+    /* เส้นบรรทัดสมุด + เส้นขอบแดง */
+    .desk::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        linear-gradient(to right, transparent 34px, rgba(214, 90, 90, .35) 34px, rgba(214, 90, 90, .35) 35px, transparent 35px),
+        repeating-linear-gradient(to bottom, transparent 0 27px, var(--line) 27px 28px);
+      background-position: 0 12px;
+    }
 
-/* ============ SCREEN 1 : ตลับเกมมาส่ง ============ */
-#s-boot{justify-content:center;gap:22px}
-.cartridge{
-  width:210px;height:250px;position:relative;margin:10px 0 4px;
-  animation:cartFloat 3.4s ease-in-out infinite;
-  filter:drop-shadow(0 14px 16px rgba(74,53,39,.3));
-}
-@keyframes cartFloat{0%,100%{transform:rotate(-3deg) translateY(0)}50%{transform:rotate(-3deg) translateY(-9px)}}
-.blink{animation:blink 1.1s steps(2) infinite}
-@keyframes blink{50%{opacity:0}}
+    /* รูเจาะสันสมุด */
+    .holes {
+      position: absolute;
+      left: 9px;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      z-index: 2;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly
+    }
 
-/* ============ SCREEN 2 : รหัสลับ ============ */
-#s-code{justify-content:center;gap:16px}
-.console{
-  width:100%;max-width:330px;background:#E9DEC3;border-radius:18px 18px 44px 18px;
-  padding:18px 18px 22px;box-shadow:var(--shadow), inset 0 -5px 0 rgba(74,53,39,.12);
-  border:2px solid rgba(74,53,39,.2);position:relative;
-}
-.lcd{
-  background:#9CBF8B;border:4px solid #5C6B4E;border-radius:8px;
-  min-height:96px;padding:12px 10px;
-  box-shadow:inset 0 3px 10px rgba(0,0,0,.3);
-  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;
-}
-.lcd .prompt{font-family:'Press Start 2P',monospace;font-size:.48rem;color:#2E3B26;letter-spacing:.06em}
-.code-out{
-  font-family:'Mali',cursive;font-weight:700;font-size:1.5rem;color:#243019;
-  min-height:2rem;letter-spacing:2px;text-shadow:0 1px 0 rgba(255,255,255,.25);
-}
-.code-out .caret{display:inline-block;width:11px;height:3px;background:#243019;vertical-align:baseline;animation:blink 1s steps(2) infinite}
-.pad-row{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
-.dpad{display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px)}
-.dbtn{
-  background:#5A4A3A;border:none;color:#EFE2C8;font-size:1.05rem;cursor:pointer;
-  box-shadow:0 4px 0 #3A2E22;display:flex;align-items:center;justify-content:center;
-  transition:transform .08s, box-shadow .08s;
-}
-.dbtn:active{transform:translateY(3px);box-shadow:0 1px 0 #3A2E22}
-.dbtn.up{grid-area:1/2;border-radius:8px 8px 0 0}
-.dbtn.down{grid-area:3/2;border-radius:0 0 8px 8px}
-.dbtn.left{grid-area:2/1;border-radius:8px 0 0 8px}
-.dbtn.right{grid-area:2/3;border-radius:0 8px 8px 0}
-.dpad .mid{grid-area:2/2;background:#5A4A3A}
-.ab{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
-.abtn{
-  width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
-  font-family:'Press Start 2P',monospace;font-size:.7rem;color:#fff;
-  transition:transform .08s, box-shadow .08s;
-}
-.abtn.a{background:var(--blush-deep);box-shadow:0 4px 0 #A93F5E;transform:rotate(-8deg)}
-.abtn.b{background:var(--mint-deep);box-shadow:0 4px 0 #40745F;transform:rotate(-8deg) translateX(-16px)}
-.abtn:active{transform:rotate(-8deg) translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.3)}
-.hint-note{
-  font-family:'Mali',cursive;font-size:.9rem;color:var(--ink-soft);text-align:center;
-  transform:rotate(-1.5deg);
-}
+    .holes i {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #B9A585, #8f7c5e 70%);
+      box-shadow: inset 0 2px 3px rgba(0, 0, 0, .35)
+    }
 
-/* ============ SCREEN 3 : ดอกไม้ ============ */
-#s-flower{justify-content:center;gap:18px;text-align:center}
-.flower-stage{
-  width:320px;
-  height:345px;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.flower-img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  transform-origin:bottom center;
-  animation:flowerBloom 1.2s cubic-bezier(.34, 1.56, 0.64, 1) both,
-            flowerSway 3s ease-in-out infinite 1.2s;
-}
-@keyframes flowerBloom{
-  from{transform:scale(0)}
-  to{transform:scale(1)}
-}
-@keyframes flowerSway{
-  0%,100%{transform:rotate(-3deg) scale(1)}
-  50%{transform:rotate(3deg) scale(1.05)}
-}
-.sparkles-container{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
-.sparkle{
-  position:absolute;
-  animation:sparkleBlink 1.8s ease-in-out infinite;
-}
-.sparkle.s1{top:15%;left:15%;font-size:1.2rem;color:var(--blush);animation-delay:0s}
-.sparkle.s2{top:10%;right:15%;font-size:1rem;color:var(--sun);animation-delay:0.3s}
-.sparkle.s3{bottom:25%;right:10%;font-size:1.3rem;color:var(--mint);animation-delay:0.6s}
-.sparkle.s4{bottom:30%;left:8%;font-size:1.1rem;animation-delay:0.9s}
-.sparkle.s5{top:40%;right:5%;font-size:0.9rem;animation-delay:1.2s}
-@keyframes sparkleBlink{
-  0%,100%{opacity:0;transform:scale(0.6) translateY(0)}
-  50%{opacity:1;transform:scale(1.1) translateY(-6px)}
-}
+    /* ---------- หน้าจอ (screens) ---------- */
+    .screen {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 26px 20px 24px 46px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
 
-/* ============ SCREEN 4 : เมนูหลัก ============ */
-#s-menu{gap:14px;padding-top:20px}
-.gauge-wrap{width:100%;position:relative}
-.gauge-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
-.gauge-label .hand{font-size:.95rem;font-weight:600}
-.gauge-label .pct{font-family:'Press Start 2P',monospace;font-size:.55rem;color:var(--blush-deep)}
-.gauge{
-  height:24px;border-radius:12px;background:#FFFDF6;border:2px solid var(--ink);
-  box-shadow:inset 0 2px 4px rgba(74,53,39,.15);overflow:hidden;position:relative;
-}
-.gauge-fill{
-  height:100%;width:0%;border-radius:9px;
-  background:repeating-linear-gradient(45deg, var(--blush) 0 10px, var(--blush-deep) 10px 20px);
-  transition:width .9s cubic-bezier(.2,.8,.3,1);
-  display:flex;align-items:center;justify-content:flex-end;
-}
-.gauge-fill::after{content:"♥";color:#fff;font-size:.8rem;margin-right:6px}
-.avatar-row{width:100%;display:flex;gap:10px;align-items:flex-end;margin-top:2px}
-.avatar{
-  width:64px;height:64px;flex:none;border-radius:12px;background:#FFE9EF;
-  border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;
-  box-shadow:3px 3px 0 rgba(74,53,39,.2);overflow:hidden;
-  animation:bob 2.6s ease-in-out infinite;
-}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.bubble{
-  position:relative;background:#FFFDF6;border:2px solid var(--ink);border-radius:12px;
-  padding:9px 12px;font-family:'Mali',cursive;font-size:.85rem;font-weight:600;flex:1;
-  box-shadow:3px 3px 0 rgba(74,53,39,.2);
-}
-.bubble::before{
-  content:"";position:absolute;left:-9px;bottom:12px;width:12px;height:12px;
-  background:#FFFDF6;border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);
-  transform:rotate(45deg);
-}
-.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;margin-top:6px}
-.cart-btn{
-  border:none;cursor:pointer;background:none;padding:0;position:relative;
-  transition:transform .15s;
-}
-.cart-btn:hover{transform:translateY(-3px) rotate(-1deg)}
-.cart-btn:active{transform:translateY(1px)}
-.cart-body{
-  border-radius:10px 10px 14px 14px;padding:14px 10px 12px;position:relative;
-  box-shadow:0 5px 0 rgba(74,53,39,.28), 0 9px 14px rgba(74,53,39,.2);
-  border:2px solid rgba(74,53,39,.3);
-}
-.cart-body::before{ /* ร่องหัวตลับ */
-  content:"";position:absolute;top:5px;left:14px;right:14px;height:4px;border-radius:2px;
-  background:rgba(255,255,255,.35);
-}
-.cart-body .lbl{
-  background:#FFFDF6;border-radius:6px;padding:8px 6px;margin-top:8px;
-  font-family:'Mali',cursive;font-weight:700;font-size:.82rem;line-height:1.35;color:var(--ink);
-  box-shadow:inset 0 0 0 1.5px rgba(74,53,39,.25);
-  min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-}
-.cart-body .ico{font-size:1.35rem;line-height:1}
-.cart-1 .cart-body{background:#F3B6C6}
-.cart-2 .cart-body{background:#F6D690}
-.cart-3 .cart-body{background:#AFD8C3}
-.cart-4 .cart-body{background:#BFC8EA}
-.stamp-done{
-  position:absolute;top:-8px;right:-6px;z-index:6;
-  font-family:'Mali',cursive;font-weight:700;font-size:.62rem;color:#C0392B;
-  border:2px solid #C0392B;border-radius:50%;width:46px;height:46px;
-  display:none;align-items:center;justify-content:center;text-align:center;line-height:1.1;
-  transform:rotate(14deg);background:rgba(255,253,246,.85);
-  box-shadow:0 2px 5px rgba(74,53,39,.2);
-}
-.cart-btn.done .stamp-done{display:flex;animation:stampIn .4s cubic-bezier(.2,.9,.3,1.4) both}
-@keyframes stampIn{from{transform:rotate(14deg) scale(2.2);opacity:0}to{transform:rotate(14deg) scale(1);opacity:1}}
-.gacha-locked{
-  width:100%;margin-top:4px;text-align:center;font-family:'Mali',cursive;
-  font-size:.85rem;color:var(--ink-soft);
-}
+    .screen.active {
+      display: flex;
+      animation: pageIn .55s cubic-bezier(.2, .8, .3, 1) both
+    }
 
-/* ============ หน้าเควสร่วม ============ */
-.quest-top{width:100%;display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.back-btn{
-  border:2px solid var(--ink);background:#FFFDF6;border-radius:10px;cursor:pointer;
-  font-family:'Mali',cursive;font-weight:700;font-size:.85rem;color:var(--ink);
-  padding:7px 13px;box-shadow:2px 2px 0 rgba(74,53,39,.25);
-}
-.back-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 rgba(74,53,39,.25)}
-.quest-title{font-family:'Mali',cursive;font-weight:700;font-size:1.05rem}
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px) rotate(.4deg)
+      }
 
-/* ============ SCREEN 5 : นับวัน ============ */
-.polaroid{
-  background:#FFFDF6;padding:12px 12px 40px;box-shadow:var(--shadow);
-  transform:rotate(-2.5deg);position:relative;width:min(78%,250px);margin:8px auto 4px;
-  transition:transform .3s;
-}
-.polaroid:nth-of-type(even){transform:rotate(2deg)}
-.polaroid:hover{transform:rotate(0) scale(1.02)}
-.polaroid .ph{
-  aspect-ratio:1/1;background:
-    linear-gradient(135deg,#F6D3DC 0%,#EDE3F2 50%,#CFE5DB 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  color:var(--ink-soft);font-size:.8rem;text-align:center;padding:8px;
-  border:1.5px dashed rgba(122,99,80,.45);
-}
-.polaroid .ph img{width:100%;height:100%;object-fit:cover}
-.polaroid .cap{
-  position:absolute;left:0;right:0;bottom:9px;text-align:center;
-  font-family:'Mali',cursive;font-size:.85rem;color:var(--ink-soft);
-}
-.count-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;margin-top:14px}
-.count-cell{
-  background:#FFFDF6;border:2px solid var(--ink);border-radius:12px;padding:10px 4px;
-  text-align:center;box-shadow:3px 3px 0 rgba(74,53,39,.18);
-}
-.count-cell b{font-family:'Press Start 2P',monospace;font-size:.85rem;color:var(--blush-deep);display:block;margin-bottom:5px}
-.count-cell span{font-family:'Mali',cursive;font-size:.7rem;font-weight:600;color:var(--ink-soft)}
-.days-big{
-  margin-top:16px;text-align:center;font-family:'Mali',cursive;font-weight:700;
-  font-size:1.05rem;
-}
-.days-big b{font-size:2rem;color:var(--blush-deep)}
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
 
-/* ============ SCREEN 6 : จดหมาย ============ */
-#s-letter{justify-content:center}
-.envelope{
-  width:min(86%,300px);cursor:pointer;position:relative;margin:12px auto;
-  filter:drop-shadow(0 12px 14px rgba(74,53,39,.28));
-  transition:transform .2s;
-}
-.envelope:hover{transform:scale(1.03)}
-.letter-paper{
-  background:#FFFDF6;width:100%;padding:24px 18px 20px;position:relative;
-  box-shadow:var(--shadow);
-  background-image:repeating-linear-gradient(to bottom, transparent 0 25px, rgba(120,140,190,.22) 25px 26px);
-}
-.letter-paper h2{font-family:'Mali',cursive;font-size:1.3rem;color:var(--blush-deep);margin-bottom:10px;text-align:center}
-.letter-body{
-  font-family:'Mali',cursive;font-size:.98rem;line-height:26px;min-height:130px;white-space:pre-wrap;
-}
-.letter-body .caret2{display:inline-block;width:2px;height:1em;background:var(--ink);vertical-align:-2px;animation:blink 1s steps(2) infinite}
-.sign{text-align:right;font-family:'Mali',cursive;font-style:italic;margin-top:12px;color:var(--ink-soft)}
+    /* ---------- ตัวอักษร ---------- */
+    .hand {
+      font-family: 'Mali', cursive
+    }
 
-/* ============ SCREEN 7 : ควิซ ============ */
-.q-card{width:100%}
-.q-num{font-family:'Press Start 2P',monospace;font-size:.5rem;color:var(--mint-deep);margin-bottom:8px}
-.q-text{font-family:'Mali',cursive;font-weight:700;font-size:1.08rem;margin-bottom:14px;line-height:1.5}
-.choices{display:flex;flex-direction:column;gap:10px}
-.choice{
-  text-align:left;font-family:'Mali',cursive;font-weight:600;font-size:.95rem;color:var(--ink);
-  background:#FFFDF6;border:2px solid var(--ink);border-radius:12px;padding:11px 14px;cursor:pointer;
-  box-shadow:3px 3px 0 rgba(74,53,39,.2);transition:transform .1s, background .2s;
-  display:flex;align-items:center;gap:9px;
-}
-.choice:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(74,53,39,.2)}
-.choice .abc{
-  font-family:'Press Start 2P',monospace;font-size:.55rem;flex:none;
-  width:24px;height:24px;border-radius:50%;background:var(--paper-dark);
-  display:flex;align-items:center;justify-content:center;
-}
-.choice.good{background:#DDF3E4;border-color:var(--mint-deep)}
-.choice.bad{background:#FBE0E4;border-color:var(--blush-deep)}
-.q-progress{display:flex;gap:6px;justify-content:center;margin:14px 0 4px}
-.q-progress i{width:10px;height:10px;border-radius:50%;background:#E3D5B8;border:1.5px solid var(--ink-soft)}
-.q-progress i.on{background:var(--blush)}
-.quiz-result{text-align:center}
-.quiz-result .big{font-size:2.6rem;line-height:1.3}
+    .pixel {
+      font-family: 'Press Start 2P', monospace
+    }
 
-/* ============ SCREEN 8 : ความทรงจำ ============ */
-#s-memory .screen-inner{width:100%}
-.mem-note{
-  font-family:'Mali',cursive;font-size:.85rem;color:var(--ink-soft);
-  text-align:center;transform:rotate(-1deg);margin-bottom:6px;
-}
+    h1.hand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.5
+    }
 
-/* ============ SCREEN 9 : ตู้กาชา ============ */
-#s-gacha{justify-content:center;text-align:center;gap:14px}
-.gacha-machine{width:340px;height:425px;position:relative;margin:6px auto}
-.gacha-machine.shake{animation:shake .6s ease-in-out}
-@keyframes shake{
-  0%,100%{transform:rotate(0)}
-  20%{transform:rotate(-4deg)}40%{transform:rotate(4deg)}
-  60%{transform:rotate(-3deg)}80%{transform:rotate(3deg)}
-}
-.prize-card{
-  background:#FFFDF6;border:2.5px dashed var(--blush-deep);border-radius:14px;
-  padding:20px 16px;width:100%;box-shadow:var(--shadow);
-  animation:stampIn .5s cubic-bezier(.2,.9,.3,1.3) both;
-}
-.prize-card .pz{font-size:2.2rem}
-.prize-card h3{font-family:'Mali',cursive;font-size:1.15rem;margin:8px 0 4px;color:var(--blush-deep)}
-.prize-card p{font-family:'Mali',cursive;font-size:.88rem;color:var(--ink-soft)}
-.coupon-note{font-family:'Mali',cursive;font-size:.78rem;color:var(--ink-soft);margin-top:2px}
+    .eyebrow {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .5rem;
+      letter-spacing: .12em;
+      color: var(--mint-deep);
+      margin-bottom: 8px;
+    }
 
-/* ============ โมดัลฉลอง ============ */
-.modal{
-  position:absolute;inset:0;z-index:50;display:none;
-  align-items:center;justify-content:center;padding:30px;
-  background:rgba(74,53,39,.45);backdrop-filter:blur(2px);
-}
-.modal.show{display:flex}
-.modal .paper-card{max-width:320px;text-align:center;animation:stampIn .5s cubic-bezier(.2,.9,.3,1.3) both}
+    /* ---------- การ์ดกระดาษฉีก ---------- */
+    .paper-card {
+      position: relative;
+      background: #FFFDF6;
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      padding: 22px 18px 20px;
+      width: 100%;
+      --tear: 8px;
+      clip-path: polygon(0 4px, 3% 0, 7% 5px, 12% 1px, 18% 6px, 24% 2px, 31% 6px, 38% 1px, 45% 5px, 52% 2px, 59% 6px, 66% 1px, 73% 5px, 80% 2px, 87% 6px, 93% 1px, 100% 4px, 100% calc(100% - 4px), 96% 100%, 90% calc(100% - 5px), 83% 100%, 76% calc(100% - 4px), 68% 100%, 60% calc(100% - 5px), 52% 100%, 44% calc(100% - 4px), 36% 100%, 28% calc(100% - 5px), 20% 100%, 13% calc(100% - 4px), 6% 100%, 0 calc(100% - 5px));
+    }
 
-/* หัวใจ/คอนเฟตติลอย */
-.float-bit{position:absolute;z-index:60;pointer-events:none;font-size:1.2rem;animation:rise 2.6s ease-out forwards}
-@keyframes rise{
-  from{opacity:1;transform:translateY(0) rotate(0)}
-  to{opacity:0;transform:translateY(-140px) rotate(40deg)}
-}
+    /* เทป washi */
+    .tape {
+      position: absolute;
+      width: 88px;
+      height: 26px;
+      z-index: 5;
+      background:
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, .35) 0 6px, transparent 6px 12px),
+        var(--tape-pink);
+      box-shadow: 0 2px 5px rgba(74, 53, 39, .18);
+      opacity: .95;
+    }
 
-@media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
-}
-</style>
+    .tape.mint {
+      background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .35) 0 6px, transparent 6px 12px), var(--tape-mint)
+    }
+
+    .tape.sun {
+      background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .35) 0 6px, transparent 6px 12px), var(--tape-sun)
+    }
+
+    .tape.tl {
+      top: -12px;
+      left: -16px;
+      transform: rotate(-38deg)
+    }
+
+    .tape.tr {
+      top: -12px;
+      right: -16px;
+      transform: rotate(38deg)
+    }
+
+    .tape.tc {
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg)
+    }
+
+    /* ---------- ปุ่ม ---------- */
+    .btn {
+      font-family: 'Mali', cursive;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #fff;
+      background: var(--blush-deep);
+      border: none;
+      border-radius: 14px;
+      padding: 13px 30px;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #A93F5E, 0 8px 14px rgba(74, 53, 39, .25);
+      transition: transform .12s, box-shadow .12s;
+      position: relative;
+    }
+
+    .btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #A93F5E, 0 3px 6px rgba(74, 53, 39, .25)
+    }
+
+    .btn.mint {
+      background: var(--mint-deep);
+      box-shadow: 0 5px 0 #40745F, 0 8px 14px rgba(74, 53, 39, .25)
+    }
+
+    .btn.mint:active {
+      box-shadow: 0 1px 0 #40745F, 0 3px 6px rgba(74, 53, 39, .25)
+    }
+
+    .btn.ghost {
+      background: #FFFDF6;
+      color: var(--ink);
+      box-shadow: 0 4px 0 #D8C9A8, 0 7px 12px rgba(74, 53, 39, .18);
+      border: 2px dashed var(--ink-soft)
+    }
+
+    .btn.ghost:active {
+      box-shadow: 0 1px 0 #D8C9A8
+    }
+
+    .btn:disabled {
+      opacity: .45;
+      filter: grayscale(.4);
+      cursor: not-allowed
+    }
+
+    /* ---------- ดูเดิลลอย ---------- */
+    .doodle {
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+      opacity: .85;
+      animation: floaty 5s ease-in-out infinite
+    }
+
+    @keyframes floaty {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(var(--r, 0deg))
+      }
+
+      50% {
+        transform: translateY(-7px) rotate(var(--r, 0deg))
+      }
+    }
+
+    .stain {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      z-index: 1;
+      pointer-events: none;
+      border: 10px solid rgba(160, 120, 70, .12);
+      filter: blur(.6px);
+    }
+
+    /* ============ SCREEN 1 : ตลับเกมมาส่ง ============ */
+    #s-boot {
+      justify-content: center;
+      gap: 22px
+    }
+
+    .cartridge {
+      width: 210px;
+      height: 250px;
+      position: relative;
+      margin: 10px 0 4px;
+      animation: cartFloat 3.4s ease-in-out infinite;
+      filter: drop-shadow(0 14px 16px rgba(74, 53, 39, .3));
+    }
+
+    @keyframes cartFloat {
+
+      0%,
+      100% {
+        transform: rotate(-3deg) translateY(0)
+      }
+
+      50% {
+        transform: rotate(-3deg) translateY(-9px)
+      }
+    }
+
+    .blink {
+      animation: blink 1.1s steps(2) infinite
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0
+      }
+    }
+
+    /* ============ SCREEN 2 : รหัสลับ ============ */
+    #s-code {
+      justify-content: center;
+      gap: 16px
+    }
+
+    .console {
+      width: 100%;
+      max-width: 330px;
+      background: #E9DEC3;
+      border-radius: 18px 18px 44px 18px;
+      padding: 18px 18px 22px;
+      box-shadow: var(--shadow), inset 0 -5px 0 rgba(74, 53, 39, .12);
+      border: 2px solid rgba(74, 53, 39, .2);
+      position: relative;
+    }
+
+    .lcd {
+      background: #9CBF8B;
+      border: 4px solid #5C6B4E;
+      border-radius: 8px;
+      min-height: 96px;
+      padding: 12px 10px;
+      box-shadow: inset 0 3px 10px rgba(0, 0, 0, .3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lcd .prompt {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .48rem;
+      color: #2E3B26;
+      letter-spacing: .06em
+    }
+
+    .code-out {
+      font-family: 'Mali', cursive;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #243019;
+      min-height: 2rem;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+    }
+
+    .code-out .caret {
+      display: inline-block;
+      width: 11px;
+      height: 3px;
+      background: #243019;
+      vertical-align: baseline;
+      animation: blink 1s steps(2) infinite
+    }
+
+    .pad-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px
+    }
+
+    .dpad {
+      display: grid;
+      grid-template-columns: repeat(3, 42px);
+      grid-template-rows: repeat(3, 42px)
+    }
+
+    .dbtn {
+      background: #5A4A3A;
+      border: none;
+      color: #EFE2C8;
+      font-size: 1.05rem;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #3A2E22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .08s, box-shadow .08s;
+    }
+
+    .dbtn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #3A2E22
+    }
+
+    .dbtn.up {
+      grid-area: 1/2;
+      border-radius: 8px 8px 0 0
+    }
+
+    .dbtn.down {
+      grid-area: 3/2;
+      border-radius: 0 0 8px 8px
+    }
+
+    .dbtn.left {
+      grid-area: 2/1;
+      border-radius: 8px 0 0 8px
+    }
+
+    .dbtn.right {
+      grid-area: 2/3;
+      border-radius: 0 8px 8px 0
+    }
+
+    .dpad .mid {
+      grid-area: 2/2;
+      background: #5A4A3A
+    }
+
+    .ab {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end
+    }
+
+    .abtn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-family: 'Press Start 2P', monospace;
+      font-size: .7rem;
+      color: #fff;
+      transition: transform .08s, box-shadow .08s;
+    }
+
+    .abtn.a {
+      background: var(--blush-deep);
+      box-shadow: 0 4px 0 #A93F5E;
+      transform: rotate(-8deg)
+    }
+
+    .abtn.b {
+      background: var(--mint-deep);
+      box-shadow: 0 4px 0 #40745F;
+      transform: rotate(-8deg) translateX(-16px)
+    }
+
+    .abtn:active {
+      transform: rotate(-8deg) translateY(3px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .3)
+    }
+
+    .hint-note {
+      font-family: 'Mali', cursive;
+      font-size: .9rem;
+      color: var(--ink-soft);
+      text-align: center;
+      transform: rotate(-1.5deg);
+    }
+
+    /* ============ SCREEN 3 : ดอกไม้ ============ */
+    #s-flower {
+      justify-content: center;
+      gap: 18px;
+      text-align: center
+    }
+
+    .flower-stage {
+      width: 320px;
+      height: 345px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flower-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transform-origin: bottom center;
+      animation: flowerBloom 1.2s cubic-bezier(.34, 1.56, 0.64, 1) both,
+        flowerSway 3s ease-in-out infinite 1.2s;
+    }
+
+    @keyframes flowerBloom {
+      from {
+        transform: scale(0)
+      }
+
+      to {
+        transform: scale(1)
+      }
+    }
+
+    @keyframes flowerSway {
+
+      0%,
+      100% {
+        transform: rotate(-3deg) scale(1)
+      }
+
+      50% {
+        transform: rotate(3deg) scale(1.05)
+      }
+    }
+
+    .sparkles-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .sparkle {
+      position: absolute;
+      animation: sparkleBlink 1.8s ease-in-out infinite;
+    }
+
+    .sparkle.s1 {
+      top: 15%;
+      left: 15%;
+      font-size: 1.2rem;
+      color: var(--blush);
+      animation-delay: 0s
+    }
+
+    .sparkle.s2 {
+      top: 10%;
+      right: 15%;
+      font-size: 1rem;
+      color: var(--sun);
+      animation-delay: 0.3s
+    }
+
+    .sparkle.s3 {
+      bottom: 25%;
+      right: 10%;
+      font-size: 1.3rem;
+      color: var(--mint);
+      animation-delay: 0.6s
+    }
+
+    .sparkle.s4 {
+      bottom: 30%;
+      left: 8%;
+      font-size: 1.1rem;
+      animation-delay: 0.9s
+    }
+
+    .sparkle.s5 {
+      top: 40%;
+      right: 5%;
+      font-size: 0.9rem;
+      animation-delay: 1.2s
+    }
+
+    @keyframes sparkleBlink {
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: scale(0.6) translateY(0)
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.1) translateY(-6px)
+      }
+    }
+
+    /* ============ SCREEN 4 : เมนูหลัก ============ */
+    #s-menu {
+      gap: 14px;
+      padding-top: 20px
+    }
+
+    .gauge-wrap {
+      width: 100%;
+      position: relative
+    }
+
+    .gauge-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 5px
+    }
+
+    .gauge-label .hand {
+      font-size: .95rem;
+      font-weight: 600
+    }
+
+    .gauge-label .pct {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .55rem;
+      color: var(--blush-deep)
+    }
+
+    .gauge {
+      height: 24px;
+      border-radius: 12px;
+      background: #FFFDF6;
+      border: 2px solid var(--ink);
+      box-shadow: inset 0 2px 4px rgba(74, 53, 39, .15);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gauge-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 9px;
+      background: repeating-linear-gradient(45deg, var(--blush) 0 10px, var(--blush-deep) 10px 20px);
+      transition: width .9s cubic-bezier(.2, .8, .3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .gauge-fill::after {
+      content: "♥";
+      color: #fff;
+      font-size: .8rem;
+      margin-right: 6px
+    }
+
+    .avatar-row {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      margin-top: 2px
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      flex: none;
+      border-radius: 12px;
+      background: #FFE9EF;
+      border: 2px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 3px 3px 0 rgba(74, 53, 39, .2);
+      overflow: hidden;
+      animation: bob 2.6s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-4px)
+      }
+    }
+
+    .bubble {
+      position: relative;
+      background: #FFFDF6;
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-family: 'Mali', cursive;
+      font-size: .85rem;
+      font-weight: 600;
+      flex: 1;
+      box-shadow: 3px 3px 0 rgba(74, 53, 39, .2);
+    }
+
+    .bubble::before {
+      content: "";
+      position: absolute;
+      left: -9px;
+      bottom: 12px;
+      width: 12px;
+      height: 12px;
+      background: #FFFDF6;
+      border-left: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+      transform: rotate(45deg);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      width: 100%;
+      margin-top: 6px
+    }
+
+    .cart-btn {
+      border: none;
+      cursor: pointer;
+      background: none;
+      padding: 0;
+      position: relative;
+      transition: transform .15s;
+    }
+
+    .cart-btn:hover {
+      transform: translateY(-3px) rotate(-1deg)
+    }
+
+    .cart-btn:active {
+      transform: translateY(1px)
+    }
+
+    .cart-body {
+      border-radius: 10px 10px 14px 14px;
+      padding: 14px 10px 12px;
+      position: relative;
+      box-shadow: 0 5px 0 rgba(74, 53, 39, .28), 0 9px 14px rgba(74, 53, 39, .2);
+      border: 2px solid rgba(74, 53, 39, .3);
+    }
+
+    .cart-body::before {
+      /* ร่องหัวตลับ */
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 14px;
+      right: 14px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, .35);
+    }
+
+    .cart-body .lbl {
+      background: #FFFDF6;
+      border-radius: 6px;
+      padding: 8px 6px;
+      margin-top: 8px;
+      font-family: 'Mali', cursive;
+      font-weight: 700;
+      font-size: .82rem;
+      line-height: 1.35;
+      color: var(--ink);
+      box-shadow: inset 0 0 0 1.5px rgba(74, 53, 39, .25);
+      min-height: 58px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .cart-body .ico {
+      font-size: 1.35rem;
+      line-height: 1
+    }
+
+    .cart-1 .cart-body {
+      background: #F3B6C6
+    }
+
+    .cart-2 .cart-body {
+      background: #F6D690
+    }
+
+    .cart-3 .cart-body {
+      background: #AFD8C3
+    }
+
+    .cart-4 .cart-body {
+      background: #BFC8EA
+    }
+
+    .stamp-done {
+      position: absolute;
+      top: -8px;
+      right: -6px;
+      z-index: 6;
+      font-family: 'Mali', cursive;
+      font-weight: 700;
+      font-size: .62rem;
+      color: #C0392B;
+      border: 2px solid #C0392B;
+      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.1;
+      transform: rotate(14deg);
+      background: rgba(255, 253, 246, .85);
+      box-shadow: 0 2px 5px rgba(74, 53, 39, .2);
+    }
+
+    .cart-btn.done .stamp-done {
+      display: flex;
+      animation: stampIn .4s cubic-bezier(.2, .9, .3, 1.4) both
+    }
+
+    @keyframes stampIn {
+      from {
+        transform: rotate(14deg) scale(2.2);
+        opacity: 0
+      }
+
+      to {
+        transform: rotate(14deg) scale(1);
+        opacity: 1
+      }
+    }
+
+    .gacha-locked {
+      width: 100%;
+      margin-top: 4px;
+      text-align: center;
+      font-family: 'Mali', cursive;
+      font-size: .85rem;
+      color: var(--ink-soft);
+    }
+
+    /* ============ หน้าเควสร่วม ============ */
+    .quest-top {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px
+    }
+
+    .back-btn {
+      border: 2px solid var(--ink);
+      background: #FFFDF6;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Mali', cursive;
+      font-weight: 700;
+      font-size: .85rem;
+      color: var(--ink);
+      padding: 7px 13px;
+      box-shadow: 2px 2px 0 rgba(74, 53, 39, .25);
+    }
+
+    .back-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 rgba(74, 53, 39, .25)
+    }
+
+    .quest-title {
+      font-family: 'Mali', cursive;
+      font-weight: 700;
+      font-size: 1.05rem
+    }
+
+    /* ============ SCREEN 5 : นับวัน ============ */
+    .polaroid {
+      background: #FFFDF6;
+      padding: 12px 12px 40px;
+      box-shadow: var(--shadow);
+      transform: rotate(-2.5deg);
+      position: relative;
+      width: min(78%, 250px);
+      margin: 8px auto 4px;
+      transition: transform .3s;
+    }
+
+    .polaroid:nth-of-type(even) {
+      transform: rotate(2deg)
+    }
+
+    .polaroid:hover {
+      transform: rotate(0) scale(1.02)
+    }
+
+    .polaroid .ph {
+      aspect-ratio: 1/1;
+      background:
+        linear-gradient(135deg, #F6D3DC 0%, #EDE3F2 50%, #CFE5DB 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--ink-soft);
+      font-size: .8rem;
+      text-align: center;
+      padding: 8px;
+      border: 1.5px dashed rgba(122, 99, 80, .45);
+    }
+
+    .polaroid .ph img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .polaroid .cap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 9px;
+      text-align: center;
+      font-family: 'Mali', cursive;
+      font-size: .85rem;
+      color: var(--ink-soft);
+    }
+
+    .count-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      margin-top: 14px
+    }
+
+    .count-cell {
+      background: #FFFDF6;
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: 10px 4px;
+      text-align: center;
+      box-shadow: 3px 3px 0 rgba(74, 53, 39, .18);
+    }
+
+    .count-cell b {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .85rem;
+      color: var(--blush-deep);
+      display: block;
+      margin-bottom: 5px
+    }
+
+    .count-cell span {
+      font-family: 'Mali', cursive;
+      font-size: .7rem;
+      font-weight: 600;
+      color: var(--ink-soft)
+    }
+
+    .days-big {
+      margin-top: 16px;
+      text-align: center;
+      font-family: 'Mali', cursive;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .days-big b {
+      font-size: 2rem;
+      color: var(--blush-deep)
+    }
+
+    /* ============ SCREEN 6 : จดหมาย ============ */
+    #s-letter {
+      justify-content: center
+    }
+
+    .envelope {
+      width: min(86%, 300px);
+      cursor: pointer;
+      position: relative;
+      margin: 12px auto;
+      filter: drop-shadow(0 12px 14px rgba(74, 53, 39, .28));
+      transition: transform .2s;
+    }
+
+    .envelope:hover {
+      transform: scale(1.03)
+    }
+
+    .letter-paper {
+      background: #FFFDF6;
+      width: 100%;
+      padding: 24px 18px 20px;
+      position: relative;
+      box-shadow: var(--shadow);
+      background-image: repeating-linear-gradient(to bottom, transparent 0 25px, rgba(120, 140, 190, .22) 25px 26px);
+    }
+
+    .letter-paper h2 {
+      font-family: 'Mali', cursive;
+      font-size: 1.3rem;
+      color: var(--blush-deep);
+      margin-bottom: 10px;
+      text-align: center
+    }
+
+    .letter-body {
+      font-family: 'Mali', cursive;
+      font-size: .98rem;
+      line-height: 26px;
+      min-height: 130px;
+      white-space: pre-wrap;
+    }
+
+    .letter-body .caret2 {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--ink);
+      vertical-align: -2px;
+      animation: blink 1s steps(2) infinite
+    }
+
+    .sign {
+      text-align: right;
+      font-family: 'Mali', cursive;
+      font-style: italic;
+      margin-top: 12px;
+      color: var(--ink-soft)
+    }
+
+    /* ============ SCREEN 7 : ควิซ ============ */
+    .q-card {
+      width: 100%
+    }
+
+    .q-num {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .5rem;
+      color: var(--mint-deep);
+      margin-bottom: 8px
+    }
+
+    .q-text {
+      font-family: 'Mali', cursive;
+      font-weight: 700;
+      font-size: 1.08rem;
+      margin-bottom: 14px;
+      line-height: 1.5
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .choice {
+      text-align: left;
+      font-family: 'Mali', cursive;
+      font-weight: 600;
+      font-size: .95rem;
+      color: var(--ink);
+      background: #FFFDF6;
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: 11px 14px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 rgba(74, 53, 39, .2);
+      transition: transform .1s, background .2s;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .choice:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 rgba(74, 53, 39, .2)
+    }
+
+    .choice .abc {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .55rem;
+      flex: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--paper-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .choice.good {
+      background: #DDF3E4;
+      border-color: var(--mint-deep)
+    }
+
+    .choice.bad {
+      background: #FBE0E4;
+      border-color: var(--blush-deep)
+    }
+
+    .q-progress {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin: 14px 0 4px
+    }
+
+    .q-progress i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #E3D5B8;
+      border: 1.5px solid var(--ink-soft)
+    }
+
+    .q-progress i.on {
+      background: var(--blush)
+    }
+
+    .quiz-result {
+      text-align: center
+    }
+
+    .quiz-result .big {
+      font-size: 2.6rem;
+      line-height: 1.3
+    }
+
+    /* ============ SCREEN 8 : ความทรงจำ ============ */
+    #s-memory .screen-inner {
+      width: 100%
+    }
+
+    .mem-note {
+      font-family: 'Mali', cursive;
+      font-size: .85rem;
+      color: var(--ink-soft);
+      text-align: center;
+      transform: rotate(-1deg);
+      margin-bottom: 6px;
+    }
+
+    /* ============ SCREEN 9 : ตู้กาชา ============ */
+    #s-gacha {
+      justify-content: center;
+      text-align: center;
+      gap: 14px
+    }
+
+    .gacha-machine {
+      width: 200px;
+      height: 250px;
+      position: relative;
+      margin: 6px auto
+    }
+
+    .gacha-machine.shake {
+      animation: shake .6s ease-in-out
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      20% {
+        transform: rotate(-4deg)
+      }
+
+      40% {
+        transform: rotate(4deg)
+      }
+
+      60% {
+        transform: rotate(-3deg)
+      }
+
+      80% {
+        transform: rotate(3deg)
+      }
+    }
+
+    .prize-card {
+      background: #FFFDF6;
+      border: 2.5px dashed var(--blush-deep);
+      border-radius: 14px;
+      padding: 20px 16px;
+      width: 100%;
+      box-shadow: var(--shadow);
+      animation: stampIn .5s cubic-bezier(.2, .9, .3, 1.3) both;
+    }
+
+    .prize-card .pz {
+      font-size: 2.2rem
+    }
+
+    .prize-card h3 {
+      font-family: 'Mali', cursive;
+      font-size: 1.15rem;
+      margin: 8px 0 4px;
+      color: var(--blush-deep)
+    }
+
+    .prize-card p {
+      font-family: 'Mali', cursive;
+      font-size: .88rem;
+      color: var(--ink-soft)
+    }
+
+    .coupon-note {
+      font-family: 'Mali', cursive;
+      font-size: .78rem;
+      color: var(--ink-soft);
+      margin-top: 2px
+    }
+
+    /* ============ โมดัลฉลอง ============ */
+    .modal {
+      position: absolute;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      background: rgba(74, 53, 39, .45);
+      backdrop-filter: blur(2px);
+    }
+
+    .modal.show {
+      display: flex
+    }
+
+    .modal .paper-card {
+      max-width: 320px;
+      text-align: center;
+      animation: stampIn .5s cubic-bezier(.2, .9, .3, 1.3) both
+    }
+
+    /* หัวใจ/คอนเฟตติลอย */
+    .float-bit {
+      position: absolute;
+      z-index: 60;
+      pointer-events: none;
+      font-size: 1.2rem;
+      animation: rise 2.6s ease-out forwards
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 1;
+        transform: translateY(0) rotate(0)
+      }
+
+      to {
+        opacity: 0;
+        transform: translateY(-140px) rotate(40deg)
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001s !important;
+        transition-duration: .001s !important
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="desk">
-  <div class="holes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="desk">
+    <div class="holes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 
-  <!-- ═══════════ SCREEN 1 : ตลับเกมมาส่งแล้ว ═══════════ -->
-  <section class="screen active" id="s-boot">
-    <div class="stain" style="top:8%;right:-30px"></div>
-    <div class="doodle" style="top:12%;left:14%;--r:-10deg">✎</div>
-    <div class="doodle" style="top:20%;right:12%;--r:8deg;color:var(--blush-deep)">♡</div>
-    <div class="doodle" style="bottom:14%;left:16%;--r:-6deg;color:var(--mint-deep)">✦</div>
+    <!-- ═══════════ SCREEN 1 : ตลับเกมมาส่งแล้ว ═══════════ -->
+    <section class="screen active" id="s-boot">
+      <div class="stain" style="top:8%;right:-30px"></div>
+      <div class="doodle" style="top:12%;left:14%;--r:-10deg">✎</div>
+      <div class="doodle" style="top:20%;right:12%;--r:8deg;color:var(--blush-deep)">♡</div>
+      <div class="doodle" style="bottom:14%;left:16%;--r:-6deg;color:var(--mint-deep)">✦</div>
 
-    <p class="eyebrow blink">▶ NEW GAME DELIVERY</p>
-    <h1 class="hand" style="text-align:center">📦 ตลับเกมมาส่งแล้ว!</h1>
+      <p class="eyebrow blink">▶ NEW GAME DELIVERY</p>
+      <h1 class="hand" style="text-align:center">📦 ตลับเกมมาส่งแล้ว!</h1>
 
-    <!-- ตลับเกม -->
-    <div class="cartridge">
-      <svg viewBox="0 0 210 250" xmlns="http://www.w3.org/2000/svg">
-        <rect x="10" y="8" width="190" height="226" rx="14" fill="#8FBFA8" stroke="#4A3527" stroke-width="3"/>
-        <rect x="10" y="196" width="190" height="38" rx="10" fill="#5E9C82" stroke="#4A3527" stroke-width="3"/>
-        <g stroke="#4A3527" stroke-width="2.5" opacity=".6">
-          <line x1="30" y1="206" x2="30" y2="226"/><line x1="45" y1="206" x2="45" y2="226"/>
-          <line x1="165" y1="206" x2="165" y2="226"/><line x1="180" y1="206" x2="180" y2="226"/>
-        </g>
-        <rect x="30" y="30" width="150" height="140" rx="8" fill="#FFFDF6" stroke="#4A3527" stroke-width="3"/>
-        <text x="105" y="66" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="13" fill="#D45C7C">LOVE</text>
-        <text x="105" y="92" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="10" fill="#4A3527">SIMULATOR</text>
-        <text x="105" y="136" text-anchor="middle" font-size="34">💘</text>
-        <text x="105" y="160" text-anchor="middle" font-family="'Mali',cursive" font-weight="700" font-size="12" fill="#7A6350">ฉบับคนคลั่งรัก</text>
-        <circle cx="26" cy="24" r="6" fill="#F2C14E" stroke="#4A3527" stroke-width="2"/>
-      </svg>
-      <div class="tape tc" style="width:100px"></div>
-    </div>
-
-    <p class="hand" style="font-size:.92rem;color:var(--ink-soft);transform:rotate(-1deg)">
-      ถึง: คนน่ารักที่สุดในโลก ♡<br>จาก: คนที่คลั่งรักเธอ
-    </p>
-    <button class="btn" onclick="Game.toCode()">▶ เล่นเกม</button>
-  </section>
-
-  <!-- ═══════════ SCREEN 2 : รหัสลับ ═══════════ -->
-  <section class="screen" id="s-code">
-    <div class="stain" style="bottom:6%;left:-34px"></div>
-    <p class="eyebrow">▶ STAGE 1 : PASSWORD</p>
-    <h1 class="hand">🔐 กรุณาพิมพ์รหัสลับ</h1>
-
-    <div class="console">
-      <div class="tape tl mint"></div>
-      <div class="lcd">
-        <span class="prompt">ENTER SECRET CODE...</span>
-        <div class="code-out" id="codeOut"><span class="caret"></span></div>
+      <!-- ตลับเกม -->
+      <div class="cartridge">
+        <svg viewBox="0 0 210 250" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="8" width="190" height="226" rx="14" fill="#8FBFA8" stroke="#4A3527" stroke-width="3" />
+          <rect x="10" y="196" width="190" height="38" rx="10" fill="#5E9C82" stroke="#4A3527" stroke-width="3" />
+          <g stroke="#4A3527" stroke-width="2.5" opacity=".6">
+            <line x1="30" y1="206" x2="30" y2="226" />
+            <line x1="45" y1="206" x2="45" y2="226" />
+            <line x1="165" y1="206" x2="165" y2="226" />
+            <line x1="180" y1="206" x2="180" y2="226" />
+          </g>
+          <rect x="30" y="30" width="150" height="140" rx="8" fill="#FFFDF6" stroke="#4A3527" stroke-width="3" />
+          <text x="105" y="66" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="13"
+            fill="#D45C7C">LOVE</text>
+          <text x="105" y="92" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="10"
+            fill="#4A3527">SIMULATOR</text>
+          <text x="105" y="136" text-anchor="middle" font-size="34">💘</text>
+          <text x="105" y="160" text-anchor="middle" font-family="'Mali',cursive" font-weight="700" font-size="12"
+            fill="#7A6350">ฉบับคนคลั่งรัก</text>
+          <circle cx="26" cy="24" r="6" fill="#F2C14E" stroke="#4A3527" stroke-width="2" />
+        </svg>
+        <div class="tape tc" style="width:100px"></div>
       </div>
-      <div class="pad-row">
-        <div class="dpad">
-          <button class="dbtn up" onclick="Game.press()">▲</button>
-          <button class="dbtn left" onclick="Game.press()">◀</button>
-          <div class="mid"></div>
-          <button class="dbtn right" onclick="Game.press()">▶</button>
-          <button class="dbtn down" onclick="Game.press()">▼</button>
+
+      <p class="hand" style="font-size:.92rem;color:var(--ink-soft);transform:rotate(-1deg)">
+        ถึง: คนน่ารักที่สุดในโลก ♡<br>จาก: คนที่คลั่งรักเธอ
+      </p>
+      <button class="btn" onclick="Game.toCode()">▶ เล่นเกม</button>
+    </section>
+
+    <!-- ═══════════ SCREEN 2 : รหัสลับ ═══════════ -->
+    <section class="screen" id="s-code">
+      <div class="stain" style="bottom:6%;left:-34px"></div>
+      <p class="eyebrow">▶ STAGE 1 : PASSWORD</p>
+      <h1 class="hand">🔐 กรุณาพิมพ์รหัสลับ</h1>
+
+      <div class="console">
+        <div class="tape tl mint"></div>
+        <div class="lcd">
+          <span class="prompt">ENTER SECRET CODE...</span>
+          <div class="code-out" id="codeOut"><span class="caret"></span></div>
         </div>
-        <div class="ab">
-          <button class="abtn a" onclick="Game.press()">A</button>
-          <button class="abtn b" onclick="Game.press()">B</button>
+        <div class="pad-row">
+          <div class="dpad">
+            <button class="dbtn up" onclick="Game.press()">▲</button>
+            <button class="dbtn left" onclick="Game.press()">◀</button>
+            <div class="mid"></div>
+            <button class="dbtn right" onclick="Game.press()">▶</button>
+            <button class="dbtn down" onclick="Game.press()">▼</button>
+          </div>
+          <div class="ab">
+            <button class="abtn a" onclick="Game.press()">A</button>
+            <button class="abtn b" onclick="Game.press()">B</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <p class="hint-note" id="codeHint">กดปุ่มมั่วๆ ไปเลย เดี๋ยวรหัสมาเอง... 😏</p>
-    <button class="btn mint" id="confirmBtn" disabled onclick="Game.confirmCode()">ยืนยันรหัส ✔</button>
-  </section>
+      <p class="hint-note" id="codeHint">กดปุ่มมั่วๆ ไปเลย เดี๋ยวรหัสมาเอง... 😏</p>
+      <button class="btn mint" id="confirmBtn" disabled onclick="Game.confirmCode()">ยืนยันรหัส ✔</button>
+    </section>
 
-  <!-- ═══════════ SCREEN 3 : ดอกไม้ ═══════════ -->
-  <section class="screen" id="s-flower">
-    <p class="eyebrow">▶ STAGE CLEAR!</p>
-    <div class="flower-stage">
-      <img class="flower-img" src="assets/flower.png" alt="Flower">
-      <div class="sparkles-container">
-        <span class="sparkle s1">✦</span>
-        <span class="sparkle s2">✧</span>
-        <span class="sparkle s3">✦</span>
-        <span class="sparkle s4">💖</span>
-        <span class="sparkle s5">🌸</span>
+    <!-- ═══════════ SCREEN 3 : ดอกไม้ ═══════════ -->
+    <section class="screen" id="s-flower">
+      <p class="eyebrow">▶ STAGE CLEAR!</p>
+      <div class="flower-stage">
+        <img class="flower-img" src="assets/flower.png" alt="Flower">
+        <div class="sparkles-container">
+          <span class="sparkle s1">✦</span>
+          <span class="sparkle s2">✧</span>
+          <span class="sparkle s3">✦</span>
+          <span class="sparkle s4">💖</span>
+          <span class="sparkle s5">🌸</span>
+        </div>
       </div>
-    </div>
-    <h1 class="hand">เก่งมาก! 🎉</h1>
-    <p class="hand" style="font-size:1.05rem;color:var(--ink-soft)">ดอกไม้ดอกนี้... สำหรับคนน่ารักโดยเฉพาะ 💐</p>
-    <button class="btn" onclick="Game.toMenu()">ไปต่อเลย ▶</button>
-  </section>
+      <h1 class="hand">เก่งมาก! 🎉</h1>
+      <p class="hand" style="font-size:1.05rem;color:var(--ink-soft)">ดอกไม้ดอกนี้... สำหรับคนน่ารักโดยเฉพาะ 💐</p>
+      <button class="btn" onclick="Game.toMenu()">ไปต่อเลย ▶</button>
+    </section>
 
-  <!-- ═══════════ SCREEN 4 : เมนูหลัก ═══════════ -->
-  <section class="screen" id="s-menu">
-    <div class="stain" style="top:40%;right:-40px;width:90px;height:90px"></div>
-    <p class="eyebrow">▶ MAIN MENU</p>
+    <!-- ═══════════ SCREEN 4 : เมนูหลัก ═══════════ -->
+    <section class="screen" id="s-menu">
+      <div class="stain" style="top:40%;right:-40px;width:90px;height:90px"></div>
+      <p class="eyebrow">▶ MAIN MENU</p>
 
-    <div class="gauge-wrap">
-      <div class="gauge-label">
-        <span class="hand">เกจหัวใจคนคลั่งรัก</span>
-        <span class="pct" id="gaugePct">0%</span>
+      <div class="gauge-wrap">
+        <div class="gauge-label">
+          <span class="hand">เกจหัวใจคนคลั่งรัก</span>
+          <span class="pct" id="gaugePct">0%</span>
+        </div>
+        <div class="gauge">
+          <div class="gauge-fill" id="gaugeFill"></div>
+        </div>
       </div>
-      <div class="gauge"><div class="gauge-fill" id="gaugeFill"></div></div>
-    </div>
 
-    <div class="avatar-row">
-      <div class="avatar" id="avatarBox">
-        <!-- 🖼 เปลี่ยนเป็นรูปแฟน: <img src="รูป.jpg" style="width:100%;height:100%;object-fit:cover"> -->
-        <svg viewBox="0 0 60 60" width="52" height="52">
-          <rect x="14" y="10" width="32" height="26" rx="4" fill="#4A3527"/>
-          <rect x="10" y="20" width="40" height="24" rx="10" fill="#F7D9C4"/>
-          <rect x="20" y="30" width="5" height="5" fill="#4A3527"/>
-          <rect x="35" y="30" width="5" height="5" fill="#4A3527"/>
-          <rect x="26" y="39" width="8" height="3" rx="1.5" fill="#D45C7C"/>
-          <rect x="16" y="26" width="6" height="4" rx="2" fill="#F3B6C6" opacity=".8"/>
-          <rect x="38" y="26" width="6" height="4" rx="2" fill="#F3B6C6" opacity=".8"/>
+      <div class="avatar-row">
+        <div class="avatar" id="avatarBox">
+          <!-- 🖼 เปลี่ยนเป็นรูปแฟน: <img src="รูป.jpg" style="width:100%;height:100%;object-fit:cover"> -->
+          <svg viewBox="0 0 60 60" width="52" height="52">
+            <rect x="14" y="10" width="32" height="26" rx="4" fill="#4A3527" />
+            <rect x="10" y="20" width="40" height="24" rx="10" fill="#F7D9C4" />
+            <rect x="20" y="30" width="5" height="5" fill="#4A3527" />
+            <rect x="35" y="30" width="5" height="5" fill="#4A3527" />
+            <rect x="26" y="39" width="8" height="3" rx="1.5" fill="#D45C7C" />
+            <rect x="16" y="26" width="6" height="4" rx="2" fill="#F3B6C6" opacity=".8" />
+            <rect x="38" y="26" width="6" height="4" rx="2" fill="#F3B6C6" opacity=".8" />
+          </svg>
+        </div>
+        <div class="bubble" id="avatarSay">ยินดีต้อนรับผู้เล่น! เคลียร์เควสให้ครบทุกเมนูล่ะ! ✨</div>
+      </div>
+
+      <div class="menu-grid">
+        <button class="cart-btn cart-1" id="cb-days" onclick="Game.open('days')">
+          <span class="stamp-done">เคลียร์<br>แล้ว!</span>
+          <div class="cart-body">
+            <div class="lbl"><span class="ico">⏳</span>เราคบกันนาน<br>เท่าไหร่แล้วนะ</div>
+          </div>
+        </button>
+        <button class="cart-btn cart-2" id="cb-letter" onclick="Game.open('letter')">
+          <span class="stamp-done">เคลียร์<br>แล้ว!</span>
+          <div class="cart-body">
+            <div class="lbl"><span class="ico">💌</span>จดหมายถึง<br>คนน่ารัก</div>
+          </div>
+        </button>
+        <button class="cart-btn cart-3" id="cb-quiz" onclick="Game.open('quiz')">
+          <span class="stamp-done">เคลียร์<br>แล้ว!</span>
+          <div class="cart-body">
+            <div class="lbl"><span class="ico">🎮</span>เรารู้ใจกัน<br>มากแค่ไหน</div>
+          </div>
+        </button>
+        <button class="cart-btn cart-4" id="cb-memory" onclick="Game.open('memory')">
+          <span class="stamp-done">เคลียร์<br>แล้ว!</span>
+          <div class="cart-body">
+            <div class="lbl"><span class="ico">📷</span>ความทรงจำ<br>ของเรา</div>
+          </div>
+        </button>
+      </div>
+
+      <p class="gacha-locked" id="gachaHint">🔒 เคลียร์ครบ 4 เควส เพื่อปลดล็อกตู้สุ่มรางวัล</p>
+      <button class="btn" id="gachaBtn" style="display:none" onclick="Game.open('gacha')">🎰 เปิดตู้สุ่มรางวัล!</button>
+    </section>
+
+    <!-- ═══════════ SCREEN 5 : นับวัน ═══════════ -->
+    <section class="screen" id="s-days">
+      <div class="quest-top">
+        <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
+        <span class="quest-title">⏳ เราคบกันมาแล้ว...</span>
+      </div>
+
+      <div class="polaroid">
+        <div class="tape tc"></div>
+        <div class="ph" id="couplePhoto">
+          <img src="assets/couple_pics.jpg" style="width:100%;height:100%;object-fit:cover" alt="รูปคู่ของเรา">
+        </div>
+        <div class="cap">เราสองคน ♡</div>
+      </div>
+
+      <div class="days-big">รวมทั้งหมด <b id="dDays">–</b> วันแล้วนะ!</div>
+
+      <div class="count-grid">
+        <div class="count-cell"><b id="cDay">–</b><span>วัน</span></div>
+        <div class="count-cell"><b id="cHr">–</b><span>ชั่วโมง</span></div>
+        <div class="count-cell"><b id="cMin">–</b><span>นาที</span></div>
+        <div class="count-cell"><b id="cSec">–</b><span>วินาที</span></div>
+      </div>
+
+      <p class="hand"
+        style="margin-top:16px;font-size:.9rem;color:var(--ink-soft);text-align:center;transform:rotate(-1deg)">
+        และจะเพิ่มขึ้นเรื่อยๆ ทุกวินาที... 💕
+      </p>
+    </section>
+
+    <!-- ═══════════ SCREEN 6 : จดหมาย ═══════════ -->
+    <section class="screen" id="s-letter">
+      <div class="quest-top">
+        <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
+        <span class="quest-title">💌 จดหมายถึงคนน่ารัก</span>
+      </div>
+
+      <!-- ซองจดหมาย -->
+      <div class="envelope" id="envelope" onclick="Game.openLetter()">
+        <svg viewBox="0 0 300 210">
+          <rect x="5" y="30" width="290" height="175" rx="10" fill="#F6E7EC" stroke="#4A3527" stroke-width="3" />
+          <path d="M5 40 L150 130 L295 40" fill="none" stroke="#4A3527" stroke-width="3" />
+          <path d="M5 32 L150 118 L295 32 L295 40 L150 130 L5 40 Z" fill="#EFD3DC" />
+          <circle cx="150" cy="120" r="24" fill="#D45C7C" stroke="#4A3527" stroke-width="3" />
+          <text x="150" y="129" text-anchor="middle" font-size="22">💗</text>
+          <text x="150" y="180" text-anchor="middle" font-family="'Mali',cursive" font-weight="700" font-size="17"
+            fill="#4A3527">Happy Anniversary</text>
         </svg>
       </div>
-      <div class="bubble" id="avatarSay">ยินดีต้อนรับผู้เล่น! เคลียร์เควสให้ครบทุกเมนูล่ะ! ✨</div>
-    </div>
+      <p class="hand" style="text-align:center;color:var(--ink-soft)" id="letterHint">แตะซองเพื่อเปิดอ่าน ✉️</p>
 
-    <div class="menu-grid">
-      <button class="cart-btn cart-1" id="cb-days" onclick="Game.open('days')">
-        <span class="stamp-done">เคลียร์<br>แล้ว!</span>
-        <div class="cart-body"><div class="lbl"><span class="ico">⏳</span>เราคบกันนาน<br>เท่าไหร่แล้วนะ</div></div>
-      </button>
-      <button class="cart-btn cart-2" id="cb-letter" onclick="Game.open('letter')">
-        <span class="stamp-done">เคลียร์<br>แล้ว!</span>
-        <div class="cart-body"><div class="lbl"><span class="ico">💌</span>จดหมายถึง<br>คนน่ารัก</div></div>
-      </button>
-      <button class="cart-btn cart-3" id="cb-quiz" onclick="Game.open('quiz')">
-        <span class="stamp-done">เคลียร์<br>แล้ว!</span>
-        <div class="cart-body"><div class="lbl"><span class="ico">🎮</span>เรารู้ใจกัน<br>มากแค่ไหน</div></div>
-      </button>
-      <button class="cart-btn cart-4" id="cb-memory" onclick="Game.open('memory')">
-        <span class="stamp-done">เคลียร์<br>แล้ว!</span>
-        <div class="cart-body"><div class="lbl"><span class="ico">📷</span>ความทรงจำ<br>ของเรา</div></div>
-      </button>
-    </div>
-
-    <p class="gacha-locked" id="gachaHint">🔒 เคลียร์ครบ 4 เควส เพื่อปลดล็อกตู้สุ่มรางวัล</p>
-    <button class="btn" id="gachaBtn" style="display:none" onclick="Game.open('gacha')">🎰 เปิดตู้สุ่มรางวัล!</button>
-  </section>
-
-  <!-- ═══════════ SCREEN 5 : นับวัน ═══════════ -->
-  <section class="screen" id="s-days">
-    <div class="quest-top">
-      <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
-      <span class="quest-title">⏳ เราคบกันมาแล้ว...</span>
-    </div>
-
-    <div class="polaroid">
-      <div class="tape tc"></div>
-      <div class="ph" id="couplePhoto">
-        <img src="assets/couple_pics.jpg" style="width:100%;height:100%;object-fit:cover" alt="รูปคู่ของเรา">
+      <!-- ตัวจดหมาย -->
+      <div class="letter-paper" id="letterPaper" style="display:none">
+        <div class="tape tl"></div>
+        <div class="tape tr sun"></div>
+        <h2>Happy Anniversary 💗</h2>
+        <div class="letter-body"><span id="letterText"></span><span class="caret2" id="letterCaret"></span></div>
+        <p class="sign" id="letterSign"></p>
       </div>
-      <div class="cap">เราสองคน ♡</div>
-    </div>
+      <button class="btn ghost" id="letterClose" style="display:none;margin-top:14px"
+        onclick="Game.closeLetter()">ปิดจดหมาย ✕</button>
+    </section>
 
-    <div class="days-big">รวมทั้งหมด <b id="dDays">–</b> วันแล้วนะ!</div>
+    <!-- ═══════════ SCREEN 7 : ควิซ ═══════════ -->
+    <section class="screen" id="s-quiz">
+      <div class="quest-top">
+        <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
+        <span class="quest-title">🎮 เรารู้ใจกันมากแค่ไหน</span>
+      </div>
+      <div class="paper-card q-card" id="quizCard">
+        <div class="tape tc mint"></div>
+        <!-- เติมด้วย JS -->
+      </div>
+      <div class="q-progress" id="qProgress"></div>
+    </section>
 
-    <div class="count-grid">
-      <div class="count-cell"><b id="cDay">–</b><span>วัน</span></div>
-      <div class="count-cell"><b id="cHr">–</b><span>ชั่วโมง</span></div>
-      <div class="count-cell"><b id="cMin">–</b><span>นาที</span></div>
-      <div class="count-cell"><b id="cSec">–</b><span>วินาที</span></div>
-    </div>
+    <!-- ═══════════ SCREEN 8 : ความทรงจำ ═══════════ -->
+    <section class="screen" id="s-memory">
+      <div class="quest-top">
+        <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
+        <span class="quest-title">📷 ความทรงจำของเรา</span>
+      </div>
+      <p class="mem-note">~ แปะรูปไว้กันลืม เหมือนหัวใจที่ไม่เคยลืมเธอ ~</p>
+      <div class="screen-inner" id="memList"><!-- เติมด้วย JS --></div>
+      <button class="btn mint" style="margin-top:8px" onclick="Game.finishMemory()">ดูครบแล้ว น่ารักมาก ✔</button>
+    </section>
 
-    <p class="hand" style="margin-top:16px;font-size:.9rem;color:var(--ink-soft);text-align:center;transform:rotate(-1deg)">
-      และจะเพิ่มขึ้นเรื่อยๆ ทุกวินาที... 💕
-    </p>
-  </section>
+    <!-- ═══════════ SCREEN 9 : ตู้กาชา ═══════════ -->
+    <section class="screen" id="s-gacha">
+      <div class="quest-top" style="justify-content:flex-start">
+        <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
+        <span class="quest-title">🎰 ตู้สุ่มรางวัลคนน่ารัก</span>
+      </div>
 
-  <!-- ═══════════ SCREEN 6 : จดหมาย ═══════════ -->
-  <section class="screen" id="s-letter">
-    <div class="quest-top">
-      <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
-      <span class="quest-title">💌 จดหมายถึงคนน่ารัก</span>
-    </div>
+      <div class="gacha-machine" id="gachaMachine">
+        <img src="assets/gacha pong.png" alt="ตู้กาชาปอง" style="width:100%;height:100%;object-fit:contain">
+      </div>
 
-    <!-- ซองจดหมาย -->
-    <div class="envelope" id="envelope" onclick="Game.openLetter()">
-      <svg viewBox="0 0 300 210">
-        <rect x="5" y="30" width="290" height="175" rx="10" fill="#F6E7EC" stroke="#4A3527" stroke-width="3"/>
-        <path d="M5 40 L150 130 L295 40" fill="none" stroke="#4A3527" stroke-width="3"/>
-        <path d="M5 32 L150 118 L295 32 L295 40 L150 130 L5 40 Z" fill="#EFD3DC"/>
-        <circle cx="150" cy="120" r="24" fill="#D45C7C" stroke="#4A3527" stroke-width="3"/>
-        <text x="150" y="129" text-anchor="middle" font-size="22">💗</text>
-        <text x="150" y="180" text-anchor="middle" font-family="'Mali',cursive" font-weight="700" font-size="17" fill="#4A3527">Happy Anniversary</text>
-      </svg>
-    </div>
-    <p class="hand" style="text-align:center;color:var(--ink-soft)" id="letterHint">แตะซองเพื่อเปิดอ่าน ✉️</p>
+      <button class="btn" id="spinBtn" onclick="Game.spin()">หมุนตู้ 🎲</button>
+      <div id="prizeArea" style="width:100%"></div>
+    </section>
 
-    <!-- ตัวจดหมาย -->
-    <div class="letter-paper" id="letterPaper" style="display:none">
-      <div class="tape tl"></div><div class="tape tr sun"></div>
-      <h2>Happy Anniversary 💗</h2>
-      <div class="letter-body"><span id="letterText"></span><span class="caret2" id="letterCaret"></span></div>
-      <p class="sign" id="letterSign"></p>
-    </div>
-    <button class="btn ghost" id="letterClose" style="display:none;margin-top:14px" onclick="Game.closeLetter()">ปิดจดหมาย ✕</button>
-  </section>
-
-  <!-- ═══════════ SCREEN 7 : ควิซ ═══════════ -->
-  <section class="screen" id="s-quiz">
-    <div class="quest-top">
-      <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
-      <span class="quest-title">🎮 เรารู้ใจกันมากแค่ไหน</span>
-    </div>
-    <div class="paper-card q-card" id="quizCard">
-      <div class="tape tc mint"></div>
-      <!-- เติมด้วย JS -->
-    </div>
-    <div class="q-progress" id="qProgress"></div>
-  </section>
-
-  <!-- ═══════════ SCREEN 8 : ความทรงจำ ═══════════ -->
-  <section class="screen" id="s-memory">
-    <div class="quest-top">
-      <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
-      <span class="quest-title">📷 ความทรงจำของเรา</span>
-    </div>
-    <p class="mem-note">~ แปะรูปไว้กันลืม เหมือนหัวใจที่ไม่เคยลืมเธอ ~</p>
-    <div class="screen-inner" id="memList"><!-- เติมด้วย JS --></div>
-    <button class="btn mint" style="margin-top:8px" onclick="Game.finishMemory()">ดูครบแล้ว น่ารักมาก ✔</button>
-  </section>
-
-  <!-- ═══════════ SCREEN 9 : ตู้กาชา ═══════════ -->
-  <section class="screen" id="s-gacha">
-    <div class="quest-top" style="justify-content:flex-start">
-      <button class="back-btn" onclick="Game.toMenu()">◀ กลับ</button>
-      <span class="quest-title">🎰 ตู้สุ่มรางวัลคนน่ารัก</span>
-    </div>
-
-    <div class="gacha-machine" id="gachaMachine">
-      <img src="assets/gacha pong.png" alt="ตู้กาชาปอง" style="width:100%;height:100%;object-fit:contain">
-    </div>
-
-    <button class="btn" id="spinBtn" onclick="Game.spin()">หมุนตู้ 🎲</button>
-    <div id="prizeArea" style="width:100%"></div>
-  </section>
-
-  <!-- ═══════════ โมดัล: คลั่งรักขั้นสุด ═══════════ -->
-  <div class="modal" id="winModal">
-    <div class="paper-card">
-      <div class="tape tl"></div><div class="tape tr mint"></div>
-      <p style="font-size:2.6rem">👑💖</p>
-      <h2 class="hand" style="font-size:1.25rem;margin:8px 0">ยินดีด้วย!</h2>
-      <p class="hand" style="font-size:1rem;line-height:1.6">คุณคือผู้เล่นระดับ<br><b style="color:var(--blush-deep);font-size:1.2rem">"คลั่งรักขั้นสุด"</b> แล้ว!</p>
-      <p class="hand" style="font-size:.85rem;color:var(--ink-soft);margin-top:8px">ตู้สุ่มรางวัลปลดล็อกแล้ว 🎉</p>
-      <button class="btn" style="margin-top:14px" onclick="Game.closeWin()">รับรางวัลเลย! 🎰</button>
+    <!-- ═══════════ โมดัล: คลั่งรักขั้นสุด ═══════════ -->
+    <div class="modal" id="winModal">
+      <div class="paper-card">
+        <div class="tape tl"></div>
+        <div class="tape tr mint"></div>
+        <p style="font-size:2.6rem">👑💖</p>
+        <h2 class="hand" style="font-size:1.25rem;margin:8px 0">ยินดีด้วย!</h2>
+        <p class="hand" style="font-size:1rem;line-height:1.6">คุณคือผู้เล่นระดับ<br><b
+            style="color:var(--blush-deep);font-size:1.2rem">"คลั่งรักขั้นสุด"</b> แล้ว!</p>
+        <p class="hand" style="font-size:.85rem;color:var(--ink-soft);margin-top:8px">ตู้สุ่มรางวัลปลดล็อกแล้ว 🎉</p>
+        <button class="btn" style="margin-top:14px" onclick="Game.closeWin()">รับรางวัลเลย! 🎰</button>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-/* ═══════════════════════════════════════════════════
-   ✏️ แก้ข้อมูลของคุณตรงนี้ที่เดียวพอ!
-   ═══════════════════════════════════════════════════ */
-const CONFIG = {
-  // วันที่เริ่มคบกัน (ปี, เดือน-1, วัน, ชั่วโมง, นาที) *เดือนเริ่มนับจาก 0 เช่น 0=ม.ค.
-  startDate: new Date(2024, 1, 14, 18, 0),
+  <script>
+    /* ═══════════════════════════════════════════════════
+       ✏️ แก้ข้อมูลของคุณตรงนี้ที่เดียวพอ!
+       ═══════════════════════════════════════════════════ */
+    const CONFIG = {
+      // วันที่เริ่มคบกัน (ปี, เดือน-1, วัน, ชั่วโมง, นาที) *เดือนเริ่มนับจาก 0 เช่น 0=ม.ค.
+      startDate: new Date(2024, 1, 14, 18, 0),
 
-  // ลายเซ็นท้ายจดหมาย
-  signature: "— จากคนที่รักเธอที่สุด ♡",
+      // ลายเซ็นท้ายจดหมาย
+      signature: "— จากคนที่รักเธอที่สุด ♡",
 
-  // เนื้อความจดหมาย (ขึ้นบรรทัดใหม่ด้วย \n)
-  letter:
-"ถึงคนน่ารักของเรา...\n\n" +
-"ขอบคุณที่อยู่ด้วยกันมาจนถึงวันนี้นะ\n" +
-"ทุกวันที่มีเธอ มันสนุกกว่าเกมทุกเกมที่เคยเล่นเลย\n" +
-"ต่อจากนี้ก็ฝากด้วยนะ ผู้เล่น 2 ของเรา 🎮\n\n" +
-"รักที่สุดเลย ♡",
+      // เนื้อความจดหมาย (ขึ้นบรรทัดใหม่ด้วย \n)
+      letter:
+        "ถึงคนน่ารักของเรา...\n\n" +
+        "ขอบคุณที่อยู่ด้วยกันมาจนถึงวันนี้นะ\n" +
+        "ทุกวันที่มีเธอ มันสนุกกว่าเกมทุกเกมที่เคยเล่นเลย\n" +
+        "ต่อจากนี้ก็ฝากด้วยนะ ผู้เล่น 2 ของเรา 🎮\n\n" +
+        "รักที่สุดเลย ♡",
 
-  // คำถามควิซ 5 ข้อ — answer คือ index ของช้อยที่ถูก (เริ่มจาก 0)
-  quiz: [
-    { q:"เดทแรกของเรา ไปที่ไหนกันนะ?", c:["ดูหนัง 🎬","คาเฟ่ ☕","สวนสาธารณะ 🌳","ทะเล 🌊"], answer:1 },
-    { q:"เครื่องดื่มที่เราชอบสั่งบ่อยสุดคือ?", c:["ชาเขียว 🍵","โกโก้ 🍫","อเมริกาโน่ ☕","ชานมไข่มุก 🧋"], answer:3 },
-    { q:"สีที่เธอชอบที่สุดคือสีอะไร?", c:["ชมพู 🌸","ฟ้า 💙","เขียว 💚","ม่วง 💜"], answer:0 },
-    { q:"เพลงที่เราฟังด้วยกันบ่อยที่สุด?", c:["เพลง A","เพลง B","เพลง C","เพลง D"], answer:0 },
-    { q:"ทริปต่อไป อยากไปเที่ยวไหนด้วยกัน?", c:["ญี่ปุ่น 🗾","เกาหลี 🇰🇷","เชียงใหม่ ⛰️","ทะเลใต้ 🏝️"], answer:0 },
-  ],
+      // คำถามควิซ 5 ข้อ — answer คือ index ของช้อยที่ถูก (เริ่มจาก 0)
+      quiz: [
+        { q: "เดทแรกของเรา ไปที่ไหนกันนะ?", c: ["ดูหนัง 🎬", "คาเฟ่ ☕", "สวนสาธารณะ 🌳", "ทะเล 🌊"], answer: 1 },
+        { q: "เครื่องดื่มที่เราชอบสั่งบ่อยสุดคือ?", c: ["ชาเขียว 🍵", "โกโก้ 🍫", "อเมริกาโน่ ☕", "ชานมไข่มุก 🧋"], answer: 3 },
+        { q: "สีที่เธอชอบที่สุดคือสีอะไร?", c: ["ชมพู 🌸", "ฟ้า 💙", "เขียว 💚", "ม่วง 💜"], answer: 0 },
+        { q: "เพลงที่เราฟังด้วยกันบ่อยที่สุด?", c: ["เพลง A", "เพลง B", "เพลง C", "เพลง D"], answer: 0 },
+        { q: "ทริปต่อไป อยากไปเที่ยวไหนด้วยกัน?", c: ["ญี่ปุ่น 🗾", "เกาหลี 🇰🇷", "เชียงใหม่ ⛰️", "ทะเลใต้ 🏝️"], answer: 0 },
+      ],
 
-  // ความทรงจำ — ใส่ img:"ชื่อไฟล์รูป.jpg" ได้เลย (วางรูปไว้โฟลเดอร์เดียวกับไฟล์นี้)
-  memories: [
-    { img: "assets/first_date.jpg", cap: "เดทแรกของเรา 💘", note: "ยังจำได้เลยว่าเขินแค่ไหน" },
-    { img: "assets/first_trip.jpg", cap: "ทริปแรกของเรา ✈️", note: "เหนื่อยแต่สนุกมากกก" },
-    { img: "assets/our_memories.jpg", cap: "ความทรงจำของเรา 🎂", note: "ปีนี้ก็ขอให้น่ารักแบบนี้ตลอดไปนะ" },
-  ],
+      // ความทรงจำ — ใส่ img:"ชื่อไฟล์รูป.jpg" ได้เลย (วางรูปไว้โฟลเดอร์เดียวกับไฟล์นี้)
+      memories: [
+        { img: "assets/first_date.jpg", cap: "เดทแรกของเรา 💘", note: "ยังจำได้เลยว่าเขินแค่ไหน" },
+        { img: "assets/first_trip.jpg", cap: "ทริปแรกของเรา ✈️", note: "เหนื่อยแต่สนุกมากกก" },
+        { img: "assets/our_memories.jpg", cap: "ความทรงจำของเรา 🎂", note: "ปีนี้ก็ขอให้น่ารักแบบนี้ตลอดไปนะ" },
+      ],
 
-  // รางวัลในตู้กาชา
-  prizes: [
-    { icon:"✈️", name:"คูปองพาไปเที่ยว 1 ทริป", desc:"เลือกที่ได้เลย เดี๋ยวจัดให้!" },
-    { icon:"💆", name:"คูปองนวดให้ 30 นาที", desc:"นวดไหล่ นวดหัว จัดเต็ม" },
-    { icon:"😤", name:"คูปองห้ามโกรธ 1 วัน", desc:"ใช้ได้ 1 ครั้ง ทรงพลังมาก" },
-    { icon:"🍰", name:"คูปองขนมหวานตามสั่ง", desc:"อยากกินอะไรบอกมาเลย" },
-    { icon:"🎬", name:"คูปองมูฟวี่ไนต์", desc:"เธอเลือกหนัง เราเตรียมป๊อปคอร์น" },
-  ],
-};
-/* ═══════════ จบส่วนแก้ไข ═══════════ */
-
-const $ = id => document.getElementById(id);
-const CODE_CHUNKS = ["ค","ลั่","ง","รั","ก","1","0","1"];
-
-/* ---------- เสียง 8-bit (Web Audio) ---------- */
-const Sfx = {
-  ctx:null,
-  ensure(){ if(!this.ctx) this.ctx = new (window.AudioContext||window.webkitAudioContext)(); return this.ctx },
-  beep(freq=600, dur=.08, type="square", vol=.12, when=0){
-    try{
-      const ctx=this.ensure(), o=ctx.createOscillator(), g=ctx.createGain();
-      o.type=type; o.frequency.value=freq;
-      g.gain.setValueAtTime(vol, ctx.currentTime+when);
-      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime+when+dur);
-      o.connect(g); g.connect(ctx.destination);
-      o.start(ctx.currentTime+when); o.stop(ctx.currentTime+when+dur+.02);
-    }catch(e){}
-  },
-  click(){ this.beep(520,.05) },
-  type(){ this.beep(760,.04,"square",.08) },
-  // “ตื๊ดตี่ดี๊ด~” เมลอดี้ผ่านด่าน
-  fanfare(){
-    const notes=[[660,.1,0],[660,.1,.12],[880,.12,.24],[988,.14,.4],[1319,.28,.58]];
-    notes.forEach(([f,d,w])=>this.beep(f,d,"square",.14,w));
-  },
-  win(){
-    const notes=[[523,.12,0],[659,.12,.13],[784,.12,.26],[1047,.3,.4]];
-    notes.forEach(([f,d,w])=>this.beep(f,d,"triangle",.16,w));
-  },
-  gacha(){
-    for(let i=0;i<6;i++) this.beep(300+Math.random()*500,.06,"square",.1,i*.09);
-    this.beep(1047,.25,"triangle",.16,.6);
-  },
-};
-
-/* ---------- เอฟเฟกต์หัวใจลอย ---------- */
-function burst(n=8, chars=["💖","💗","✨","🌸"]){
-  const desk=document.querySelector(".desk");
-  for(let i=0;i<n;i++){
-    const el=document.createElement("span");
-    el.className="float-bit";
-    el.textContent=chars[Math.floor(Math.random()*chars.length)];
-    el.style.left=(15+Math.random()*70)+"%";
-    el.style.bottom=(20+Math.random()*30)+"%";
-    el.style.animationDelay=(Math.random()*.5)+"s";
-    desk.appendChild(el);
-    setTimeout(()=>el.remove(),3200);
-  }
-}
-
-/* ---------- ตัวเกมหลัก ---------- */
-const Game = {
-  codeIdx:0,
-  quests:{days:false,letter:false,quiz:false,memory:false},
-  quizIdx:0, quizScore:0,
-  timerId:null, letterTyping:null,
-
-  show(id){
-    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-    $(id).classList.add("active");
-    $(id).scrollTop=0;
-  },
-
-  toCode(){ Sfx.click(); this.show("s-code") },
-
-  press(){
-    if(this.codeIdx >= CODE_CHUNKS.length){ Sfx.type(); return }
-    Sfx.type();
-    this.codeIdx++;
-    const out=$("codeOut");
-    out.innerHTML = CODE_CHUNKS.slice(0,this.codeIdx).join("") + '<span class="caret"></span>';
-    if(this.codeIdx >= CODE_CHUNKS.length){
-      $("confirmBtn").disabled=false;
-      $("codeHint").textContent='รหัสคือ "คลั่งรัก101" นี่เอง! กดยืนยันเลย 💗';
-      Sfx.beep(880,.15,"triangle",.15);
-    }
-  },
-
-  confirmCode(){
-    Sfx.fanfare();  // ตื๊ดตี่ดี๊ด~
-    burst(10);
-    setTimeout(()=>this.show("s-flower"), 900);
-  },
-
-  toMenu(){
-    Sfx.click();
-    this.show("s-menu");
-    this.updateGauge();
-  },
-
-  updateGauge(){
-    const done=Object.values(this.quests).filter(Boolean).length;
-    const pct=done*25;
-    $("gaugeFill").style.width=pct+"%";
-    $("gaugePct").textContent=pct+"%";
-    const say=$("avatarSay");
-    if(done===0) say.textContent="ยินดีต้อนรับผู้เล่น! เคลียร์เควสให้ครบทุกเมนูล่ะ! ✨";
-    else if(done===1) say.textContent="เริ่มได้สวย! อีก 3 เควสนะ 💪";
-    else if(done===2) say.textContent="ครึ่งทางแล้ว! ความคลั่งรักกำลังพุ่ง 📈";
-    else if(done===3) say.textContent="อีกเควสเดียวว! สู้ๆ 🔥";
-    else say.textContent="สุดยอดดด คลั่งรักเต็มเกจแล้ว! 👑";
-
-    Object.keys(this.quests).forEach(k=>{
-      $("cb-"+k).classList.toggle("done", this.quests[k]);
-    });
-
-    if(done===4){
-      $("gachaHint").style.display="none";
-      $("gachaBtn").style.display="inline-block";
-      if(!this.winShown){
-        this.winShown=true;
-        Sfx.win(); burst(14,["👑","💖","🎉","✨"]);
-        setTimeout(()=>$("winModal").classList.add("show"), 600);
-      }
-    }
-  },
-  closeWin(){ Sfx.click(); $("winModal").classList.remove("show"); this.open("gacha") },
-
-  complete(q){ if(!this.quests[q]){ this.quests[q]=true; } },
-
-  open(which){
-    Sfx.click();
-    if(which==="days"){ this.show("s-days"); this.startTimer(); this.complete("days"); }
-    if(which==="letter"){ this.show("s-letter"); this.resetLetter(); }
-    if(which==="quiz"){ this.show("s-quiz"); this.startQuiz(); }
-    if(which==="memory"){ this.show("s-memory"); this.renderMemories(); }
-    if(which==="gacha"){ this.show("s-gacha"); }
-  },
-
-  /* ----- นับวัน ----- */
-  startTimer(){
-    clearInterval(this.timerId);
-    const tick=()=>{
-      const diff=Date.now()-CONFIG.startDate.getTime();
-      if(diff<0){ $("dDays").textContent="0"; return }
-      const s=Math.floor(diff/1000);
-      const days=Math.floor(s/86400);
-      $("dDays").textContent=days.toLocaleString("th-TH");
-      $("cDay").textContent=days.toLocaleString("th-TH");
-      $("cHr").textContent=String(Math.floor(s/3600)%24).padStart(2,"0");
-      $("cMin").textContent=String(Math.floor(s/60)%60).padStart(2,"0");
-      $("cSec").textContent=String(s%60).padStart(2,"0");
+      // รางวัลในตู้กาชา
+      prizes: [
+        { icon: "✈️", name: "คูปองพาไปเที่ยว 1 ทริป", desc: "เลือกที่ได้เลย เดี๋ยวจัดให้!" },
+        { icon: "💆", name: "คูปองนวดให้ 30 นาที", desc: "นวดไหล่ นวดหัว จัดเต็ม" },
+        { icon: "😤", name: "คูปองห้ามโกรธ 1 วัน", desc: "ใช้ได้ 1 ครั้ง ทรงพลังมาก" },
+        { icon: "🍰", name: "คูปองขนมหวานตามสั่ง", desc: "อยากกินอะไรบอกมาเลย" },
+        { icon: "🎬", name: "คูปองมูฟวี่ไนต์", desc: "เธอเลือกหนัง เราเตรียมป๊อปคอร์น" },
+      ],
     };
-    tick(); this.timerId=setInterval(tick,1000);
-  },
+    /* ═══════════ จบส่วนแก้ไข ═══════════ */
 
-  /* ----- จดหมาย ----- */
-  resetLetter(){
-    clearInterval(this.letterTyping);
-    $("envelope").style.display="block";
-    $("letterHint").style.display="block";
-    $("letterPaper").style.display="none";
-    $("letterClose").style.display="none";
-    $("letterText").textContent="";
-  },
-  openLetter(){
-    Sfx.beep(700,.1,"triangle",.15);
-    $("envelope").style.display="none";
-    $("letterHint").style.display="none";
-    $("letterPaper").style.display="block";
-    $("letterSign").textContent=CONFIG.signature;
-    let i=0; const txt=CONFIG.letter;
-    this.letterTyping=setInterval(()=>{
-      if(i>=txt.length){
-        clearInterval(this.letterTyping);
-        $("letterCaret").style.display="none";
-        $("letterClose").style.display="inline-block";
-        this.complete("letter"); burst(6,["💌","💗","✨"]);
-        return;
+    const $ = id => document.getElementById(id);
+    const CODE_CHUNKS = ["ค", "ลั่", "ง", "รั", "ก", "1", "0", "1"];
+
+    /* ---------- เสียง 8-bit (Web Audio) ---------- */
+    const Sfx = {
+      ctx: null,
+      ensure() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); return this.ctx },
+      beep(freq = 600, dur = .08, type = "square", vol = .12, when = 0) {
+        try {
+          const ctx = this.ensure(), o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = type; o.frequency.value = freq;
+          g.gain.setValueAtTime(vol, ctx.currentTime + when);
+          g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + when + dur);
+          o.connect(g); g.connect(ctx.destination);
+          o.start(ctx.currentTime + when); o.stop(ctx.currentTime + when + dur + .02);
+        } catch (e) { }
+      },
+      click() { this.beep(520, .05) },
+      type() { this.beep(760, .04, "square", .08) },
+      // “ตื๊ดตี่ดี๊ด~” เมลอดี้ผ่านด่าน
+      fanfare() {
+        const notes = [[660, .1, 0], [660, .1, .12], [880, .12, .24], [988, .14, .4], [1319, .28, .58]];
+        notes.forEach(([f, d, w]) => this.beep(f, d, "square", .14, w));
+      },
+      win() {
+        const notes = [[523, .12, 0], [659, .12, .13], [784, .12, .26], [1047, .3, .4]];
+        notes.forEach(([f, d, w]) => this.beep(f, d, "triangle", .16, w));
+      },
+      gacha() {
+        for (let i = 0; i < 6; i++) this.beep(300 + Math.random() * 500, .06, "square", .1, i * .09);
+        this.beep(1047, .25, "triangle", .16, .6);
+      },
+    };
+
+    /* ---------- เอฟเฟกต์หัวใจลอย ---------- */
+    function burst(n = 8, chars = ["💖", "💗", "✨", "🌸"]) {
+      const desk = document.querySelector(".desk");
+      for (let i = 0; i < n; i++) {
+        const el = document.createElement("span");
+        el.className = "float-bit";
+        el.textContent = chars[Math.floor(Math.random() * chars.length)];
+        el.style.left = (15 + Math.random() * 70) + "%";
+        el.style.bottom = (20 + Math.random() * 30) + "%";
+        el.style.animationDelay = (Math.random() * .5) + "s";
+        desk.appendChild(el);
+        setTimeout(() => el.remove(), 3200);
       }
-      $("letterText").textContent += txt[i];
-      if(i%3===0 && txt[i]!==" " && txt[i]!=="\n") Sfx.type();
-      i++;
-    }, 55);
-  },
-  closeLetter(){ this.toMenu() },
+    }
 
-  /* ----- ควิซ ----- */
-  startQuiz(){
-    this.quizIdx=0; this.quizScore=0;
-    $("qProgress").innerHTML=CONFIG.quiz.map(()=> "<i></i>").join("");
-    this.renderQ();
-  },
-  renderQ(){
-    const card=$("quizCard");
-    if(this.quizIdx>=CONFIG.quiz.length){
-      const s=this.quizScore, total=CONFIG.quiz.length;
-      let msg = s===total ? "โอ้โห รู้ใจกันสุดๆ ไปเลย! 💯" :
-                s>=3 ? "เก่งมากก รู้ใจกันเกินครึ่ง! 💗" :
-                "ไม่เป็นไร~ เดี๋ยวเรามาทำความรู้จักกันใหม่อีกรอบนะ 😙";
-      card.innerHTML = `
+    /* ---------- ตัวเกมหลัก ---------- */
+    const Game = {
+      codeIdx: 0,
+      quests: { days: false, letter: false, quiz: false, memory: false },
+      quizIdx: 0, quizScore: 0,
+      timerId: null, letterTyping: null,
+
+      show(id) {
+        document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+        $(id).classList.add("active");
+        $(id).scrollTop = 0;
+      },
+
+      toCode() { Sfx.click(); this.show("s-code") },
+
+      press() {
+        if (this.codeIdx >= CODE_CHUNKS.length) { Sfx.type(); return }
+        Sfx.type();
+        this.codeIdx++;
+        const out = $("codeOut");
+        out.innerHTML = CODE_CHUNKS.slice(0, this.codeIdx).join("") + '<span class="caret"></span>';
+        if (this.codeIdx >= CODE_CHUNKS.length) {
+          $("confirmBtn").disabled = false;
+          $("codeHint").textContent = 'รหัสคือ "คลั่งรัก101" นี่เอง! กดยืนยันเลย 💗';
+          Sfx.beep(880, .15, "triangle", .15);
+        }
+      },
+
+      confirmCode() {
+        Sfx.fanfare();  // ตื๊ดตี่ดี๊ด~
+        burst(10);
+        setTimeout(() => this.show("s-flower"), 900);
+      },
+
+      toMenu() {
+        Sfx.click();
+        this.show("s-menu");
+        this.updateGauge();
+      },
+
+      updateGauge() {
+        const done = Object.values(this.quests).filter(Boolean).length;
+        const pct = done * 25;
+        $("gaugeFill").style.width = pct + "%";
+        $("gaugePct").textContent = pct + "%";
+        const say = $("avatarSay");
+        if (done === 0) say.textContent = "ยินดีต้อนรับผู้เล่น! เคลียร์เควสให้ครบทุกเมนูล่ะ! ✨";
+        else if (done === 1) say.textContent = "เริ่มได้สวย! อีก 3 เควสนะ 💪";
+        else if (done === 2) say.textContent = "ครึ่งทางแล้ว! ความคลั่งรักกำลังพุ่ง 📈";
+        else if (done === 3) say.textContent = "อีกเควสเดียวว! สู้ๆ 🔥";
+        else say.textContent = "สุดยอดดด คลั่งรักเต็มเกจแล้ว! 👑";
+
+        Object.keys(this.quests).forEach(k => {
+          $("cb-" + k).classList.toggle("done", this.quests[k]);
+        });
+
+        if (done === 4) {
+          $("gachaHint").style.display = "none";
+          $("gachaBtn").style.display = "inline-block";
+          if (!this.winShown) {
+            this.winShown = true;
+            Sfx.win(); burst(14, ["👑", "💖", "🎉", "✨"]);
+            setTimeout(() => $("winModal").classList.add("show"), 600);
+          }
+        }
+      },
+      closeWin() { Sfx.click(); $("winModal").classList.remove("show"); this.open("gacha") },
+
+      complete(q) { if (!this.quests[q]) { this.quests[q] = true; } },
+
+      open(which) {
+        Sfx.click();
+        if (which === "days") { this.show("s-days"); this.startTimer(); this.complete("days"); }
+        if (which === "letter") { this.show("s-letter"); this.resetLetter(); }
+        if (which === "quiz") { this.show("s-quiz"); this.startQuiz(); }
+        if (which === "memory") { this.show("s-memory"); this.renderMemories(); }
+        if (which === "gacha") { this.show("s-gacha"); }
+      },
+
+      /* ----- นับวัน ----- */
+      startTimer() {
+        clearInterval(this.timerId);
+        const tick = () => {
+          const diff = Date.now() - CONFIG.startDate.getTime();
+          if (diff < 0) { $("dDays").textContent = "0"; return }
+          const s = Math.floor(diff / 1000);
+          const days = Math.floor(s / 86400);
+          $("dDays").textContent = days.toLocaleString("th-TH");
+          $("cDay").textContent = days.toLocaleString("th-TH");
+          $("cHr").textContent = String(Math.floor(s / 3600) % 24).padStart(2, "0");
+          $("cMin").textContent = String(Math.floor(s / 60) % 60).padStart(2, "0");
+          $("cSec").textContent = String(s % 60).padStart(2, "0");
+        };
+        tick(); this.timerId = setInterval(tick, 1000);
+      },
+
+      /* ----- จดหมาย ----- */
+      resetLetter() {
+        clearInterval(this.letterTyping);
+        $("envelope").style.display = "block";
+        $("letterHint").style.display = "block";
+        $("letterPaper").style.display = "none";
+        $("letterClose").style.display = "none";
+        $("letterText").textContent = "";
+      },
+      openLetter() {
+        Sfx.beep(700, .1, "triangle", .15);
+        $("envelope").style.display = "none";
+        $("letterHint").style.display = "none";
+        $("letterPaper").style.display = "block";
+        $("letterSign").textContent = CONFIG.signature;
+        let i = 0; const txt = CONFIG.letter;
+        this.letterTyping = setInterval(() => {
+          if (i >= txt.length) {
+            clearInterval(this.letterTyping);
+            $("letterCaret").style.display = "none";
+            $("letterClose").style.display = "inline-block";
+            this.complete("letter"); burst(6, ["💌", "💗", "✨"]);
+            return;
+          }
+          $("letterText").textContent += txt[i];
+          if (i % 3 === 0 && txt[i] !== " " && txt[i] !== "\n") Sfx.type();
+          i++;
+        }, 55);
+      },
+      closeLetter() { this.toMenu() },
+
+      /* ----- ควิซ ----- */
+      startQuiz() {
+        this.quizIdx = 0; this.quizScore = 0;
+        $("qProgress").innerHTML = CONFIG.quiz.map(() => "<i></i>").join("");
+        this.renderQ();
+      },
+      renderQ() {
+        const card = $("quizCard");
+        if (this.quizIdx >= CONFIG.quiz.length) {
+          const s = this.quizScore, total = CONFIG.quiz.length;
+          let msg = s === total ? "โอ้โห รู้ใจกันสุดๆ ไปเลย! 💯" :
+            s >= 3 ? "เก่งมากก รู้ใจกันเกินครึ่ง! 💗" :
+              "ไม่เป็นไร~ เดี๋ยวเรามาทำความรู้จักกันใหม่อีกรอบนะ 😙";
+          card.innerHTML = `
         <div class="tape tc mint"></div>
         <div class="quiz-result">
-          <p class="big">${ s===total ? "🏆" : s>=3 ? "💖" : "🫶" }</p>
+          <p class="big">${s === total ? "🏆" : s >= 3 ? "💖" : "🫶"}</p>
           <h3 class="hand" style="font-size:1.15rem;margin:6px 0">เธอตอบถูก ${s} / ${total} ข้อ!</h3>
           <p class="hand" style="font-size:.95rem;color:var(--ink-soft)">${msg}</p>
           <button class="btn mint" style="margin-top:14px" onclick="Game.finishQuiz()">กลับเมนู ✔</button>
         </div>`;
-      return;
-    }
-    const q=CONFIG.quiz[this.quizIdx];
-    const abc=["A","B","C","D"];
-    card.innerHTML = `
+          return;
+        }
+        const q = CONFIG.quiz[this.quizIdx];
+        const abc = ["A", "B", "C", "D"];
+        card.innerHTML = `
       <div class="tape tc mint"></div>
-      <div class="q-num">QUEST ${this.quizIdx+1} / ${CONFIG.quiz.length}</div>
+      <div class="q-num">QUEST ${this.quizIdx + 1} / ${CONFIG.quiz.length}</div>
       <div class="q-text">${q.q}</div>
       <div class="choices">
-        ${q.c.map((c,i)=>`<button class="choice" onclick="Game.answer(${i}, this)"><span class="abc">${abc[i]}</span>${c}</button>`).join("")}
+        ${q.c.map((c, i) => `<button class="choice" onclick="Game.answer(${i}, this)"><span class="abc">${abc[i]}</span>${c}</button>`).join("")}
       </div>`;
-    [...$("qProgress").children].forEach((dot,i)=>dot.classList.toggle("on", i<this.quizIdx));
-  },
-  answer(i, el){
-    const q=CONFIG.quiz[this.quizIdx];
-    const good = i===q.answer;
-    document.querySelectorAll(".choice").forEach(b=>b.disabled=true);
-    el.classList.add(good?"good":"bad");
-    if(good){ this.quizScore++; Sfx.beep(880,.12,"triangle",.15); burst(3,["💗"]) }
-    else{
-      Sfx.beep(220,.18,"sawtooth",.1);
-      document.querySelectorAll(".choice")[q.answer].classList.add("good");
-    }
-    setTimeout(()=>{ this.quizIdx++; this.renderQ() }, 950);
-  },
-  finishQuiz(){ this.complete("quiz"); this.toMenu() },
+        [...$("qProgress").children].forEach((dot, i) => dot.classList.toggle("on", i < this.quizIdx));
+      },
+      answer(i, el) {
+        const q = CONFIG.quiz[this.quizIdx];
+        const good = i === q.answer;
+        document.querySelectorAll(".choice").forEach(b => b.disabled = true);
+        el.classList.add(good ? "good" : "bad");
+        if (good) { this.quizScore++; Sfx.beep(880, .12, "triangle", .15); burst(3, ["💗"]) }
+        else {
+          Sfx.beep(220, .18, "sawtooth", .1);
+          document.querySelectorAll(".choice")[q.answer].classList.add("good");
+        }
+        setTimeout(() => { this.quizIdx++; this.renderQ() }, 950);
+      },
+      finishQuiz() { this.complete("quiz"); this.toMenu() },
 
-  /* ----- ความทรงจำ ----- */
-  renderMemories(){
-    $("memList").innerHTML = CONFIG.memories.map((m,i)=>`
+      /* ----- ความทรงจำ ----- */
+      renderMemories() {
+        $("memList").innerHTML = CONFIG.memories.map((m, i) => `
       <div class="polaroid">
-        <div class="tape ${i%3===0?"tl":i%3===1?"tr mint":"tc sun"}"></div>
-        <div class="ph">${
-          m.img ? `<img src="${m.img}" alt="">`
-                : `<span style="font-size:2rem">🖼️</span><span>วางรูปตรงนี้<br>(แก้ใน CONFIG.memories)</span>`
-        }</div>
-        <div class="cap">${m.cap}${m.note?` — <i>${m.note}</i>`:""}</div>
+        <div class="tape ${i % 3 === 0 ? "tl" : i % 3 === 1 ? "tr mint" : "tc sun"}"></div>
+        <div class="ph">${m.img ? `<img src="${m.img}" alt="">`
+            : `<span style="font-size:2rem">🖼️</span><span>วางรูปตรงนี้<br>(แก้ใน CONFIG.memories)</span>`
+          }</div>
+        <div class="cap">${m.cap}${m.note ? ` — <i>${m.note}</i>` : ""}</div>
       </div>`).join("");
-  },
-  finishMemory(){ Sfx.win(); this.complete("memory"); this.toMenu() },
+      },
+      finishMemory() { Sfx.win(); this.complete("memory"); this.toMenu() },
 
-  /* ----- กาชา ----- */
-  spin(){
-    const btn=$("spinBtn"); btn.disabled=true;
-    $("prizeArea").innerHTML="";
-    $("gachaMachine").classList.add("shake");
-    Sfx.gacha();
-    setTimeout(()=>{
-      $("gachaMachine").classList.remove("shake");
-      const p=CONFIG.prizes[Math.floor(Math.random()*CONFIG.prizes.length)];
-      $("prizeArea").innerHTML=`
+      /* ----- กาชา ----- */
+      spin() {
+        const btn = $("spinBtn"); btn.disabled = true;
+        $("prizeArea").innerHTML = "";
+        $("gachaMachine").classList.add("shake");
+        Sfx.gacha();
+        setTimeout(() => {
+          $("gachaMachine").classList.remove("shake");
+          const p = CONFIG.prizes[Math.floor(Math.random() * CONFIG.prizes.length)];
+          $("prizeArea").innerHTML = `
         <div class="prize-card">
           <div class="pz">${p.icon}</div>
           <h3>${p.name}</h3>
           <p>${p.desc}</p>
           <p class="coupon-note">✂ - - - แคปหน้าจอเก็บไว้เป็นคูปองได้เลย - - - ✂</p>
         </div>`;
-      burst(10,["🎉","💖","✨","🎊"]);
-      btn.disabled=false; btn.textContent="หมุนอีกครั้ง 🎲";
-    }, 750);
-  },
-};
-</script>
+          burst(10, ["🎉", "💖", "✨", "🎊"]);
+          btn.disabled = false; btn.textContent = "หมุนอีกครั้ง 🎲";
+        }, 750);
+      },
+    };
+  </script>
 </body>
+
 </html>
