@@ -166,13 +166,21 @@
     /* ---------- การ์ดกระดาษฉีก ---------- */
     .paper-card {
       position: relative;
-      background: #FFFDF6;
+      isolation: isolate;
       border-radius: 4px;
-      box-shadow: var(--shadow);
+      filter: drop-shadow(0 6px 14px rgba(74, 53, 39, .15));
       padding: 22px 18px 20px;
       width: 100%;
       --tear: 8px;
+    }
+
+    .paper-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #FFFDF6;
       clip-path: polygon(0 4px, 3% 0, 7% 5px, 12% 1px, 18% 6px, 24% 2px, 31% 6px, 38% 1px, 45% 5px, 52% 2px, 59% 6px, 66% 1px, 73% 5px, 80% 2px, 87% 6px, 93% 1px, 100% 4px, 100% calc(100% - 4px), 96% 100%, 90% calc(100% - 5px), 83% 100%, 76% calc(100% - 4px), 68% 100%, 60% calc(100% - 5px), 52% 100%, 44% calc(100% - 4px), 36% 100%, 28% calc(100% - 5px), 20% 100%, 13% calc(100% - 4px), 6% 100%, 0 calc(100% - 5px));
+      z-index: -1;
     }
 
     /* เทป washi */
@@ -1485,7 +1493,7 @@
           <path d="M5 40 L150 130 L295 40" fill="none" stroke="#4A3527" stroke-width="3" />
           <path d="M5 32 L150 118 L295 32 L295 40 L150 130 L5 40 Z" fill="#EFD3DC" />
           <circle cx="150" cy="120" r="24" fill="#D45C7C" stroke="#4A3527" stroke-width="3" />
-          <text x="150" y="129" text-anchor="middle" font-size="22">💗</text>
+          <text x="150" y="129" text-anchor="middle" font-size="22">🤍</text>
           <text x="150" y="180" text-anchor="middle" font-family="'Mali',cursive" font-weight="700" font-size="17"
             fill="#4A3527">Happy Anniversary</text>
         </svg>
