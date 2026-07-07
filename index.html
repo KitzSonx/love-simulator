@@ -1181,27 +1181,91 @@
     }
 
     @keyframes shake {
+      0%, 100% { transform: rotate(0) }
+      20% { transform: rotate(-4deg) }
+      40% { transform: rotate(4deg) }
+      60% { transform: rotate(-3deg) }
+      80% { transform: rotate(3deg) }
+    }
 
-      0%,
-      100% {
-        transform: rotate(0)
+    /* ปุ่มหมุนกาชา */
+    .gacha-knob {
+      position: absolute;
+      width: 22%;
+      height: auto;
+      top: 62%;
+      left: 28%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      z-index: 5;
+      transition: filter 0.15s;
+      filter: drop-shadow(0 2px 3px rgba(74,53,39,.3));
+    }
+
+    .gacha-knob:hover {
+      filter: drop-shadow(0 3px 6px rgba(74,53,39,.4)) brightness(1.05);
+    }
+
+    .gacha-knob:active {
+      filter: drop-shadow(0 1px 2px rgba(74,53,39,.3)) brightness(0.95);
+    }
+
+    .gacha-knob.spinning {
+      animation: knobSpin 0.8s cubic-bezier(.4, 0, .2, 1);
+      pointer-events: none;
+    }
+
+    @keyframes knobSpin {
+      0% { transform: translate(-50%, -50%) rotate(0deg) }
+      100% { transform: translate(-50%, -50%) rotate(720deg) }
+    }
+
+    /* ลูกกาชาปอง */
+    .gacha-ball {
+      position: absolute;
+      width: 20%;
+      height: auto;
+      bottom: 3%;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      z-index: 4;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .gacha-ball.dropping {
+      animation: ballDrop 0.7s cubic-bezier(.17,.67,.35,1.2) forwards;
+    }
+
+    @keyframes ballDrop {
+      0% {
+        transform: translateX(-50%) scale(0) translateY(-40px);
+        opacity: 0;
       }
-
-      20% {
-        transform: rotate(-4deg)
-      }
-
       40% {
-        transform: rotate(4deg)
+        opacity: 1;
+        transform: translateX(-50%) scale(1.1) translateY(0px);
       }
-
       60% {
-        transform: rotate(-3deg)
+        transform: translateX(-50%) scale(0.9) translateY(5px);
       }
-
       80% {
-        transform: rotate(3deg)
+        transform: translateX(-50%) scale(1.05) translateY(-2px);
       }
+      100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1) translateY(0px);
+      }
+    }
+
+    .gacha-ball.open {
+      animation: ballOpen 0.5s cubic-bezier(.2,.9,.3,1.3) forwards;
+    }
+
+    @keyframes ballOpen {
+      0% { transform: translateX(-50%) scale(1); opacity: 1 }
+      50% { transform: translateX(-50%) scale(1.4); opacity: 0.7 }
+      100% { transform: translateX(-50%) scale(0); opacity: 0 }
     }
 
     .prize-card {
@@ -1404,16 +1468,7 @@
 
       <div class="avatar-row">
         <div class="avatar" id="avatarBox">
-          <!-- 🖼 เปลี่ยนเป็นรูปแฟน: <img src="รูป.jpg" style="width:100%;height:100%;object-fit:cover"> -->
-          <svg viewBox="0 0 60 60" width="52" height="52">
-            <rect x="14" y="10" width="32" height="26" rx="4" fill="#4A3527" />
-            <rect x="10" y="20" width="40" height="24" rx="10" fill="#F7D9C4" />
-            <rect x="20" y="30" width="5" height="5" fill="#4A3527" />
-            <rect x="35" y="30" width="5" height="5" fill="#4A3527" />
-            <rect x="26" y="39" width="8" height="3" rx="1.5" fill="#D45C7C" />
-            <rect x="16" y="26" width="6" height="4" rx="2" fill="#F3B6C6" opacity=".8" />
-            <rect x="38" y="26" width="6" height="4" rx="2" fill="#F3B6C6" opacity=".8" />
-          </svg>
+          <img src="assets/face.png" alt="Avatar" style="width:100%;height:100%;object-fit:cover">
         </div>
         <div class="bubble" id="avatarSay">ยินดีต้อนรับผู้เล่น! เคลียร์เควสให้ครบทุกเมนูล่ะ! ✨</div>
       </div>
@@ -1545,9 +1600,11 @@
 
       <div class="gacha-machine" id="gachaMachine">
         <img src="assets/gacha pong.png" alt="ตู้กาชาปอง" style="width:100%;height:100%;object-fit:contain">
+        <img src="assets/button.png" alt="ปุ่มหมุน" class="gacha-knob" id="gachaKnob" onclick="Game.spin()">
+        <img src="assets/gacha pong ball.jpg" alt="ลูกกาชา" class="gacha-ball" id="gachaBall">
       </div>
 
-      <button class="btn" id="spinBtn" onclick="Game.spin()">หมุนตู้ 🎲</button>
+      <p class="hand" style="font-size:.9rem;color:var(--ink-soft)">กดที่ปุ่มหมุนเพื่อสุ่มรางวัล! 🌟</p>
       <div id="prizeArea" style="width:100%"></div>
     </section>
 
@@ -1851,23 +1908,63 @@
 
       /* ----- กาชา ----- */
       spin() {
-        const btn = $("spinBtn"); btn.disabled = true;
+        const knob = $("gachaKnob");
+        const ball = $("gachaBall");
+        const machine = $("gachaMachine");
+
+        // ป้องกันกดซ้ำ
+        if (knob.classList.contains("spinning")) return;
+
+        // เคลียร์รางวัลเก่า
         $("prizeArea").innerHTML = "";
-        $("gachaMachine").classList.add("shake");
+
+        // รีเซ็ตลูกบอล
+        ball.classList.remove("dropping", "open");
+        ball.style.opacity = "0";
+        ball.style.transform = "translateX(-50%) scale(0)";
+
+        // Step 1: หมุนปุ่ม
+        knob.classList.add("spinning");
         Sfx.gacha();
+
+        // Step 2: เครื่องสั่น
         setTimeout(() => {
-          $("gachaMachine").classList.remove("shake");
+          machine.classList.add("shake");
+        }, 400);
+
+        // Step 3: ลูกบอลตกออกมา
+        setTimeout(() => {
+          machine.classList.remove("shake");
+          knob.classList.remove("spinning");
+          ball.style.opacity = "";
+          ball.style.transform = "";
+          ball.classList.add("dropping");
+          Sfx.beep(600, .15, "triangle", .15);
+        }, 1000);
+
+        // Step 4: เปิดลูกบอล + แสดงรางวัล
+        setTimeout(() => {
+          ball.classList.remove("dropping");
+          ball.classList.add("open");
+          Sfx.win();
+          burst(10, ["🎉", "💖", "✨", "🎊"]);
+
           const p = CONFIG.prizes[Math.floor(Math.random() * CONFIG.prizes.length)];
           $("prizeArea").innerHTML = `
-        <div class="prize-card">
-          <div class="pz">${p.icon}</div>
-          <h3>${p.name}</h3>
-          <p>${p.desc}</p>
-          <p class="coupon-note">✂ - - - แคปหน้าจอเก็บไว้เป็นคูปองได้เลย - - - ✂</p>
-        </div>`;
-          burst(10, ["🎉", "💖", "✨", "🎊"]);
-          btn.disabled = false; btn.textContent = "หมุนอีกครั้ง 🎲";
-        }, 750);
+            <div class="prize-card">
+              <div class="pz">${p.icon}</div>
+              <h3>${p.name}</h3>
+              <p>${p.desc}</p>
+              <p class="coupon-note">✂ - - - แคปหน้าจอเก็บไว้เป็นคูปองได้เลย - - - ✂</p>
+            </div>`;
+        }, 1800);
+
+        // Step 5: รีเซ็ตลูกบอลหลังแสดงรางวัล
+        setTimeout(() => {
+          ball.classList.remove("open");
+          ball.style.opacity = "0";
+          ball.style.transform = "translateX(-50%) scale(0)";
+        }, 2300);
       },
     };
   </script>
