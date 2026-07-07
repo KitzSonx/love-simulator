@@ -194,13 +194,48 @@ h1.hand{font-size:1.5rem;font-weight:700;line-height:1.5}
 
 /* ============ SCREEN 3 : ดอกไม้ ============ */
 #s-flower{justify-content:center;gap:18px;text-align:center}
-.flower-stage{width:230px;height:250px;position:relative}
-.flower-stage svg{width:100%;height:100%;overflow:visible}
-.petal{transform-origin:115px 118px;animation:bloom 1.4s cubic-bezier(.2,.9,.3,1.2) both}
-@keyframes bloom{from{transform:scale(0) rotate(var(--pr))}to{transform:scale(1) rotate(var(--pr))}}
-.stem{stroke-dasharray:140;stroke-dashoffset:140;animation:grow 1s ease-out both}
-@keyframes grow{to{stroke-dashoffset:0}}
-.sparkle{animation:blink 1.6s ease-in-out infinite}
+.flower-stage{
+  width:230px;
+  height:250px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.flower-img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  transform-origin:bottom center;
+  animation:flowerBloom 1.2s cubic-bezier(.34, 1.56, 0.64, 1) both,
+            flowerSway 3s ease-in-out infinite 1.2s;
+}
+@keyframes flowerBloom{
+  from{transform:scale(0)}
+  to{transform:scale(1)}
+}
+@keyframes flowerSway{
+  0%,100%{transform:rotate(-3deg) scale(1)}
+  50%{transform:rotate(3deg) scale(1.05)}
+}
+.sparkles-container{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.sparkle{
+  position:absolute;
+  animation:sparkleBlink 1.8s ease-in-out infinite;
+}
+.sparkle.s1{top:15%;left:15%;font-size:1.2rem;color:var(--blush);animation-delay:0s}
+.sparkle.s2{top:10%;right:15%;font-size:1rem;color:var(--sun);animation-delay:0.3s}
+.sparkle.s3{bottom:25%;right:10%;font-size:1.3rem;color:var(--mint);animation-delay:0.6s}
+.sparkle.s4{bottom:30%;left:8%;font-size:1.1rem;animation-delay:0.9s}
+.sparkle.s5{top:40%;right:5%;font-size:0.9rem;animation-delay:1.2s}
+@keyframes sparkleBlink{
+  0%,100%{opacity:0;transform:scale(0.6) translateY(0)}
+  50%{opacity:1;transform:scale(1.1) translateY(-6px)}
+}
 
 /* ============ SCREEN 4 : เมนูหลัก ============ */
 #s-menu{gap:14px;padding-top:20px}
@@ -488,25 +523,14 @@ h1.hand{font-size:1.5rem;font-weight:700;line-height:1.5}
   <section class="screen" id="s-flower">
     <p class="eyebrow">▶ STAGE CLEAR!</p>
     <div class="flower-stage">
-      <svg viewBox="0 0 230 250">
-        <path class="stem" d="M115 240 C 112 200, 120 170, 115 128" stroke="#5E9C82" stroke-width="7" fill="none" stroke-linecap="round"/>
-        <path d="M115 190 q -30 -6 -38 -30 q 32 2 38 30z" fill="#8FBFA8"/>
-        <path d="M115 205 q 30 -4 36 -28 q -30 0 -36 28z" fill="#8FBFA8"/>
-        <g>
-          <ellipse class="petal" style="--pr:0deg"   cx="115" cy="76" rx="26" ry="44" fill="#F3B6C6" stroke="#D45C7C" stroke-width="2.5" transform="rotate(0 115 118)"/>
-          <ellipse class="petal" style="--pr:60deg;animation-delay:.1s"  cx="115" cy="76" rx="26" ry="44" fill="#F3B6C6" stroke="#D45C7C" stroke-width="2.5" transform="rotate(60 115 118)"/>
-          <ellipse class="petal" style="--pr:120deg;animation-delay:.2s" cx="115" cy="76" rx="26" ry="44" fill="#F3B6C6" stroke="#D45C7C" stroke-width="2.5" transform="rotate(120 115 118)"/>
-          <ellipse class="petal" style="--pr:180deg;animation-delay:.3s" cx="115" cy="76" rx="26" ry="44" fill="#F3B6C6" stroke="#D45C7C" stroke-width="2.5" transform="rotate(180 115 118)"/>
-          <ellipse class="petal" style="--pr:240deg;animation-delay:.4s" cx="115" cy="76" rx="26" ry="44" fill="#F3B6C6" stroke="#D45C7C" stroke-width="2.5" transform="rotate(240 115 118)"/>
-          <ellipse class="petal" style="--pr:300deg;animation-delay:.5s" cx="115" cy="76" rx="26" ry="44" fill="#F3B6C6" stroke="#D45C7C" stroke-width="2.5" transform="rotate(300 115 118)"/>
-        </g>
-        <circle cx="115" cy="118" r="24" fill="#F2C14E" stroke="#4A3527" stroke-width="2.5"/>
-        <circle cx="108" cy="113" r="3" fill="#4A3527"/><circle cx="122" cy="113" r="3" fill="#4A3527"/>
-        <path d="M107 124 q 8 7 16 0" stroke="#4A3527" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <text class="sparkle" x="40" y="60" font-size="18">✦</text>
-        <text class="sparkle" x="180" y="40" font-size="14" style="animation-delay:.5s">✧</text>
-        <text class="sparkle" x="190" y="150" font-size="18" style="animation-delay:1s">✦</text>
-      </svg>
+      <img class="flower-img" src="assets/flower.png" alt="Flower">
+      <div class="sparkles-container">
+        <span class="sparkle s1">✦</span>
+        <span class="sparkle s2">✧</span>
+        <span class="sparkle s3">✦</span>
+        <span class="sparkle s4">💖</span>
+        <span class="sparkle s5">🌸</span>
+      </div>
     </div>
     <h1 class="hand">เก่งมาก! 🎉</h1>
     <p class="hand" style="font-size:1.05rem;color:var(--ink-soft)">ดอกไม้ดอกนี้... สำหรับคนน่ารักโดยเฉพาะ 💐</p>
