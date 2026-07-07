@@ -1604,7 +1604,7 @@
         <img src="assets/gacha pong ball.png" alt="ลูกกาชา" class="gacha-ball" id="gachaBall">
       </div>
 
-      <p class="hand" style="font-size:.9rem;color:var(--ink-soft)">กดที่ปุ่มหมุนเพื่อสุ่มรางวัล! 🌟</p>
+      <p id="gachaHintText" class="hand" style="font-size:.9rem;color:var(--ink-soft)">กดที่ปุ่มหมุนเพื่อสุ่มรางวัล! 🌟</p>
       <div id="prizeArea" style="width:100%"></div>
     </section>
 
@@ -1917,6 +1917,8 @@
 
         // เคลียร์รางวัลเก่า
         $("prizeArea").innerHTML = "";
+        const gachaHintText = $("gachaHintText");
+        if (gachaHintText) gachaHintText.style.display = "none";
 
         // รีเซ็ตลูกบอล
         ball.classList.remove("dropping", "open");
