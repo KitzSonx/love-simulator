@@ -1,0 +1,1148 @@
+/* ============================================================
+LOVE SIMULATOR — diary × retro game
+โทน: กระดาษครีม + หมึกน้ำตาลซีเปีย + ชมพูบลัช + มินต์เกมบอย
+============================================================ */
+.retro-8bit {
+  --paper: #F7EEDD;
+  --paper-dark: #EFE2C8;
+  --ink: #4A3527;
+  --ink-soft: #7A6350;
+  --blush: #E8849B;
+  --blush-deep: #D45C7C;
+  --mint: #8FBFA8;
+  --mint-deep: #5E9C82;
+  --sun: #F2C14E;
+  --tape-pink: rgba(240, 170, 190, .55);
+  --tape-mint: rgba(160, 210, 190, .55);
+  --tape-sun: rgba(245, 205, 120, .55);
+  --line: rgba(120, 140, 190, .25);
+  --shadow: 0 6px 18px rgba(74, 53, 39, .18);
+
+  font-family: 'Itim', var(--font-itim), cursive;
+  color: var(--ink);
+  background: #CBB89A;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.retro-8bit * {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- โต๊ะไม้ + สมุด ---------- */
+.retro-8bit .desk {
+  width: 100%;
+  max-width: 430px;
+  height: 100dvh;
+  position: relative;
+  background: var(--paper);
+  box-shadow: 0 0 60px rgba(0, 0, 0, .35);
+  overflow: hidden;
+}
+
+/* เท็กซ์เจอร์กระดาษ (noise) */
+.retro-8bit .desk::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.29 0 0 0 0 0.21 0 0 0 0 0.15 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* เส้นบรรทัดสมุด + เส้นขอบแดง */
+.retro-8bit .desk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(to right, transparent 34px, rgba(214, 90, 90, .35) 34px, rgba(214, 90, 90, .35) 35px, transparent 35px),
+    repeating-linear-gradient(to bottom, transparent 0 27px, var(--line) 27px 28px);
+  background-position: 0 12px;
+}
+
+/* รูเจาะสันสมุด */
+.retro-8bit .holes {
+  position: absolute;
+  left: 9px;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly
+}
+
+.retro-8bit .holes i {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #B9A585, #8f7c5e 70%);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, .35)
+}
+
+/* ---------- หน้าจอ (screens) ---------- */
+.retro-8bit .screen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 26px 20px 24px 46px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.retro-8bit .screen.active {
+  display: flex;
+  animation: pageIn .55s cubic-bezier(.2, .8, .3, 1) both
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(14px) rotate(.4deg) }
+  to { opacity: 1; transform: none }
+}
+
+/* ---------- ตัวอักษร ---------- */
+.retro-8bit .hand {
+  font-family: 'Mali', var(--font-mali), cursive
+}
+
+.retro-8bit .pixel {
+  font-family: 'Press Start 2P', var(--font-press-start-2p), monospace
+}
+
+.retro-8bit h1.hand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.5
+}
+
+.retro-8bit .eyebrow {
+  font-family: 'Press Start 2P', var(--font-press-start-2p), monospace;
+  font-size: .5rem;
+  letter-spacing: .12em;
+  color: var(--mint-deep);
+  margin-bottom: 8px;
+}
+
+/* ---------- การ์ดกระดาษฉีก ---------- */
+.retro-8bit .paper-card {
+  position: relative;
+  isolation: isolate;
+  border-radius: 4px;
+  filter: drop-shadow(0 6px 14px rgba(74, 53, 39, .15));
+  padding: 22px 18px 20px;
+  width: 100%;
+  --tear: 8px;
+}
+
+.retro-8bit .paper-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #FFFDF6;
+  clip-path: polygon(0 4px, 3% 0, 7% 5px, 12% 1px, 18% 6px, 24% 2px, 31% 6px, 38% 1px, 45% 5px, 52% 2px, 59% 6px, 66% 1px, 73% 5px, 80% 2px, 87% 6px, 93% 1px, 100% 4px, 100% calc(100% - 4px), 96% 100%, 90% calc(100% - 5px), 83% 100%, 76% calc(100% - 4px), 68% 100%, 60% calc(100% - 5px), 52% 100%, 44% calc(100% - 4px), 36% 100%, 28% calc(100% - 5px), 20% 100%, 13% calc(100% - 4px), 6% 100%, 0 calc(100% - 5px));
+  z-index: -1;
+}
+
+/* เทป washi */
+.retro-8bit .tape {
+  position: absolute;
+  width: 88px;
+  height: 26px;
+  z-index: 5;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, .35) 0 6px, transparent 6px 12px),
+    var(--tape-pink);
+  box-shadow: 0 2px 5px rgba(74, 53, 39, .18);
+  opacity: .95;
+}
+
+.retro-8bit .tape.mint {
+  background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .35) 0 6px, transparent 6px 12px), var(--tape-mint)
+}
+
+.retro-8bit .tape.sun {
+  background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .35) 0 6px, transparent 6px 12px), var(--tape-sun)
+}
+
+.retro-8bit .tape.tl {
+  top: -12px;
+  left: -16px;
+  transform: rotate(-38deg)
+}
+
+.retro-8bit .tape.tr {
+  top: -12px;
+  right: -16px;
+  transform: rotate(38deg)
+}
+
+.retro-8bit .tape.tc {
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg)
+}
+
+/* ---------- ปุ่ม ---------- */
+.retro-8bit .btn {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+  background: var(--blush-deep);
+  border: none;
+  border-radius: 14px;
+  padding: 13px 30px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #A93F5E, 0 8px 14px rgba(74, 53, 39, .25);
+  transition: transform .12s, box-shadow .12s;
+  position: relative;
+}
+
+.retro-8bit .btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #A93F5E, 0 3px 6px rgba(74, 53, 39, .25)
+}
+
+.retro-8bit .btn.mint {
+  background: var(--mint-deep);
+  box-shadow: 0 5px 0 #40745F, 0 8px 14px rgba(74, 53, 39, .25)
+}
+
+.retro-8bit .btn.mint:active {
+  box-shadow: 0 1px 0 #40745F, 0 3px 6px rgba(74, 53, 39, .25)
+}
+
+.retro-8bit .btn.ghost {
+  background: #FFFDF6;
+  color: var(--ink);
+  box-shadow: 0 4px 0 #D8C9A8, 0 7px 12px rgba(74, 53, 39, .18);
+  border: 2px dashed var(--ink-soft)
+}
+
+.retro-8bit .btn.ghost:active {
+  box-shadow: 0 1px 0 #D8C9A8
+}
+
+.retro-8bit .btn:disabled {
+  opacity: .45;
+  filter: grayscale(.4);
+  cursor: not-allowed
+}
+
+/* ---------- ดูเดิลลอย ---------- */
+.retro-8bit .doodle {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  opacity: .85;
+  animation: floaty 5s ease-in-out infinite
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)) }
+  50% { transform: translateY(-7px) rotate(var(--r, 0deg)) }
+}
+
+.retro-8bit .stain {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  border: 10px solid rgba(160, 120, 70, .12);
+  filter: blur(.6px);
+}
+
+/* ============ SCREEN 1 : ตลับเกมมาส่ง ============ */
+.retro-8bit #s-boot {
+  justify-content: center;
+  gap: 22px
+}
+
+.retro-8bit .cartridge {
+  width: 210px;
+  height: 250px;
+  position: relative;
+  margin: 10px 0 4px;
+  animation: cartFloat 3.4s ease-in-out infinite;
+  filter: drop-shadow(0 14px 16px rgba(74, 53, 39, .3));
+}
+
+@keyframes cartFloat {
+  0%, 100% { transform: rotate(-3deg) translateY(0) }
+  50% { transform: rotate(-3deg) translateY(-9px) }
+}
+
+.retro-8bit .blink {
+  animation: blink 1.1s steps(2) infinite
+}
+
+@keyframes blink {
+  50% { opacity: 0 }
+}
+
+/* ============ SCREEN 2 : รหัสลับ ============ */
+.retro-8bit #s-code {
+  justify-content: center;
+  gap: 16px
+}
+
+.retro-8bit .console {
+  width: 100%;
+  max-width: 330px;
+  background: #E9DEC3;
+  border-radius: 18px 18px 44px 18px;
+  padding: 18px 18px 22px;
+  box-shadow: var(--shadow), inset 0 -5px 0 rgba(74, 53, 39, .12);
+  border: 2px solid rgba(74, 53, 39, .2);
+  position: relative;
+}
+
+.retro-8bit .lcd {
+  background: #9CBF8B;
+  border: 4px solid #5C6B4E;
+  border-radius: 8px;
+  min-height: 96px;
+  padding: 12px 10px;
+  box-shadow: inset 0 3px 10px rgba(0, 0, 0, .3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.retro-8bit .lcd .prompt {
+  font-family: 'Press Start 2P', var(--font-press-start-2p), monospace;
+  font-size: .48rem;
+  color: #2E3B26;
+  letter-spacing: .06em
+}
+
+.retro-8bit .code-out {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #243019;
+  min-height: 2rem;
+  letter-spacing: 2px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+}
+
+.retro-8bit .code-out .caret {
+  display: inline-block;
+  width: 11px;
+  height: 3px;
+  background: #243019;
+  vertical-align: baseline;
+  animation: blink 1s steps(2) infinite
+}
+
+.retro-8bit .pad-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px
+}
+
+.retro-8bit .dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 42px);
+  grid-template-rows: repeat(3, 42px)
+}
+
+.retro-8bit .dbtn {
+  background: #5A4A3A;
+  border: none;
+  color: #EFE2C8;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #3A2E22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .08s, box-shadow .08s;
+}
+
+.retro-8bit .dbtn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #3A2E22
+}
+
+.retro-8bit .dbtn.up { grid-area: 1/2; border-radius: 8px 8px 0 0 }
+.retro-8bit .dbtn.down { grid-area: 3/2; border-radius: 0 0 8px 8px }
+.retro-8bit .dbtn.left { grid-area: 2/1; border-radius: 8px 0 0 8px }
+.retro-8bit .dbtn.right { grid-area: 2/3; border-radius: 0 8px 8px 0 }
+.retro-8bit .dpad .mid { grid-area: 2/2; background: #5A4A3A }
+
+.retro-8bit .ab {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end
+}
+
+.retro-8bit .abtn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-family: 'Press Start 2P', var(--font-press-start-2p), monospace;
+  font-size: .7rem;
+  color: #fff;
+  transition: transform .08s, box-shadow .08s;
+}
+
+.retro-8bit .abtn.a {
+  background: var(--blush-deep);
+  box-shadow: 0 4px 0 #A93F5E;
+  transform: rotate(-8deg)
+}
+
+.retro-8bit .abtn.b {
+  background: var(--mint-deep);
+  box-shadow: 0 4px 0 #40745F;
+  transform: rotate(-8deg) translateX(-16px)
+}
+
+.retro-8bit .abtn:active {
+  transform: rotate(-8deg) translateY(3px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .3)
+}
+
+.retro-8bit .hint-note {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: .9rem;
+  color: var(--ink-soft);
+  text-align: center;
+  transform: rotate(-1.5deg);
+}
+
+/* ============ SCREEN 3 : ดอกไม้ ============ */
+.retro-8bit #s-flower {
+  justify-content: center;
+  gap: 18px;
+  text-align: center
+}
+
+.retro-8bit .flower-stage {
+  width: 320px;
+  height: 345px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.retro-8bit .flower-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: bottom center;
+  animation: flowerBloom 1.2s cubic-bezier(.34, 1.56, 0.64, 1) both,
+    flowerSway 3s ease-in-out infinite 1.2s;
+}
+
+@keyframes flowerBloom {
+  from { transform: scale(0) }
+  to { transform: scale(1) }
+}
+
+@keyframes flowerSway {
+  0%, 100% { transform: rotate(-3deg) scale(1) }
+  50% { transform: rotate(3deg) scale(1.05) }
+}
+
+.retro-8bit .sparkles-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.retro-8bit .sparkle {
+  position: absolute;
+  animation: sparkleBlink 1.8s ease-in-out infinite;
+}
+
+.retro-8bit .sparkle.s1 { top: 15%; left: 15%; font-size: 1.2rem; color: var(--blush); animation-delay: 0s }
+.retro-8bit .sparkle.s2 { top: 10%; right: 15%; font-size: 1rem; color: var(--sun); animation-delay: 0.3s }
+.retro-8bit .sparkle.s3 { bottom: 25%; right: 10%; font-size: 1.3rem; color: var(--mint); animation-delay: 0.6s }
+.retro-8bit .sparkle.s4 { bottom: 30%; left: 8%; font-size: 1.1rem; animation-delay: 0.9s }
+.retro-8bit .sparkle.s5 { top: 40%; right: 5%; font-size: 0.9rem; animation-delay: 1.2s }
+
+@keyframes sparkleBlink {
+  0%, 100% { opacity: 0; transform: scale(0.6) translateY(0) }
+  50% { opacity: 1; transform: scale(1.1) translateY(-6px) }
+}
+
+/* ============ SCREEN 4 : เมนูหลัก ============ */
+.retro-8bit #s-menu {
+  gap: 14px;
+  padding-top: 20px
+}
+
+.retro-8bit .gauge-wrap {
+  width: 100%;
+  position: relative
+}
+
+.retro-8bit .gauge-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 5px
+}
+
+.retro-8bit .gauge-label .hand {
+  font-size: .95rem;
+  font-weight: 600
+}
+
+.retro-8bit .gauge-label .pct {
+  font-family: 'Press Start 2P', var(--font-press-start-2p), monospace;
+  font-size: .55rem;
+  color: var(--blush-deep)
+}
+
+.retro-8bit .gauge {
+  height: 24px;
+  border-radius: 12px;
+  background: #FFFDF6;
+  border: 2px solid var(--ink);
+  box-shadow: inset 0 2px 4px rgba(74, 53, 39, .15);
+  overflow: hidden;
+  position: relative;
+}
+
+.retro-8bit .gauge-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 9px;
+  background: repeating-linear-gradient(45deg, var(--blush) 0 10px, var(--blush-deep) 10px 20px);
+  transition: width .9s cubic-bezier(.2, .8, .3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.retro-8bit .gauge-fill::after {
+  content: "♥";
+  color: #fff;
+  font-size: .8rem;
+  margin-right: 6px
+}
+
+.retro-8bit .avatar-row {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  margin-top: 2px
+}
+
+.retro-8bit .avatar {
+  width: 64px;
+  height: 64px;
+  flex: none;
+  border-radius: 12px;
+  background: #FFE9EF;
+  border: 2px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 rgba(74, 53, 39, .2);
+  overflow: hidden;
+  animation: bob 2.6s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-4px) }
+}
+
+.retro-8bit .bubble {
+  position: relative;
+  background: #FFFDF6;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: .85rem;
+  font-weight: 600;
+  flex: 1;
+  box-shadow: 3px 3px 0 rgba(74, 53, 39, .2);
+}
+
+.retro-8bit .bubble::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  bottom: 12px;
+  width: 12px;
+  height: 12px;
+  background: #FFFDF6;
+  border-left: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg);
+}
+
+.retro-8bit .menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+  margin-top: 6px
+}
+
+.retro-8bit .cart-btn {
+  border: none;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  position: relative;
+  transition: transform .15s;
+}
+
+.retro-8bit .cart-btn:hover {
+  transform: translateY(-3px) rotate(-1deg)
+}
+
+.retro-8bit .cart-btn:active {
+  transform: translateY(1px)
+}
+
+.retro-8bit .cart-body {
+  border-radius: 10px 10px 14px 14px;
+  padding: 14px 10px 12px;
+  position: relative;
+  box-shadow: 0 5px 0 rgba(74, 53, 39, .28), 0 9px 14px rgba(74, 53, 39, .2);
+  border: 2px solid rgba(74, 53, 39, .3);
+}
+
+.retro-8bit .cart-body::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 14px;
+  right: 14px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .35);
+}
+
+.retro-8bit .cart-body .lbl {
+  background: #FFFDF6;
+  border-radius: 6px;
+  padding: 8px 6px;
+  margin-top: 8px;
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-weight: 700;
+  font-size: .82rem;
+  line-height: 1.35;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px rgba(74, 53, 39, .25);
+  min-height: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.retro-8bit .cart-body .ico {
+  font-size: 1.35rem;
+  line-height: 1
+}
+
+.retro-8bit .cart-1 .cart-body { background: #F3B6C6 }
+.retro-8bit .cart-2 .cart-body { background: #F6D690 }
+.retro-8bit .cart-3 .cart-body { background: #AFD8C3 }
+.retro-8bit .cart-4 .cart-body { background: #BFC8EA }
+
+.retro-8bit .stamp-done {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  z-index: 6;
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-weight: 700;
+  font-size: .62rem;
+  color: #C0392B;
+  border: 2px solid #C0392B;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.1;
+  transform: rotate(14deg);
+  background: rgba(255, 253, 246, .85);
+  box-shadow: 0 2px 5px rgba(74, 53, 39, .2);
+}
+
+.retro-8bit .cart-btn.done .stamp-done {
+  display: flex;
+  animation: stampIn .4s cubic-bezier(.2, .9, .3, 1.4) both
+}
+
+.retro-8bit .gacha-locked {
+  width: 100%;
+  margin-top: 4px;
+  text-align: center;
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: .85rem;
+  color: var(--ink-soft);
+}
+
+/* ============ หน้าเควสร่วม ============ */
+.retro-8bit .quest-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px
+}
+
+.retro-8bit .back-btn {
+  border: 2px solid var(--ink);
+  background: #FFFDF6;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--ink);
+  padding: 7px 13px;
+  box-shadow: 2px 2px 0 rgba(74, 53, 39, .25);
+}
+
+.retro-8bit .back-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 rgba(74, 53, 39, .25)
+}
+
+.retro-8bit .quest-title {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-weight: 700;
+  font-size: 1.05rem
+}
+
+/* ============ SCREEN 5 : นับวัน ============ */
+.retro-8bit .polaroid {
+  background: #FFFDF6;
+  padding: 12px 12px 40px;
+  box-shadow: var(--shadow);
+  transform: rotate(-2.5deg);
+  position: relative;
+  width: min(78%, 250px);
+  margin: 8px auto 4px;
+  transition: transform .3s;
+}
+
+.retro-8bit .polaroid:nth-of-type(even) { transform: rotate(2deg) }
+.retro-8bit .polaroid:hover { transform: rotate(0) scale(1.02) }
+
+.retro-8bit .polaroid .ph {
+  aspect-ratio: 1/1;
+  background: linear-gradient(135deg, #F6D3DC 0%, #EDE3F2 50%, #CFE5DB 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--ink-soft);
+  font-size: .8rem;
+  text-align: center;
+  padding: 8px;
+  border: 1.5px dashed rgba(122, 99, 80, .45);
+}
+
+.retro-8bit .polaroid .ph img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover
+}
+
+.retro-8bit .polaroid .cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 9px;
+  text-align: center;
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: .85rem;
+  color: var(--ink-soft);
+}
+
+.retro-8bit .count-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  margin-top: 14px
+}
+
+.retro-8bit .count-cell {
+  background: #FFFDF6;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 10px 4px;
+  text-align: center;
+  box-shadow: 3px 3px 0 rgba(74, 53, 39, .18);
+}
+
+.retro-8bit .count-cell b {
+  font-family: 'Press Start 2P', var(--font-press-start-2p), monospace;
+  font-size: .85rem;
+  color: var(--blush-deep);
+  display: block;
+  margin-bottom: 5px
+}
+
+.retro-8bit .count-cell span {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--ink-soft)
+}
+
+.retro-8bit .days-big {
+  margin-top: 16px;
+  text-align: center;
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.retro-8bit .days-big b {
+  font-size: 2rem;
+  color: var(--blush-deep)
+}
+
+/* ============ SCREEN 6 : จดหมาย ============ */
+.retro-8bit #s-letter { justify-content: center }
+
+.retro-8bit .envelope {
+  width: min(86%, 300px);
+  cursor: pointer;
+  position: relative;
+  margin: 12px auto;
+  filter: drop-shadow(0 12px 14px rgba(74, 53, 39, .28));
+  transition: transform .2s;
+}
+
+.retro-8bit .envelope:hover { transform: scale(1.03) }
+
+.retro-8bit .letter-paper {
+  background: #FFFDF6;
+  width: 100%;
+  padding: 24px 18px 20px;
+  position: relative;
+  box-shadow: var(--shadow);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 25px, rgba(120, 140, 190, .22) 25px 26px);
+}
+
+.retro-8bit .letter-paper h2 {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: 1.3rem;
+  color: var(--blush-deep);
+  margin-bottom: 10px;
+  text-align: center
+}
+
+.retro-8bit .letter-body {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: .98rem;
+  line-height: 26px;
+  min-height: 130px;
+  white-space: pre-wrap;
+}
+
+.retro-8bit .letter-body .caret2 {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--ink);
+  vertical-align: -2px;
+  animation: blink 1s steps(2) infinite
+}
+
+.retro-8bit .sign {
+  text-align: right;
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-style: italic;
+  margin-top: 12px;
+  color: var(--ink-soft)
+}
+
+/* ============ SCREEN 7 : ควิซ ============ */
+.retro-8bit .q-card { width: 100% }
+
+.retro-8bit .q-num {
+  font-family: 'Press Start 2P', var(--font-press-start-2p), monospace;
+  font-size: .5rem;
+  color: var(--mint-deep);
+  margin-bottom: 8px
+}
+
+.retro-8bit .q-text {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-weight: 700;
+  font-size: 1.08rem;
+  margin-bottom: 14px;
+  line-height: 1.5
+}
+
+.retro-8bit .choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}
+
+.retro-8bit .choice {
+  text-align: left;
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-weight: 600;
+  font-size: .95rem;
+  color: var(--ink);
+  background: #FFFDF6;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 11px 14px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(74, 53, 39, .2);
+  transition: transform .1s, background .2s;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.retro-8bit .choice:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(74, 53, 39, .2)
+}
+
+.retro-8bit .choice .abc {
+  font-family: 'Press Start 2P', var(--font-press-start-2p), monospace;
+  font-size: .55rem;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--paper-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.retro-8bit .choice.good {
+  background: #DDF3E4;
+  border-color: var(--mint-deep)
+}
+
+.retro-8bit .choice.bad {
+  background: #FBE0E4;
+  border-color: var(--blush-deep)
+}
+
+.retro-8bit .q-progress {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin: 14px 0 4px
+}
+
+.retro-8bit .q-progress i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #E3D5B8;
+  border: 1.5px solid var(--ink-soft)
+}
+
+.retro-8bit .q-progress i.on {
+  background: var(--blush)
+}
+
+.retro-8bit .quiz-result { text-align: center }
+.retro-8bit .quiz-result .big { font-size: 2.6rem; line-height: 1.3 }
+
+/* ============ SCREEN 8 : ความทรงจำ ============ */
+.retro-8bit #s-memory .screen-inner { width: 100% }
+
+.retro-8bit .mem-note {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: .85rem;
+  color: var(--ink-soft);
+  text-align: center;
+  transform: rotate(-1deg);
+  margin-bottom: 6px;
+}
+
+/* ============ SCREEN 9 : ตู้กาชา ============ */
+.retro-8bit #s-gacha {
+  justify-content: center;
+  text-align: center;
+  gap: 14px
+}
+
+.retro-8bit .gacha-machine {
+  width: 200px;
+  height: 250px;
+  position: relative;
+  margin: 6px auto
+}
+
+.retro-8bit .gacha-machine.shake { animation: shake .6s ease-in-out }
+
+@keyframes shake {
+  0%, 100% { transform: rotate(0) }
+  20% { transform: rotate(-4deg) }
+  40% { transform: rotate(4deg) }
+  60% { transform: rotate(-3deg) }
+  80% { transform: rotate(3deg) }
+}
+
+.retro-8bit .gacha-knob {
+  position: absolute;
+  width: 25%;
+  height: auto;
+  top: 65%;
+  left: 48%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 2;
+  transition: filter 0.15s;
+  filter: drop-shadow(0 2px 3px rgba(74,53,39,.3));
+}
+
+.retro-8bit .gacha-knob:hover { filter: drop-shadow(0 3px 6px rgba(74,53,39,.4)) brightness(1.05); }
+.retro-8bit .gacha-knob:active { filter: drop-shadow(0 1px 2px rgba(74,53,39,.3)) brightness(0.95); }
+
+.retro-8bit .gacha-knob.spinning {
+  animation: knobSpin 0.8s cubic-bezier(.4, 0, .2, 1);
+  pointer-events: none;
+}
+
+@keyframes knobSpin {
+  0% { transform: translate(-50%, -50%) rotate(0deg) }
+  100% { transform: translate(-50%, -50%) rotate(720deg) }
+}
+
+.retro-8bit .gacha-ball {
+  position: absolute;
+  width: 30%;
+  height: auto;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.retro-8bit .gacha-ball.dropping { animation: ballDrop 0.7s cubic-bezier(.17,.67,.35,1.2) forwards; }
+
+@keyframes ballDrop {
+  0% { transform: translateX(-50%) scale(0) translateY(-40px); opacity: 0; }
+  40% { opacity: 1; transform: translateX(-50%) scale(1.1) translateY(0px); }
+  60% { transform: translateX(-50%) scale(0.9) translateY(5px); }
+  80% { transform: translateX(-50%) scale(1.05) translateY(-2px); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0px); }
+}
+
+.retro-8bit .gacha-ball.open { animation: ballOpen 0.5s cubic-bezier(.2,.9,.3,1.3) forwards; }
+
+@keyframes ballOpen {
+  0% { transform: translateX(-50%) scale(1); opacity: 1 }
+  50% { transform: translateX(-50%) scale(1.4); opacity: 0.7 }
+  100% { transform: translateX(-50%) scale(0); opacity: 0 }
+}
+
+.retro-8bit .prize-card {
+  background: #FFFDF6;
+  border: 2.5px dashed var(--blush-deep);
+  border-radius: 14px;
+  padding: 20px 16px;
+  width: 100%;
+  box-shadow: var(--shadow);
+  animation: stampIn .5s cubic-bezier(.2, .9, .3, 1.3) both;
+}
+
+.retro-8bit .prize-card .pz { font-size: 2.2rem }
+.retro-8bit .prize-card h3 { font-family: 'Mali', var(--font-mali), cursive; font-size: 1.15rem; margin: 8px 0 4px; color: var(--blush-deep) }
+.retro-8bit .prize-card p { font-family: 'Mali', var(--font-mali), cursive; font-size: .88rem; color: var(--ink-soft) }
+.retro-8bit .coupon-note { font-family: 'Mali', var(--font-mali), cursive; font-size: .78rem; color: var(--ink-soft); margin-top: 2px }
+
+/* ============ โมดัลฉลอง ============ */
+.retro-8bit .modal {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background: rgba(74, 53, 39, .45);
+  backdrop-filter: blur(2px);
+}
+
+.retro-8bit .modal.show { display: flex }
+
+.retro-8bit .modal .paper-card {
+  max-width: 320px;
+  text-align: center;
+  animation: stampIn .5s cubic-bezier(.2, .9, .3, 1.3) both
+}
+
+/* หัวใจ/คอนเฟตติลอย */
+.retro-8bit .float-bit {
+  position: absolute;
+  z-index: 60;
+  pointer-events: none;
+  font-size: 1.2rem;
+  animation: rise 2.6s ease-out forwards
+}
+
+@keyframes rise {
+  from { opacity: 1; transform: translateY(0) rotate(0) }
+  to { opacity: 0; transform: translateY(-140px) rotate(40deg) }
+}
+
+@keyframes stampIn {
+  from {
+    transform: rotate(14deg) scale(2.2);
+    opacity: 0
+  }
+
+  to {
+    transform: rotate(14deg) scale(1);
+    opacity: 1
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retro-8bit *, .retro-8bit *::before, .retro-8bit *::after {
+    animation-duration: .001s !important;
+    transition-duration: .001s !important
+  }
+}
