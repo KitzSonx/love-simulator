@@ -33,7 +33,7 @@ export default function MenuScreen({ data, quests, onOpenMenu, onOpenGacha, anim
   return (
     <section className="screen active" id="s-menu">
       <div className="stain" style={{ top: '40%', right: '-40px', width: '90px', height: '90px' }}></div>
-      <p className="eyebrow">▶ MAIN MENU</p>
+      <p className="eyebrow">{"▶\uFE0E"} MAIN MENU</p>
 
       <div className="gauge-wrap">
         <div className="gauge-label">

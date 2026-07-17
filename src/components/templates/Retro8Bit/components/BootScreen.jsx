@@ -9,7 +9,7 @@ export default function BootScreen({ onStart, data }) {
       <div className="doodle" style={{ top: '20%', right: '12%', '--r': '8deg', color: 'var(--blush-deep)' }}>♡</div>
       <div className="doodle" style={{ bottom: '14%', left: '16%', '--r': '-6deg', color: 'var(--mint-deep)' }}>✦</div>
 
-      <p className="eyebrow blink">▶ NEW GAME DELIVERY</p>
+      <p className="eyebrow blink">{"▶\uFE0E"} NEW GAME DELIVERY</p>
       <h1 className="hand" style={{ textAlign: 'center' }}>📦 ตลับเกมมาส่งแล้ว!</h1>
 
       <div className="cartridge">
@@ -38,7 +38,7 @@ export default function BootScreen({ onStart, data }) {
       <button className="btn" onClick={() => {
         Sfx.click();
         onStart();
-      }}>▶ เล่นเกม</button>
+      }}>{"▶\uFE0E"} เล่นเกม</button>
     </section>
   );
 }

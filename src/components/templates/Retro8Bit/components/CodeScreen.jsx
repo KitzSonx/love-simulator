@@ -46,11 +46,11 @@ export default function CodeScreen({ data, onComplete }) {
         </div>
         <div className="pad-row">
           <div className="dpad">
-            <button className="dbtn up" onClick={handlePress}>▲</button>
-            <button className="dbtn left" onClick={handlePress}>◀</button>
+            <button className="dbtn up" onClick={handlePress}>{"▲\uFE0E"}</button>
+            <button className="dbtn left" onClick={handlePress}>{"◀\uFE0E"}</button>
             <div className="mid"></div>
-            <button className="dbtn right" onClick={handlePress}>▶</button>
-            <button className="dbtn down" onClick={handlePress}>▼</button>
+            <button className="dbtn right" onClick={handlePress}>{"▶\uFE0E"}</button>
+            <button className="dbtn down" onClick={handlePress}>{"▼\uFE0E"}</button>
           </div>
           <div className="ab">
             <button className="abtn a" onClick={handlePress}>A</button>

@@ -6,7 +6,7 @@ export default function FlowerScreen({ data, onContinue }) {
 
   return (
     <section className="screen active" id="s-flower">
-      <p className="eyebrow">▶ STAGE CLEAR!</p>
+      <p className="eyebrow">{"▶\uFE0E"} STAGE CLEAR!</p>
       <div className="flower-stage">
         <img className="flower-img" src={flowerSrc} alt="Flower" />
         <div className="sparkles-container">
@@ -24,7 +24,7 @@ export default function FlowerScreen({ data, onContinue }) {
       <button className="btn" onClick={() => {
         Sfx.click();
         onContinue();
-      }}>ไปต่อเลย ▶</button>
+      }}>ไปต่อเลย {"▶\uFE0E"}</button>
     </section>
   );
 }

@@ -43,7 +43,7 @@ export default function DaysScreen({ data, onBack, startDate, onComplete }) {
   return (
     <section className="screen active" id="s-days">
       <div className="quest-top">
-        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>◀ กลับ</button>
+        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>{"◀\uFE0E"} กลับ</button>
         <span className="quest-title">⏳ เราคบกันมาแล้ว...</span>
       </div>
 
