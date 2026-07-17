@@ -238,17 +238,17 @@ export default function HomePage() {
         <section className="mt-10 rounded-[40px] border border-rose-100/80 bg-white/60 p-8 shadow-[0_20px_50px_-20px_rgba(244,114,182,0.15)] backdrop-blur-xl sm:p-12">
           <div className="mx-auto max-w-3xl text-center mb-10">
             <h2 className="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">
-              ง่ายเหมือนส่งข้อความ
+              ขั้นตอนการสร้างเว็บไซต์
             </h2>
-            <p className="mt-2 text-sm text-slate-500">ขั้นตอนการสร้างเซอร์ไพรส์แบบไม่ยุ่งยาก</p>
+            <p className="mt-2 text-sm text-slate-500">โดยทำตาม 4 ขั้นตอนง่าย ๆ ดังต่อไปนี้</p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 relative">
             {[
               { step: '01', icon: '🎨', title: 'เลือกดีไซน์', desc: 'เลือกรูปแบบเทมเพลตที่เหมาะกับคู่ของคุณ' },
               { step: '02', icon: '✍️', title: 'ใส่ความรู้สึก', desc: 'กรอกข้อความ รูปภาพ และความทรงจำร่วมกัน' },
-              { step: '03', icon: '💳', title: 'ชำระเงิน', desc: 'สแกน QR พร้อมเพย์ แล้วแนบสลิปยืนยัน' },
-              { step: '04', icon: '🎁', title: 'ส่งให้แฟน', desc: 'รับลิงก์และ QR Code ส่งเซอร์ไพรส์ได้ทันที!' },
+              { step: '03', icon: <img src="/assets/Prompt%20pay.jpg" alt="Prompt Pay" className="h-full object-contain mix-blend-multiply" />, title: 'ชำระเงิน', desc: 'สแกน QR พร้อมเพย์ แล้วแนบสลิปยืนยัน', wide: true },
+              { step: '04', icon: '🎁', title: 'ส่งให้แฟน', desc: 'รับลิงก์และ QR Code ส่งเซอร์ไพรส์ได้เลย!' },
             ].map((item, i) => (
               <div
                 key={i}
@@ -258,7 +258,7 @@ export default function HomePage() {
                   {item.step}
                 </span>
                 <div>
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-2xl group-hover:scale-110 transition-transform">
+                  <div className={`mb-4 inline-flex h-12 items-center justify-center rounded-2xl bg-rose-50 text-2xl group-hover:scale-110 transition-transform overflow-hidden ${item.wide ? 'w-24' : 'w-12'}`}>
                     {item.icon}
                   </div>
                   <h3 className="font-bold text-slate-800 text-base">{item.title}</h3>

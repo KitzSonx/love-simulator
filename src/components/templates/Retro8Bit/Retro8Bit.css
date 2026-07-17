@@ -23,12 +23,12 @@ LOVE SIMULATOR — diary × retro game
   background: #CBB89A;
   display: flex;
   justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  align-items: flex-start;
   min-height: 100vh;
   width: 100%;
   margin: 0 auto;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .retro-8bit * {
@@ -40,7 +40,7 @@ LOVE SIMULATOR — diary × retro game
 .retro-8bit .desk {
   width: 100%;
   max-width: 430px;
-  height: 100dvh;
+  min-height: 100dvh;
   position: relative;
   background: var(--paper);
   box-shadow: 0 0 60px rgba(0, 0, 0, .35);
@@ -111,8 +111,15 @@ LOVE SIMULATOR — diary × retro game
 }
 
 @keyframes pageIn {
-  from { opacity: 0; transform: translateY(14px) rotate(.4deg) }
-  to { opacity: 1; transform: none }
+  from {
+    opacity: 0;
+    transform: translateY(14px) rotate(.4deg)
+  }
+
+  to {
+    opacity: 1;
+    transform: none
+  }
 }
 
 /* ---------- ตัวอักษร ---------- */
@@ -254,8 +261,15 @@ LOVE SIMULATOR — diary × retro game
 }
 
 @keyframes floaty {
-  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)) }
-  50% { transform: translateY(-7px) rotate(var(--r, 0deg)) }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg))
+  }
+
+  50% {
+    transform: translateY(-7px) rotate(var(--r, 0deg))
+  }
 }
 
 .retro-8bit .stain {
@@ -285,8 +299,15 @@ LOVE SIMULATOR — diary × retro game
 }
 
 @keyframes cartFloat {
-  0%, 100% { transform: rotate(-3deg) translateY(0) }
-  50% { transform: rotate(-3deg) translateY(-9px) }
+
+  0%,
+  100% {
+    transform: rotate(-3deg) translateY(0)
+  }
+
+  50% {
+    transform: rotate(-3deg) translateY(-9px)
+  }
 }
 
 .retro-8bit .blink {
@@ -294,7 +315,9 @@ LOVE SIMULATOR — diary × retro game
 }
 
 @keyframes blink {
-  50% { opacity: 0 }
+  50% {
+    opacity: 0
+  }
 }
 
 /* ============ SCREEN 2 : รหัสลับ ============ */
@@ -385,11 +408,30 @@ LOVE SIMULATOR — diary × retro game
   box-shadow: 0 1px 0 #3A2E22
 }
 
-.retro-8bit .dbtn.up { grid-area: 1/2; border-radius: 8px 8px 0 0 }
-.retro-8bit .dbtn.down { grid-area: 3/2; border-radius: 0 0 8px 8px }
-.retro-8bit .dbtn.left { grid-area: 2/1; border-radius: 8px 0 0 8px }
-.retro-8bit .dbtn.right { grid-area: 2/3; border-radius: 0 8px 8px 0 }
-.retro-8bit .dpad .mid { grid-area: 2/2; background: #5A4A3A }
+.retro-8bit .dbtn.up {
+  grid-area: 1/2;
+  border-radius: 8px 8px 0 0
+}
+
+.retro-8bit .dbtn.down {
+  grid-area: 3/2;
+  border-radius: 0 0 8px 8px
+}
+
+.retro-8bit .dbtn.left {
+  grid-area: 2/1;
+  border-radius: 8px 0 0 8px
+}
+
+.retro-8bit .dbtn.right {
+  grid-area: 2/3;
+  border-radius: 0 8px 8px 0
+}
+
+.retro-8bit .dpad .mid {
+  grid-area: 2/2;
+  background: #5A4A3A
+}
 
 .retro-8bit .ab {
   display: flex;
@@ -461,13 +503,25 @@ LOVE SIMULATOR — diary × retro game
 }
 
 @keyframes flowerBloom {
-  from { transform: scale(0) }
-  to { transform: scale(1) }
+  from {
+    transform: scale(0)
+  }
+
+  to {
+    transform: scale(1)
+  }
 }
 
 @keyframes flowerSway {
-  0%, 100% { transform: rotate(-3deg) scale(1) }
-  50% { transform: rotate(3deg) scale(1.05) }
+
+  0%,
+  100% {
+    transform: rotate(-3deg) scale(1)
+  }
+
+  50% {
+    transform: rotate(3deg) scale(1.05)
+  }
 }
 
 .retro-8bit .sparkles-container {
@@ -481,15 +535,56 @@ LOVE SIMULATOR — diary × retro game
   animation: sparkleBlink 1.8s ease-in-out infinite;
 }
 
-.retro-8bit .sparkle.s1 { top: 15%; left: 15%; font-size: 1.2rem; color: var(--blush); animation-delay: 0s }
-.retro-8bit .sparkle.s2 { top: 10%; right: 15%; font-size: 1rem; color: var(--sun); animation-delay: 0.3s }
-.retro-8bit .sparkle.s3 { bottom: 25%; right: 10%; font-size: 1.3rem; color: var(--mint); animation-delay: 0.6s }
-.retro-8bit .sparkle.s4 { bottom: 30%; left: 8%; font-size: 1.1rem; animation-delay: 0.9s }
-.retro-8bit .sparkle.s5 { top: 40%; right: 5%; font-size: 0.9rem; animation-delay: 1.2s }
+.retro-8bit .sparkle.s1 {
+  top: 15%;
+  left: 15%;
+  font-size: 1.2rem;
+  color: var(--blush);
+  animation-delay: 0s
+}
+
+.retro-8bit .sparkle.s2 {
+  top: 10%;
+  right: 15%;
+  font-size: 1rem;
+  color: var(--sun);
+  animation-delay: 0.3s
+}
+
+.retro-8bit .sparkle.s3 {
+  bottom: 25%;
+  right: 10%;
+  font-size: 1.3rem;
+  color: var(--mint);
+  animation-delay: 0.6s
+}
+
+.retro-8bit .sparkle.s4 {
+  bottom: 30%;
+  left: 8%;
+  font-size: 1.1rem;
+  animation-delay: 0.9s
+}
+
+.retro-8bit .sparkle.s5 {
+  top: 40%;
+  right: 5%;
+  font-size: 0.9rem;
+  animation-delay: 1.2s
+}
 
 @keyframes sparkleBlink {
-  0%, 100% { opacity: 0; transform: scale(0.6) translateY(0) }
-  50% { opacity: 1; transform: scale(1.1) translateY(-6px) }
+
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6) translateY(0)
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1) translateY(-6px)
+  }
 }
 
 /* ============ SCREEN 4 : เมนูหลัก ============ */
@@ -573,8 +668,15 @@ LOVE SIMULATOR — diary × retro game
 }
 
 @keyframes bob {
-  0%, 100% { transform: translateY(0) }
-  50% { transform: translateY(-4px) }
+
+  0%,
+  100% {
+    transform: translateY(0)
+  }
+
+  50% {
+    transform: translateY(-4px)
+  }
 }
 
 .retro-8bit .bubble {
@@ -671,10 +773,21 @@ LOVE SIMULATOR — diary × retro game
   line-height: 1
 }
 
-.retro-8bit .cart-1 .cart-body { background: #F3B6C6 }
-.retro-8bit .cart-2 .cart-body { background: #F6D690 }
-.retro-8bit .cart-3 .cart-body { background: #AFD8C3 }
-.retro-8bit .cart-4 .cart-body { background: #BFC8EA }
+.retro-8bit .cart-1 .cart-body {
+  background: #F3B6C6
+}
+
+.retro-8bit .cart-2 .cart-body {
+  background: #F6D690
+}
+
+.retro-8bit .cart-3 .cart-body {
+  background: #AFD8C3
+}
+
+.retro-8bit .cart-4 .cart-body {
+  background: #BFC8EA
+}
 
 .retro-8bit .stamp-done {
   position: absolute;
@@ -758,8 +871,13 @@ LOVE SIMULATOR — diary × retro game
   transition: transform .3s;
 }
 
-.retro-8bit .polaroid:nth-of-type(even) { transform: rotate(2deg) }
-.retro-8bit .polaroid:hover { transform: rotate(0) scale(1.02) }
+.retro-8bit .polaroid:nth-of-type(even) {
+  transform: rotate(2deg)
+}
+
+.retro-8bit .polaroid:hover {
+  transform: rotate(0) scale(1.02)
+}
 
 .retro-8bit .polaroid .ph {
   aspect-ratio: 1/1;
@@ -839,7 +957,9 @@ LOVE SIMULATOR — diary × retro game
 }
 
 /* ============ SCREEN 6 : จดหมาย ============ */
-.retro-8bit #s-letter { justify-content: center }
+.retro-8bit #s-letter {
+  justify-content: center
+}
 
 .retro-8bit .envelope {
   width: min(86%, 300px);
@@ -850,7 +970,9 @@ LOVE SIMULATOR — diary × retro game
   transition: transform .2s;
 }
 
-.retro-8bit .envelope:hover { transform: scale(1.03) }
+.retro-8bit .envelope:hover {
+  transform: scale(1.03)
+}
 
 .retro-8bit .letter-paper {
   background: #FFFDF6;
@@ -895,7 +1017,9 @@ LOVE SIMULATOR — diary × retro game
 }
 
 /* ============ SCREEN 7 : ควิซ ============ */
-.retro-8bit .q-card { width: 100% }
+.retro-8bit .q-card {
+  width: 100%
+}
 
 .retro-8bit .q-num {
   font-family: 'Press Start 2P', var(--font-press-start-2p), monospace;
@@ -983,11 +1107,19 @@ LOVE SIMULATOR — diary × retro game
   background: var(--blush)
 }
 
-.retro-8bit .quiz-result { text-align: center }
-.retro-8bit .quiz-result .big { font-size: 2.6rem; line-height: 1.3 }
+.retro-8bit .quiz-result {
+  text-align: center
+}
+
+.retro-8bit .quiz-result .big {
+  font-size: 2.6rem;
+  line-height: 1.3
+}
 
 /* ============ SCREEN 8 : ความทรงจำ ============ */
-.retro-8bit #s-memory .screen-inner { width: 100% }
+.retro-8bit #s-memory .screen-inner {
+  width: 100%
+}
 
 .retro-8bit .mem-note {
   font-family: 'Mali', var(--font-mali), cursive;
@@ -1012,14 +1144,32 @@ LOVE SIMULATOR — diary × retro game
   margin: 6px auto
 }
 
-.retro-8bit .gacha-machine.shake { animation: shake .6s ease-in-out }
+.retro-8bit .gacha-machine.shake {
+  animation: shake .6s ease-in-out
+}
 
 @keyframes shake {
-  0%, 100% { transform: rotate(0) }
-  20% { transform: rotate(-4deg) }
-  40% { transform: rotate(4deg) }
-  60% { transform: rotate(-3deg) }
-  80% { transform: rotate(3deg) }
+
+  0%,
+  100% {
+    transform: rotate(0)
+  }
+
+  20% {
+    transform: rotate(-4deg)
+  }
+
+  40% {
+    transform: rotate(4deg)
+  }
+
+  60% {
+    transform: rotate(-3deg)
+  }
+
+  80% {
+    transform: rotate(3deg)
+  }
 }
 
 .retro-8bit .gacha-knob {
@@ -1032,11 +1182,16 @@ LOVE SIMULATOR — diary × retro game
   cursor: pointer;
   z-index: 2;
   transition: filter 0.15s;
-  filter: drop-shadow(0 2px 3px rgba(74,53,39,.3));
+  filter: drop-shadow(0 2px 3px rgba(74, 53, 39, .3));
 }
 
-.retro-8bit .gacha-knob:hover { filter: drop-shadow(0 3px 6px rgba(74,53,39,.4)) brightness(1.05); }
-.retro-8bit .gacha-knob:active { filter: drop-shadow(0 1px 2px rgba(74,53,39,.3)) brightness(0.95); }
+.retro-8bit .gacha-knob:hover {
+  filter: drop-shadow(0 3px 6px rgba(74, 53, 39, .4)) brightness(1.05);
+}
+
+.retro-8bit .gacha-knob:active {
+  filter: drop-shadow(0 1px 2px rgba(74, 53, 39, .3)) brightness(0.95);
+}
 
 .retro-8bit .gacha-knob.spinning {
   animation: knobSpin 0.8s cubic-bezier(.4, 0, .2, 1);
@@ -1044,8 +1199,13 @@ LOVE SIMULATOR — diary × retro game
 }
 
 @keyframes knobSpin {
-  0% { transform: translate(-50%, -50%) rotate(0deg) }
-  100% { transform: translate(-50%, -50%) rotate(720deg) }
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg)
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(720deg)
+  }
 }
 
 .retro-8bit .gacha-ball {
@@ -1060,22 +1220,54 @@ LOVE SIMULATOR — diary × retro game
   pointer-events: none;
 }
 
-.retro-8bit .gacha-ball.dropping { animation: ballDrop 0.7s cubic-bezier(.17,.67,.35,1.2) forwards; }
-
-@keyframes ballDrop {
-  0% { transform: translateX(-50%) scale(0) translateY(-40px); opacity: 0; }
-  40% { opacity: 1; transform: translateX(-50%) scale(1.1) translateY(0px); }
-  60% { transform: translateX(-50%) scale(0.9) translateY(5px); }
-  80% { transform: translateX(-50%) scale(1.05) translateY(-2px); }
-  100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0px); }
+.retro-8bit .gacha-ball.dropping {
+  animation: ballDrop 0.7s cubic-bezier(.17, .67, .35, 1.2) forwards;
 }
 
-.retro-8bit .gacha-ball.open { animation: ballOpen 0.5s cubic-bezier(.2,.9,.3,1.3) forwards; }
+@keyframes ballDrop {
+  0% {
+    transform: translateX(-50%) scale(0) translateY(-40px);
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1) translateY(0px);
+  }
+
+  60% {
+    transform: translateX(-50%) scale(0.9) translateY(5px);
+  }
+
+  80% {
+    transform: translateX(-50%) scale(1.05) translateY(-2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1) translateY(0px);
+  }
+}
+
+.retro-8bit .gacha-ball.open {
+  animation: ballOpen 0.5s cubic-bezier(.2, .9, .3, 1.3) forwards;
+}
 
 @keyframes ballOpen {
-  0% { transform: translateX(-50%) scale(1); opacity: 1 }
-  50% { transform: translateX(-50%) scale(1.4); opacity: 0.7 }
-  100% { transform: translateX(-50%) scale(0); opacity: 0 }
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1
+  }
+
+  50% {
+    transform: translateX(-50%) scale(1.4);
+    opacity: 0.7
+  }
+
+  100% {
+    transform: translateX(-50%) scale(0);
+    opacity: 0
+  }
 }
 
 .retro-8bit .prize-card {
@@ -1088,10 +1280,29 @@ LOVE SIMULATOR — diary × retro game
   animation: stampIn .5s cubic-bezier(.2, .9, .3, 1.3) both;
 }
 
-.retro-8bit .prize-card .pz { font-size: 2.2rem }
-.retro-8bit .prize-card h3 { font-family: 'Mali', var(--font-mali), cursive; font-size: 1.15rem; margin: 8px 0 4px; color: var(--blush-deep) }
-.retro-8bit .prize-card p { font-family: 'Mali', var(--font-mali), cursive; font-size: .88rem; color: var(--ink-soft) }
-.retro-8bit .coupon-note { font-family: 'Mali', var(--font-mali), cursive; font-size: .78rem; color: var(--ink-soft); margin-top: 2px }
+.retro-8bit .prize-card .pz {
+  font-size: 2.2rem
+}
+
+.retro-8bit .prize-card h3 {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: 1.15rem;
+  margin: 8px 0 4px;
+  color: var(--blush-deep)
+}
+
+.retro-8bit .prize-card p {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: .88rem;
+  color: var(--ink-soft)
+}
+
+.retro-8bit .coupon-note {
+  font-family: 'Mali', var(--font-mali), cursive;
+  font-size: .78rem;
+  color: var(--ink-soft);
+  margin-top: 2px
+}
 
 /* ============ โมดัลฉลอง ============ */
 .retro-8bit .modal {
@@ -1106,7 +1317,9 @@ LOVE SIMULATOR — diary × retro game
   backdrop-filter: blur(2px);
 }
 
-.retro-8bit .modal.show { display: flex }
+.retro-8bit .modal.show {
+  display: flex
+}
 
 .retro-8bit .modal .paper-card {
   max-width: 320px;
@@ -1124,8 +1337,15 @@ LOVE SIMULATOR — diary × retro game
 }
 
 @keyframes rise {
-  from { opacity: 1; transform: translateY(0) rotate(0) }
-  to { opacity: 0; transform: translateY(-140px) rotate(40deg) }
+  from {
+    opacity: 1;
+    transform: translateY(0) rotate(0)
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-140px) rotate(40deg)
+  }
 }
 
 @keyframes stampIn {
@@ -1141,8 +1361,169 @@ LOVE SIMULATOR — diary × retro game
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .retro-8bit *, .retro-8bit *::before, .retro-8bit *::after {
+
+  .retro-8bit *,
+  .retro-8bit *::before,
+  .retro-8bit *::after {
     animation-duration: .001s !important;
     transition-duration: .001s !important
   }
+}
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* ---------- แนวนอน มือถือ (landscape phone) ---------- */
+@media (max-width: 767px) and (orientation: landscape) {
+  .retro-8bit {
+    align-items: flex-start;
+  }
+
+  .retro-8bit .desk {
+    max-width: 100%;
+    min-height: 100dvh;
+    height: auto;
+  }
+
+  .retro-8bit .screen {
+    padding: 14px 16px 14px 42px;
+  }
+
+  .retro-8bit .cart-title {
+    font-size: .7rem;
+  }
+
+  .retro-8bit .q-card {
+    font-size: .9rem;
+  }
+}
+
+/* ---------- iPad แนวตั้ง (768px – 1023px portrait) ---------- */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: portrait) {
+  .retro-8bit {
+    align-items: center;
+    background: #B8A48A;
+  }
+
+  .retro-8bit .desk {
+    max-width: 520px;
+    min-height: 100dvh;
+    border-radius: 0 0 0 0;
+    box-shadow: 0 0 80px rgba(0, 0, 0, .4);
+  }
+
+  .retro-8bit .screen {
+    padding: 32px 28px 28px 56px;
+  }
+
+  .retro-8bit .screen-inner {
+    max-width: 360px;
+  }
+
+  /* ปรับขนาดตัวการ์ตลิดจ์ให้ใหญ่ขึ้นเล็กน้อย */
+  .retro-8bit .cart-img {
+    width: 200px;
+  }
+}
+
+/* ---------- iPad แนวนอน / notebook เล็ก (1024px – 1279px) ---------- */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .retro-8bit {
+    align-items: stretch;
+    background: #B8A48A;
+    justify-content: center;
+  }
+
+  .retro-8bit .desk {
+    max-width: 560px;
+    min-height: 100dvh;
+    box-shadow: 0 0 100px rgba(0, 0, 0, .45);
+  }
+
+  .retro-8bit .screen {
+    padding: 36px 32px 32px 60px;
+  }
+
+  .retro-8bit .screen-inner {
+    max-width: 380px;
+  }
+
+  /* การ์ตลิดจ์ */
+  .retro-8bit .cart-img {
+    width: 210px;
+  }
+
+  /* กาชาปองจัดวางให้กว้างขึ้น */
+  .retro-8bit .gacha-machine {
+    width: 220px;
+    height: 240px;
+  }
+}
+
+/* ---------- notebook / desktop (1280px+) ---------- */
+@media (min-width: 1280px) {
+  .retro-8bit {
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%, rgba(120, 90, 60, .25), transparent),
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(80, 55, 35, .2), transparent),
+      #B0997C;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  .retro-8bit .desk {
+    max-width: 600px;
+    min-height: 100dvh;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, .08),
+      0 0 120px rgba(0, 0, 0, .5);
+  }
+
+  .retro-8bit .screen {
+    padding: 40px 36px 36px 66px;
+  }
+
+  .retro-8bit .screen-inner {
+    max-width: 420px;
+  }
+
+  /* Boot Screen */
+  .retro-8bit .cart-img {
+    width: 230px;
+  }
+
+  /* กาชาปอง */
+  .retro-8bit .gacha-machine {
+    width: 240px;
+    height: 260px;
+  }
+
+  /* ตัวอักษร title ใหญ่ขึ้นนิดนึง */
+  .retro-8bit .screen-title {
+    font-size: 1.05rem;
+  }
+}
+
+/* ---------- iPad แนวนอน landscape (768-1023px landscape) ---------- */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
+  .retro-8bit {
+    align-items: stretch;
+    background: #B8A48A;
+  }
+
+  .retro-8bit .desk {
+    max-width: 480px;
+    min-height: 100dvh;
+  }
+
+  .retro-8bit .screen {
+    padding: 24px 24px 24px 52px;
+  }
+}
+
+.retro-8bit .btn,
+.retro-8bit input[type="text"],
+.retro-8bit input[type="password"] {
+  touch-action: manipulation;
 }

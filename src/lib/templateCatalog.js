@@ -30,25 +30,6 @@ export const TEMPLATE_CATALOG = [
     tier: 'premium',
   },
   {
-    id: 'minimal-romantic',
-    name: 'Minimal Romantic',
-    tagline: 'ความรักในแบบมินิมอล',
-    description:
-      'เว็บเซอร์ไพรส์โทนขาว-ชมพูสุดโรแมนติก มีเอฟเฟกต์กลีบดอกไม้ร่วง จดหมายรัก และ Countdown ถึงวันครบรอบ',
-    price: 49,
-    badge: '✨ ยอดนิยม',
-    badgeColor: 'violet',
-    available: false,
-    features: [
-      'เอฟเฟกต์กลีบดอกไม้ร่วง',
-      'จดหมายรักแบบ Handwriting',
-      'Countdown วันครบรอบ',
-      'รูปคู่แบบ Gallery',
-    ],
-    previewImage: '/assets/templates/minimal-romantic-preview.png',
-    tier: 'standard',
-  },
-  {
     id: 'recipe-of-love',
     name: 'Recipe of Our Love',
     tagline: 'สูตรรักฉบับเราสองคน',
@@ -65,6 +46,25 @@ export const TEMPLATE_CATALOG = [
       'การ์ดสูตรอาหารบันทึกภาพได้',
     ],
     previewImage: '/assets/templates/recipe-preview.png',
+    tier: 'standard',
+  },
+  {
+    id: 'minimal-romantic',
+    name: 'Minimal Romantic',
+    tagline: 'ความรักในแบบมินิมอล',
+    description:
+      'เว็บเซอร์ไพรส์โทนขาว-ชมพูสุดโรแมนติก มีเอฟเฟกต์กลีบดอกไม้ร่วง จดหมายรัก และ Countdown ถึงวันครบรอบ',
+    price: 49,
+    badge: '✨ ยอดนิยม',
+    badgeColor: 'violet',
+    available: false,
+    features: [
+      'เอฟเฟกต์กลีบดอกไม้ร่วง',
+      'จดหมายรักแบบ Handwriting',
+      'Countdown วันครบรอบ',
+      'รูปคู่แบบ Gallery',
+    ],
+    previewImage: '/assets/templates/minimal-romantic-preview.png',
     tier: 'standard',
   },
   {

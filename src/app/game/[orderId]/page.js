@@ -40,12 +40,8 @@ export default async function RealGamePage({ params }) {
 
   // Minimal layout: full-bleed, no header/controls — just the game
   return (
-    <div style={{ minHeight: '100vh', background: '#000', color: '#fff' }}>
-      <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: '100%', maxWidth: '720px', borderRadius: 0, overflow: 'hidden' }}>
-          <TemplateComponent orderData={order} fullscreenMode={true} />
-        </div>
-      </div>
+    <div style={{ minHeight: '100vh', width: '100%', overflow: 'hidden' }}>
+      <TemplateComponent orderData={order} fullscreenMode={true} />
     </div>
   );
 }
