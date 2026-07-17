@@ -14,7 +14,7 @@ export default function CodeScreen({ data, onComplete }) {
     }
     Sfx.type();
     setCodeIdx(prev => prev + 1);
-    
+
     if (codeIdx + 1 >= CODE_CHUNKS.length) {
       Sfx.beep(880, .15, "triangle", .15);
     }
