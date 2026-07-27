@@ -27,7 +27,7 @@ export const TEMPLATE_CATALOG = [
       'กาชาปองคูปองรัก',
       'นับวันรักอัตโนมัติ',
     ],
-    previewImage: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
+    previewImage: '/assets/firsttemplate.png',
     tier: 'premium',
   },
   {
