@@ -63,6 +63,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         />
+        <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet" />
       </head>
       <body className={`${notoSansThai.variable} ${beVietnamPro.variable} ${mali.variable} ${itim.variable} ${pressStart2P.variable} ${plusJakartaSans.variable} ${quicksand.variable} font-sans bg-[#f8f9fa] text-[#191c1d] antialiased`}>
         {children}

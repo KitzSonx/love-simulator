@@ -160,7 +160,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#fff8f9] text-[#3d2c2e] selection:bg-[#ffe5ec] selection:text-[#ff477e]">
+    <div className="font-google-sans relative min-h-screen bg-[#fff8f9] text-[#3d2c2e] selection:bg-[#ffe5ec] selection:text-[#ff477e]">
       <ParticleCanvas />
 
       {/* Top Navigation Bar */}

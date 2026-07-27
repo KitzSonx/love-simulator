@@ -1,4 +1,9 @@
+@import url('https://fonts.cdnfonts.com/css/google-sans');
 @import "tailwindcss";
+
+.font-google-sans {
+  font-family: 'Google Sans', var(--font-noto-thai), var(--font-be-vietnam), 'Noto Sans Thai', sans-serif !important;
+}
 
 @layer base {
   :root {
