@@ -1125,7 +1125,7 @@ export default function RecipeOfLoveTemplate({ orderData }) {
       )}
 
       {/* YouTube Background Audio */}
-      <YouTubeAudioPlayer url={youtubeUrl} playing={hasInteracted && musicPlaying} />
+      <YouTubeAudioPlayer url={youtubeUrl} playing={musicPlaying} />
 
       {/* wooden counter footer */}
       <div className="absolute bottom-0 inset-x-0 h-5 sm:h-6 pointer-events-none z-10" style={{ ...WOOD_DARK, boxShadow: "0 -6px 16px rgba(60,35,10,.35)" }} />

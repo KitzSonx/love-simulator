@@ -27,11 +27,7 @@ const FLOWER_OPTIONS = Array.from({ length: 10 }, (_, i) => ({
   src: `/assets/flower${i + 1}.png`,
 }));
 const MUSIC_OPTIONS = [
-  { id: 'lofi', label: 'Lofi Love', emoji: '🎵' },
-  { id: 'acoustic', label: 'Acoustic Joy', emoji: '🎸' },
-  { id: 'pixel', label: 'Pixel Dreams', emoji: '🎮' },
-  { id: 'jazz', label: 'Rainy Jazz', emoji: '🌧️' },
-  { id: 'custom', label: 'YouTube Link', emoji: '🔗' },
+  { id: 'custom', label: 'เลือกเพลงจาก YouTube (วางลิงก์วิดีโอ)', emoji: '🎵' },
 ];
 
 const TOTAL_STEPS = 5;
@@ -345,7 +341,7 @@ function Step2({ data, onChange }) {
 
 /* ─── Step 3: Vibe & Style ─── */
 function Step3({ data, onChange, isRetro, isMinimal }) {
-  const [selectedMusic, setSelectedMusic] = useState('lofi');
+  const [selectedMusic, setSelectedMusic] = useState('custom');
 
   return (
     <div className="space-y-8">
@@ -353,7 +349,7 @@ function Step3({ data, onChange, isRetro, isMinimal }) {
         <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1f1b1b] leading-tight mb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           Set the Mood
         </h1>
-        <p className="text-sm text-[#5a4042]">Choose the perfect melody and identity for your romantic journey.</p>
+        <p className="text-sm text-[#5a4042]">ใส่ลิงก์เพลงโปรดจาก YouTube เพื่อใช้เป็นเพลงประกอบมินิเกม</p>
       </div>
 
       {/* Music section */}
@@ -367,43 +363,30 @@ function Step3({ data, onChange, isRetro, isMinimal }) {
           {MUSIC_OPTIONS.map((opt) => {
             const isActive = selectedMusic === opt.id;
             return (
-              <button
+              <div
                 key={opt.id}
-                type="button"
-                onClick={() => {
-                  setSelectedMusic(opt.id);
-                  if (opt.id !== 'custom') onChange({ youtubeUrl: '' });
-                }}
-                className={`flex items-center gap-4 px-5 py-3.5 rounded-full font-bold text-sm transition-all duration-200 ${
-                  isActive
-                    ? 'bg-[#b60e3d] text-white shadow-lg shadow-[#b60e3d]/25'
-                    : 'bg-white border-2 border-[#e2bec0]/60 text-[#1f1b1b] hover:border-[#b60e3d]/40'
-                }`}
+                className="flex items-center gap-4 px-5 py-3.5 rounded-full font-bold text-sm bg-[#b60e3d] text-white shadow-lg shadow-[#b60e3d]/25"
               >
                 <span className="text-lg">{opt.emoji}</span>
                 <span>{opt.label}</span>
-                {isActive && (
-                  <span className="material-symbols-outlined ml-auto text-white text-base" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    play_circle
-                  </span>
-                )}
-              </button>
+                <span className="material-symbols-outlined ml-auto text-white text-base" style={{ fontVariationSettings: "'FILL' 1" }}>
+                  check_circle
+                </span>
+              </div>
             );
           })}
         </div>
 
-        {selectedMusic === 'custom' && (
-          <div className="mt-4">
-            <label className={labelCls}>ลิงก์ YouTube</label>
-            <input
-              type="url"
-              className={inputCls}
-              placeholder="https://www.youtube.com/watch?v=..."
-              value={data.youtubeUrl || ''}
-              onChange={(e) => onChange({ youtubeUrl: e.target.value })}
-            />
-          </div>
-        )}
+        <div className="mt-4">
+          <label className={labelCls}>ลิงก์ YouTube (ตัวอย่าง: https://www.youtube.com/watch?v=...)</label>
+          <input
+            type="url"
+            className={inputCls}
+            placeholder="https://www.youtube.com/watch?v=..."
+            value={data.youtubeUrl || ''}
+            onChange={(e) => onChange({ youtubeUrl: e.target.value })}
+          />
+        </div>
       </div>
 
       {/* Avatar section (retro only) */}

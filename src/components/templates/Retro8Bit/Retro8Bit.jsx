@@ -144,7 +144,7 @@ export default function Retro8Bit({ orderData }) {
         )}
 
         {/* YouTube Background Audio */}
-        <YouTubeAudioPlayer url={data.youtubeUrl} playing={screen !== 'boot' && musicPlaying} />
+        <YouTubeAudioPlayer url={data.youtubeUrl} playing={musicPlaying} />
       </div>
     </div>
   );

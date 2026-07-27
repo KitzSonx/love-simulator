@@ -99,8 +99,22 @@ export default function YouTubeAudioPlayer({ url, playing }) {
     };
   }, [videoId]);
 
-  // Handle play/pause changes
+  // Handle play/pause changes and global click fallback
   useEffect(() => {
+    const tryPlay = () => {
+      if (playerRef.current && typeof playerRef.current.getPlayerState === 'function') {
+        try {
+          const state = playerRef.current.getPlayerState();
+          // state 1 = playing, 3 = buffering
+          if (state !== 1 && state !== 3) {
+            playerRef.current.playVideo();
+          }
+        } catch (e) {
+          console.warn('Error attempting YT playVideo:', e);
+        }
+      }
+    };
+
     if (playerRef.current && typeof playerRef.current.getPlayerState === 'function') {
       try {
         if (playing) {
@@ -112,6 +126,22 @@ export default function YouTubeAudioPlayer({ url, playing }) {
         console.warn('Error setting YT play state:', e);
       }
     }
+
+    if (!playing) return;
+
+    const handleUserGesture = () => {
+      tryPlay();
+    };
+
+    window.addEventListener('click', handleUserGesture, { capture: true, once: false });
+    window.addEventListener('touchstart', handleUserGesture, { capture: true, once: false });
+    window.addEventListener('pointerdown', handleUserGesture, { capture: true, once: false });
+
+    return () => {
+      window.removeEventListener('click', handleUserGesture, { capture: true });
+      window.removeEventListener('touchstart', handleUserGesture, { capture: true });
+      window.removeEventListener('pointerdown', handleUserGesture, { capture: true });
+    };
   }, [playing]);
 
   if (!videoId) return null;
