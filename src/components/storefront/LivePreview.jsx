@@ -18,6 +18,7 @@ export default function LivePreview({ data }) {
             startDate: data.anniversaryDate,
             letter: data.letter,
             signature: data.signature,
+            youtubeUrl: data.youtubeUrl,
             quiz: data.quiz,
             memories: data.memoryPhotos.map((photo) => ({ previewUrl: photo.preview || '', cap: photo.caption, note: photo.note })),
           },

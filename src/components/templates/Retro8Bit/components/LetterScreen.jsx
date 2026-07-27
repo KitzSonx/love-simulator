@@ -42,7 +42,7 @@ export default function LetterScreen({ onBack, data, onComplete }) {
   return (
     <section className="screen active" id="s-letter">
       <div className="quest-top">
-        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>◀ กลับ</button>
+        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>{"◀\uFE0E"} กลับ</button>
         <span className="quest-title">💌 จดหมายถึงคนน่ารัก</span>
       </div>
 

@@ -43,7 +43,7 @@ export default function GachaScreen({ onBack, data }) {
   return (
     <section className="screen active" id="s-gacha">
       <div className="quest-top" style={{ justifyContent: 'flex-start' }}>
-        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>◀ กลับ</button>
+        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>{"◀\uFE0E"} กลับ</button>
         <span className="quest-title">🎰 ตู้สุ่มรางวัลคนน่ารัก</span>
       </div>
 

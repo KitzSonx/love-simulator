@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-import CustomizerForm from '@/components/storefront/CustomizerForm';
+import WizardForm from '@/components/storefront/WizardForm';
 import { getTemplateById, getPriceLabel } from '@/lib/templateCatalog';
 
 const FORM_STORAGE_KEY = 'love-simulator-create-form';
@@ -18,6 +18,7 @@ const initialFormData = {
   avatarImage: '/assets/boy1.png',
   letter: 'ถึงคนน่ารักของเรา...\n\nขอบคุณที่อยู่ด้วยกันมาจนถึงวันนี้นะ\nทุกวันที่มีเธอ มันสนุกกว่าเกมทุกเกมที่เคยเล่นเลย\nต่อจากนี้ก็ฝากด้วยนะ ผู้เล่น 2 ของเรา 🎮\n\nรักที่สุดเลย ♡',
   signature: '— จากคนที่รักเธอที่สุด ♡',
+  youtubeUrl: '',
   quiz: [
     { q: 'เดทแรกของเรา ไปที่ไหนกันนะ?', c: ['ดูหนัง 🎬', 'คาเฟ่ ☕', 'สวนสาธารณะ 🌳', 'ทะเล 🌊'], answer: 1 },
     { q: 'เครื่องดื่มที่เราชอบสั่งบ่อยสุดคือ?', c: ['ชาเขียว 🍵', 'โกโก้ 🍫', 'อเมริกาโน่ ☕', 'ชานมไข่มุก 🧋'], answer: 3 },
@@ -126,7 +127,7 @@ function CreatePageContent() {
     const needsCouplePhoto = ['retro-8bit', 'minimal-romantic', 'love-letter-free'].includes(templateId);
     if (needsCouplePhoto && !formData.couplePhoto?.preview) {
       setErrorMessage('กรุณาอัปโหลดรูปคู่ก่อนดำเนินการต่อ');
-      const coupleBlock = formRef.current.querySelector('#couple-photo-upload');
+      const coupleBlock = formRef.current?.querySelector('#couple-photo-upload');
       if (coupleBlock) coupleBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
@@ -162,6 +163,7 @@ function CreatePageContent() {
           avatarImage: formData.avatarImage,
           letter: formData.letter,
           signature: formData.signature,
+          youtubeUrl: formData.youtubeUrl,
           couplePhoto: {
             caption: formData.couplePhoto.caption,
             note: formData.couplePhoto.note,
@@ -172,14 +174,13 @@ function CreatePageContent() {
           prizes: formData.prizes,
         },
         image_urls: [
-          formData.couplePhoto.file?.name || formData.couplePhoto.caption,
-          ...formData.memoryPhotos.map((photo) => photo.file?.name || photo.caption),
+          couplePhotoPreview,
+          ...memories.map((m) => m.previewUrl),
         ],
       };
 
       console.log('Creating order, payload:', orderPayload);
 
-      // Use a secure server-side endpoint that runs with the Supabase service role key.
       const resp = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -196,7 +197,6 @@ function CreatePageContent() {
         return;
       }
 
-      // If the template is free, skip checkout and go directly to play page
       if (price === 0) {
         router.push(`/play/${result.id}`);
       } else {
@@ -214,39 +214,16 @@ function CreatePageContent() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 text-slate-900">
-      <div className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
-        {/* Template info banner */}
-        <div className="mb-4 flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-3 shadow-sm">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">{templateMeta.tier === 'premium' ? '🎮' : templateMeta.tier === 'standard' ? '💌' : '✉️'}</span>
-            <div>
-              <p className="text-sm font-bold text-slate-800">{templateMeta.name}</p>
-              <p className="text-xs text-slate-500">{templateMeta.tagline}</p>
-            </div>
-          </div>
-          <div className="text-right">
-            <span className={`text-lg font-extrabold ${templateMeta.price === 0 ? 'text-emerald-600' : 'text-pink-600'}`}>
-              {getPriceLabel(templateMeta.price)}
-            </span>
-          </div>
-        </div>
-
-        <section className="rounded-3xl bg-white p-6 shadow-xl">
-          <h1 className="text-3xl font-semibold text-slate-900">Customize Your Love Simulator</h1>
-          <p className="mt-2 text-slate-500">กรอกข้อมูลและดูตัวอย่างเมื่อสั่งซื้อเสร็จ</p>
-            <CustomizerForm
-              data={formData}
-              formRef={formRef}
-              onChange={updateForm}
-              loading={loading}
-              onSubmit={handleSubmit}
-              errorMessage={errorMessage}
-              templateId={templateId}
-            />
-        </section>
-      </div>
-    </main>
+    <WizardForm
+      formRef={formRef}
+      data={formData}
+      onChange={updateForm}
+      loading={loading}
+      onSubmit={handleSubmit}
+      errorMessage={errorMessage}
+      templateId={templateId}
+      templateMeta={templateMeta}
+    />
   );
 }
 
@@ -254,8 +231,8 @@ export default function CreatePage() {
   return (
     <Suspense
       fallback={
-        <main className="flex min-h-screen items-center justify-center bg-slate-100">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-pink-500 border-t-transparent" />
+        <main className="flex min-h-screen items-center justify-center bg-[#fff8f7]">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#b60e3d] border-t-transparent" />
         </main>
       }
     >

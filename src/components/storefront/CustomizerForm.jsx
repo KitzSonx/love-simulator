@@ -1,6 +1,49 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
+import Cropper from 'react-easy-crop';
+import { getCroppedImg } from '@/lib/cropUtils';
+
+function CropModal({ imageSrc, onCropComplete, onCancel }) {
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
+  const handleCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const handleConfirm = async () => {
+    try {
+      const cropped = await getCroppedImg(imageSrc, croppedAreaPixels);
+      onCropComplete(cropped);
+    } catch (e) {
+      console.error(e);
+      onCancel();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex flex-col bg-black/90 p-4">
+      <div className="relative flex-1">
+        <Cropper
+          image={imageSrc}
+          crop={crop}
+          zoom={zoom}
+          aspect={1}
+          onCropChange={setCrop}
+          onCropComplete={handleCropComplete}
+          onZoomChange={setZoom}
+          cropShape="rect"
+        />
+      </div>
+      <div className="mt-6 mb-4 flex justify-center gap-4">
+        <button type="button" onClick={onCancel} className="rounded-xl bg-slate-800 px-6 py-3 font-semibold text-white">ยกเลิก</button>
+        <button type="button" onClick={handleConfirm} className="rounded-xl bg-pink-600 px-6 py-3 font-semibold text-white">ยืนยันการครอป</button>
+      </div>
+    </div>
+  );
+}
 
 const PASSWORD_PRESETS = ['คลั่งรัก101', 'รักกันตลอดไป', 'MyHeart123', 'FOREVERLOVE'];
 const COUPLE_PHOTO_INPUT_ID = 'couple-photo-upload';
@@ -20,6 +63,7 @@ const AVATAR_OPTIONS = [
   { id: 'girl4.png', src: '/assets/girl4.png' },
 ];
 export default function CustomizerForm({ data, formRef, onChange, loading, onSubmit, errorMessage, templateId }) {
+  const [cropData, setCropData] = useState(null);
   const quizInputs = useMemo(() => data.quiz.map((quiz, index) => ({ ...quiz, index })), [data.quiz]);
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,6 +109,36 @@ export default function CustomizerForm({ data, formRef, onChange, loading, onSub
     const nextPhotos = data.memoryPhotos.filter((_, idx) => idx !== index);
     onChange({ memoryPhotos: nextPhotos });
   };
+
+  const handleRecipePhotoSelect = (index, file) => {
+    if (file) {
+      setCropData({ index, imageSrc: URL.createObjectURL(file) });
+    }
+  };
+
+  const handleCropComplete = (cropped) => {
+    if (cropData) {
+      const nextPhotos = [...data.memoryPhotos];
+      while (nextPhotos.length < 6) {
+        nextPhotos.push({ id: Date.now() + Math.random(), caption: '', note: '', file: null, preview: '' });
+      }
+      nextPhotos[cropData.index] = {
+        ...nextPhotos[cropData.index],
+        file: cropped.file,
+        preview: cropped.preview,
+      };
+      onChange({ memoryPhotos: nextPhotos });
+    }
+    setCropData(null);
+  };
+
+  const recipePhotos = useMemo(() => {
+    const arr = [...data.memoryPhotos];
+    while (arr.length < 6) {
+      arr.push({ id: `temp-${arr.length}`, caption: '', note: '', file: null, preview: '' });
+    }
+    return arr.slice(0, 6);
+  }, [data.memoryPhotos]);
 
   const updatePrize = (index, field, value) => {
     const nextPrizes = data.prizes.map((item, idx) => (idx === index ? { ...item, [field]: value } : item));
@@ -153,6 +227,20 @@ export default function CustomizerForm({ data, formRef, onChange, loading, onSub
         />
       </div>
 
+      {/* เพลงประกอบ (Background Music) */}
+      <div className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-5">
+        <h3 className="text-lg font-semibold text-slate-900">เพลงประกอบ (Background Music)</h3>
+        <p className="text-sm text-slate-500">ใส่ลิงก์วิดีโอจาก YouTube เพื่อใช้เป็นเพลงประกอบ (จะเล่นอัตโนมัติแบบไม่มีโฆษณาบังสายตา)</p>
+        <label className="block text-sm font-medium text-slate-700">ลิงก์ YouTube (ตัวอย่าง: https://www.youtube.com/watch?v=...)</label>
+        <input
+          type="url"
+          value={data.youtubeUrl || ''}
+          onChange={(e) => onChange({ youtubeUrl: e.target.value })}
+          placeholder="https://www.youtube.com/watch?v=..."
+          className="mt-1 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-200"
+        />
+      </div>
+
       {/* ข้อมูลรหัสผ่าน (เฉพาะ retro) */}
       {isRetro && (
         <div className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-5">
@@ -214,6 +302,35 @@ export default function CustomizerForm({ data, formRef, onChange, loading, onSub
               >
                 <img src={flower.src} alt={flower.id} className="h-24 w-full rounded-2xl object-cover" />
               </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* รูปวัตถุดิบ (เฉพาะ recipe-of-love) */}
+      {isRecipe && (
+        <div className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-slate-900">รูปภาพโมเมนต์ 6 รูป (วัตถุดิบ)</h3>
+            <p className="text-xs text-slate-500">จะถูกครอปเป็นสี่เหลี่ยมจัตุรัสเพื่อใส่ลงในหม้อ</p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {recipePhotos.map((photo, index) => (
+              <div key={photo.id} className="group relative rounded-3xl border border-dashed border-slate-300 bg-white p-4 text-center transition hover:border-pink-400">
+                <label className="block cursor-pointer">
+                  {photo.preview ? (
+                    <img src={photo.preview} alt={`รูปภาพ ${index + 1}`} className="mx-auto aspect-square w-full rounded-2xl object-cover" />
+                  ) : (
+                    <div className="flex aspect-square items-center justify-center text-slate-400 bg-slate-50 rounded-2xl">รูปที่ {index + 1}</div>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={(e) => handleRecipePhotoSelect(index, e.target.files?.[0] || null)}
+                  />
+                </label>
+              </div>
             ))}
           </div>
         </div>
@@ -385,6 +502,14 @@ export default function CustomizerForm({ data, formRef, onChange, loading, onSub
       >
         {loading ? 'กำลังสร้างคำสั่งซื้อ...' : 'ยืนยันและไปยังเช็คเอาต์'}
       </button>
+
+      {cropData && (
+        <CropModal
+          imageSrc={cropData.imageSrc}
+          onCropComplete={handleCropComplete}
+          onCancel={() => setCropData(null)}
+        />
+      )}
     </form>
   );
 }

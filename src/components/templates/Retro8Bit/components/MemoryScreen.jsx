@@ -10,7 +10,7 @@ export default function MemoryScreen({ onBack, data, onComplete }) {
   return (
     <section className="screen active" id="s-memory">
       <div className="quest-top">
-        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>◀ กลับ</button>
+        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>{"◀\uFE0E"} กลับ</button>
         <span className="quest-title">📷 ความทรงจำของเรา</span>
       </div>
       <p className="mem-note">~ แปะรูปไว้กันลืม เหมือนหัวใจที่ไม่เคยลืมเธอ ~</p>

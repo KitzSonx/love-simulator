@@ -46,7 +46,7 @@ export default function QuizScreen({ onBack, data, onComplete }) {
     return (
       <section className="screen active" id="s-quiz">
         <div className="quest-top">
-          <button className="back-btn" onClick={handleFinish}>◀ กลับ</button>
+          <button className="back-btn" onClick={handleFinish}>{"◀\uFE0E"} กลับ</button>
           <span className="quest-title">🎮 เรารู้ใจกันมากแค่ไหน</span>
         </div>
         <div className="paper-card q-card">
@@ -68,7 +68,7 @@ export default function QuizScreen({ onBack, data, onComplete }) {
   return (
     <section className="screen active" id="s-quiz">
       <div className="quest-top">
-        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>◀ กลับ</button>
+        <button className="back-btn" onClick={() => { Sfx.click(); onBack(); }}>{"◀\uFE0E"} กลับ</button>
         <span className="quest-title">🎮 เรารู้ใจกันมากแค่ไหน</span>
       </div>
       <div className="paper-card q-card">

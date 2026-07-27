@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import './Retro8Bit.css';
+import YouTubeAudioPlayer from '@/components/shared/YouTubeAudioPlayer';
 
 import BootScreen from './components/BootScreen';
 import CodeScreen from './components/CodeScreen';
@@ -19,6 +20,7 @@ export default function Retro8Bit({ orderData }) {
   const [quests, setQuests] = useState({ days: false, letter: false, quiz: false, memory: false });
   const [winModalShow, setWinModalShow] = useState(false);
   const [menuAnimateToken, setMenuAnimateToken] = useState(0);
+  const [musicPlaying, setMusicPlaying] = useState(true);
 
   // default data matching structure
   const data = orderData?.custom_texts || {
@@ -111,6 +113,38 @@ export default function Retro8Bit({ orderData }) {
             </div>
           </div>
         )}
+
+        {/* Speaker Toggle Button */}
+        {data.youtubeUrl && (
+          <button
+            onClick={() => setMusicPlaying(p => !p)}
+            style={{
+              position: 'fixed',
+              top: 12,
+              right: 12,
+              zIndex: 90,
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.85)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255,182,193,0.5)',
+              boxShadow: '0 2px 12px rgba(0,0,0,0.12)',
+              fontSize: '1.25rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'transform 0.15s',
+            }}
+            aria-label={musicPlaying ? 'ปิดเสียงเพลง' : 'เปิดเสียงเพลง'}
+          >
+            {musicPlaying ? '🔊' : '🔇'}
+          </button>
+        )}
+
+        {/* YouTube Background Audio */}
+        <YouTubeAudioPlayer url={data.youtubeUrl} playing={screen !== 'boot' && musicPlaying} />
       </div>
     </div>
   );
