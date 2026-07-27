@@ -26,10 +26,10 @@ export default function BootScreen({ onStart, data }) {
         📦 ตลับเกมมาส่งแล้ว!
       </h1>
 
-      {/* Retro OS Pixel Music Player / Cartridge Window */}
+      {/* Retro OS Pixel Music Player / Cartridge Window — fully SVG with foreignObject for play button */}
       <div className="pixel-player-container" style={{ width: '100%', maxWidth: '320px', margin: '0 auto', position: 'relative' }}>
         <div style={{ position: 'relative', width: '100%', filter: 'drop-shadow(0 10px 24px rgba(45, 27, 45, 0.18))' }}>
-          <svg viewBox="0 0 320 390" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+          <svg viewBox="0 0 320 480" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
             <defs>
               <linearGradient id="screenGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#ffb5cb" />
@@ -49,10 +49,10 @@ export default function BootScreen({ onStart, data }) {
               </filter>
             </defs>
 
-            {/* Outer Window Box */}
-            <rect x="8" y="16" width="304" height="360" rx="22" fill="#FFF8FA" stroke="#2d1b2d" strokeWidth="4" filter="url(#shadowOffset)" />
+            {/* Outer Window Box — 452px tall to accommodate all rows */}
+            <rect x="8" y="16" width="304" height="452" rx="22" fill="#FFF8FA" stroke="#2d1b2d" strokeWidth="4" filter="url(#shadowOffset)" />
 
-            {/* Top Bar Header - Seamlessly Flipped & Clipped */}
+            {/* Top Bar Header */}
             <path
               d="M 8 38 A 22 22 0 0 1 30 16 L 290 16 A 22 22 0 0 1 312 38 L 312 56 L 8 56 Z"
               fill="url(#headerGrad)"
@@ -61,107 +61,119 @@ export default function BootScreen({ onStart, data }) {
             />
             <line x1="8" y1="56" x2="312" y2="56" stroke="#2d1b2d" strokeWidth="4" />
 
-            {/* Window Close/Minimize Controls (Top Right Pink Dots) */}
+            {/* Window Controls (Top Right) */}
             <circle cx="270" cy="36" r="7" fill="#ff7eb3" stroke="#2d1b2d" strokeWidth="2.5" />
             <circle cx="290" cy="36" r="7" fill="#ff4d7e" stroke="#2d1b2d" strokeWidth="2.5" />
 
-            {/* Top-Left Music Note Badge (Neatly fitted inside header bar) */}
+            {/* Music Note Badge (Top Left) */}
             <g transform="translate(20, 24)">
               <rect x="0" y="0" width="32" height="24" rx="7" fill="#ffffff" stroke="#2d1b2d" strokeWidth="2.5" />
               <text x="16" y="17" textAnchor="middle" fontSize="14">🎵</text>
             </g>
 
-            {/* Inner Pixel Screen Box */}
-            <rect x="28" y="72" width="264" height="172" rx="16" fill="url(#screenGrad)" stroke="#2d1b2d" strokeWidth="4" />
+            {/* ── Inner Screen Box ── */}
+            <rect x="28" y="72" width="264" height="182" rx="16" fill="url(#screenGrad)" stroke="#2d1b2d" strokeWidth="4" />
 
-            {/* Inner Screen Content */}
-            <g textAnchor="middle">
-              <text x="160" y="104" textAnchor="middle" fontFamily="'Press Start 2P', monospace" fontSize="13" fontWeight="bold" fill="#ffffff" stroke="#2d1b2d" strokeWidth="3" paintOrder="stroke fill">
-                LOVE
-              </text>
-              <text x="160" y="124" textAnchor="middle" fontFamily="'Press Start 2P', monospace" fontSize="10" fontWeight="bold" fill="#ffffff" stroke="#2d1b2d" strokeWidth="2.5" paintOrder="stroke fill">
-                SIMULATOR
-              </text>
+            {/* Screen: LOVE SIMULATOR text */}
+            <text x="160" y="108" textAnchor="middle" fontFamily="'Press Start 2P', monospace" fontSize="14" fontWeight="bold" fill="#ffffff" stroke="#2d1b2d" strokeWidth="3" paintOrder="stroke fill">
+              LOVE
+            </text>
+            <text x="160" y="130" textAnchor="middle" fontFamily="'Press Start 2P', monospace" fontSize="11" fontWeight="bold" fill="#ffffff" stroke="#2d1b2d" strokeWidth="2.5" paintOrder="stroke fill">
+              SIMULATOR
+            </text>
 
-              {/* Pixel Art Bunny / Heart Box */}
-              <rect x="124" y="134" width="72" height="66" rx="14" fill="#ffffff" opacity="0.92" stroke="#2d1b2d" strokeWidth="2.5" />
-              <text x="160" y="178" textAnchor="middle" fontSize="34">🐰</text>
+            {/* Bunny Box */}
+            <rect x="122" y="138" width="76" height="68" rx="14" fill="#ffffff" opacity="0.92" stroke="#2d1b2d" strokeWidth="2.5" />
+            <text x="160" y="185" textAnchor="middle" fontSize="36">🐰</text>
 
-              {/* Tagline */}
-              <text x="160" y="228" textAnchor="middle" fontFamily="'Mali', cursive" fontWeight="700" fontSize="13" fill="#2d1b2d">
-                ฉบับคนคลั่งรัก
-              </text>
-            </g>
+            {/* Tagline */}
+            <text x="160" y="238" textAnchor="middle" fontFamily="'Mali', cursive" fontWeight="700" fontSize="22" fill="#2d1b2d">
+              ฉบับคนคลั่งรัก
+            </text>
 
-            {/* Below Screen Controls Section */}
-            {/* 5 Dots Indicator */}
+            {/* ── Row 1: 5 Dots ── (y=270) */}
             <g fill="#2d1b2d">
-              <circle cx="120" cy="264" r="4" />
-              <circle cx="140" cy="264" r="4" />
-              <circle cx="160" cy="264" r="5" fill="#ff4d7e" stroke="#2d1b2d" strokeWidth="1.5" />
-              <circle cx="180" cy="264" r="4" />
-              <circle cx="200" cy="264" r="4" />
+              <circle cx="120" cy="278" r="5" />
+              <circle cx="140" cy="278" r="5" />
+              <circle cx="160" cy="278" r="6" fill="#ff4d7e" stroke="#2d1b2d" strokeWidth="1.5" />
+              <circle cx="180" cy="278" r="5" />
+              <circle cx="200" cy="278" r="5" />
             </g>
 
-            {/* Progress Playback Bar */}
-            <rect x="36" y="280" width="248" height="10" rx="5" fill="#f0e2e8" stroke="#2d1b2d" strokeWidth="2.5" />
-            <rect x="36" y="280" width="160" height="10" rx="5" fill="url(#progressGrad)" stroke="#2d1b2d" strokeWidth="2.5" />
+            {/* ── Row 2: Progress Bar ── (y=294) */}
+            <rect x="32" y="295" width="256" height="11" rx="5.5" fill="#f0e2e8" stroke="#2d1b2d" strokeWidth="2.5" />
+            <rect x="32" y="295" width="165" height="11" rx="5.5" fill="url(#progressGrad)" stroke="#2d1b2d" strokeWidth="2.5" />
 
-            {/* Player Control Icons (Pixel Heart, Prev, Next, Repeat) */}
-            {/* Pixel Heart */}
-            <g transform="translate(42, 304)" fill="#ff4d7e" stroke="#2d1b2d" strokeWidth="2">
-              <path d="M 6 4 a 5 5 0 0 1 7 0 a 5 5 0 0 1 7 0 c 0 6 -10 13 -10 13 s -10 -7 -10 -13 z" />
+            {/* ── Row 3: Icon Controls (❤ ◀ [space] ▶ 🔁) ── (y=325) */}
+            {/* Heart emoji left */}
+            <text x="48" y="342" textAnchor="middle" fontSize="22">❤️</text>
+
+            {/* Previous ◀ */}
+            <g transform="translate(86, 326)" fill="#2d1b2d">
+              <rect x="0" y="0" width="5" height="18" rx="2" />
+              <polygon points="20,0 6,9 20,18" />
             </g>
 
-            {/* Previous */}
-            <g transform="translate(104, 308)" fill="#2d1b2d">
-              <rect x="0" y="2" width="3.5" height="14" rx="1" />
-              <polygon points="16,2 6,9 16,16" />
+            {/* Next ▶ */}
+            <g transform="translate(214, 326)" fill="#2d1b2d">
+              <polygon points="0,0 14,9 0,18" />
+              <rect x="16" y="0" width="5" height="18" rx="2" />
             </g>
 
-            {/* Next */}
-            <g transform="translate(200, 308)" fill="#2d1b2d">
-              <polygon points="0,2 10,9 0,16" />
-              <rect x="12.5" y="2" width="3.5" height="14" rx="1" />
+            {/* Repeat 🔁 right */}
+            <g transform="translate(264, 322)" stroke="#2d1b2d" strokeWidth="3" fill="none">
+              <path d="M 5 12 A 9 9 0 1 1 20 14" strokeLinecap="round" />
+              <polygon points="20,19 26,12 16,12" fill="#2d1b2d" stroke="none" />
             </g>
 
-            {/* Loop / Repeat */}
-            <g transform="translate(254, 306)" stroke="#2d1b2d" strokeWidth="2.5" fill="none">
-              <path d="M 4 10 A 7 7 0 1 1 16 12" strokeLinecap="round" />
-              <polygon points="16,15 20,10 14,10" fill="#2d1b2d" stroke="none" />
-            </g>
+            {/* ── Row 4: Play Button (foreignObject) ── (y=362–418) */}
+            <foreignObject x="80" y="364" width="160" height="60">
+              <div xmlns="http://www.w3.org/1999/xhtml" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                <button
+                  type="button"
+                  onClick={handlePlay}
+                  style={{
+                    fontFamily: "'Mali', cursive",
+                    fontWeight: 700,
+                    fontSize: '1.05rem',
+                    color: '#ffffff',
+                    background: 'linear-gradient(135deg, #ff4d7e 0%, #ff6584 100%)',
+                    border: '3px solid #2d1b2d',
+                    borderRadius: '9999px',
+                    padding: '11px 28px',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 0 #2d1b2d',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '7px',
+                    whiteSpace: 'nowrap',
+                    transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+                  }}
+                  onMouseDown={e => {
+                    e.currentTarget.style.transform = 'translateY(3px)';
+                    e.currentTarget.style.boxShadow = '0 1px 0 #2d1b2d';
+                  }}
+                  onMouseUp={e => {
+                    e.currentTarget.style.transform = '';
+                    e.currentTarget.style.boxShadow = '0 4px 0 #2d1b2d';
+                  }}
+                  onTouchStart={e => {
+                    e.currentTarget.style.transform = 'translateY(3px)';
+                    e.currentTarget.style.boxShadow = '0 1px 0 #2d1b2d';
+                  }}
+                  onTouchEnd={e => {
+                    e.currentTarget.style.transform = '';
+                    e.currentTarget.style.boxShadow = '0 4px 0 #2d1b2d';
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: '22px', fontVariationSettings: "'FILL' 1" }}>
+                    play_circle
+                  </span>
+                  เล่นเกม
+                </button>
+              </div>
+            </foreignObject>
           </svg>
-
-          {/* Interactive Play Button Centered Over SVG Play Slot */}
-          <div style={{ position: 'absolute', bottom: '26px', left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}>
-            <button
-              type="button"
-              className={`btn ${isPlaying ? 'active' : ''}`}
-              onClick={handlePlay}
-              style={{
-                fontFamily: "'Mali', cursive",
-                fontWeight: 700,
-                fontSize: '1rem',
-                color: '#ffffff',
-                background: 'linear-gradient(135deg, #ff4d7e 0%, #ff6584 100%)',
-                border: '3px solid #2d1b2d',
-                borderRadius: '9999px',
-                padding: '10px 24px',
-                cursor: 'pointer',
-                boxShadow: '0 4px 0 #2d1b2d, 0 8px 16px rgba(255, 77, 126, 0.35)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                transition: 'all 0.15s ease',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px', fontVariationSettings: "'FILL' 1" }}>
-                play_circle
-              </span>
-              เล่นเกม
-            </button>
-          </div>
         </div>
       </div>
 

@@ -84,7 +84,7 @@ export default function CodeScreen({ data, onComplete }) {
             </g>
 
             {/* Inner Pixel Screen Box */}
-            <rect x="28" y="72" width="264" height="176" rx="16" fill="url(#screenGradCode)" stroke="#2d1b2d" strokeWidth="4" />
+            <rect x="28" y="72" width="264" height="136" rx="16" fill="url(#screenGradCode)" stroke="#2d1b2d" strokeWidth="4" />
 
             {/* Title in Screen */}
             <text x="160" y="98" textAnchor="middle" fontFamily="'Press Start 2P', monospace" fontSize="10" fontWeight="bold" fill="#ffffff" stroke="#2d1b2d" strokeWidth="2.5" paintOrder="stroke fill">
@@ -92,7 +92,7 @@ export default function CodeScreen({ data, onComplete }) {
             </text>
 
             {/* Single SVG foreignObject for LCD Display - Vector-locked to SVG coordinate space */}
-            <foreignObject x="42" y="108" width="236" height="124">
+            <foreignObject x="42" y="106" width="236" height="88">
               <div
                 xmlns="http://www.w3.org/1999/xhtml"
                 style={{
@@ -101,34 +101,34 @@ export default function CodeScreen({ data, onComplete }) {
                   background: '#231524',
                   borderRadius: '14px',
                   border: '3.5px solid #2d1b2d',
-                  padding: '12px 10px',
+                  padding: '8px 10px',
                   display: 'flex',
                   flexDirection: 'column',
-                  justify: 'center',
+                  justifyContent: 'center',
                   alignItems: 'center',
                   boxSizing: 'border-box',
                   boxShadow: 'inset 0 3px 10px rgba(0,0,0,0.6)',
                 }}
               >
-                <span style={{ fontSize: '10px', color: '#ffb5cb', fontFamily: "'Press Start 2P', monospace", letterSpacing: '1px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '11px', color: '#ffb5cb', fontFamily: "'Press Start 2P', monospace", letterSpacing: '1px', marginBottom: '4px' }}>
                   PASSCODE:
                 </span>
-                <div style={{ fontSize: '15px', color: '#55ff99', fontFamily: "'Press Start 2P', monospace", display: 'flex', alignItems: 'center', gap: '4px', textShadow: '0 0 8px rgba(85,255,153,0.6)', minHeight: '26px' }}>
+                <div style={{ fontSize: '24px', color: '#55ff99', fontFamily: "var(--font-mali), var(--font-itim), sans-serif", fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px', textShadow: '0 0 8px rgba(85,255,153,0.6)', minHeight: '34px' }}>
                   {codeString}
-                  <span className="caret" style={{ display: 'inline-block', width: '9px', height: '16px', background: '#55ff99', marginLeft: '2px' }} />
+                  <span className="caret" style={{ display: 'inline-block', width: '10px', height: '22px', background: '#55ff99', marginLeft: '4px' }} />
                 </div>
               </div>
             </foreignObject>
           </svg>
 
-          {/* D-Pad Container (Untouched - Left Position) */}
+          {/* D-Pad Container */}
           <div
             style={{
               position: 'absolute',
-              bottom: '22px',
-              left: '24px',
-              width: '84px',
-              height: '84px',
+              bottom: '38px',
+              left: '18px',
+              width: '108px',
+              height: '108px',
               zIndex: 10,
             }}
           >
@@ -139,20 +139,20 @@ export default function CodeScreen({ data, onComplete }) {
               style={{
                 position: 'absolute',
                 top: '0',
-                left: '28px',
-                width: '28px',
-                height: '30px',
+                left: '36px',
+                width: '36px',
+                height: '38px',
                 background: '#2d1b2d',
                 color: '#fff',
                 border: 'none',
-                borderRadius: '6px 6px 0 0',
+                borderRadius: '8px 8px 0 0',
                 cursor: 'pointer',
-                fontSize: '11px',
-                boxShadow: '0 3px 0 #180d19',
+                fontSize: '14px',
+                boxShadow: '0 4px 0 #180d19',
                 transition: 'all 0.08s ease',
               }}
             >
-              {"▲\uFE0E"}
+              {"\u25b2\uFE0E"}
             </button>
             <button
               type="button"
@@ -160,29 +160,29 @@ export default function CodeScreen({ data, onComplete }) {
               onClick={handlePress}
               style={{
                 position: 'absolute',
-                top: '28px',
+                top: '36px',
                 left: '0',
-                width: '30px',
-                height: '28px',
+                width: '38px',
+                height: '36px',
                 background: '#2d1b2d',
                 color: '#fff',
                 border: 'none',
-                borderRadius: '6px 0 0 6px',
+                borderRadius: '8px 0 0 8px',
                 cursor: 'pointer',
-                fontSize: '11px',
-                boxShadow: '0 3px 0 #180d19',
+                fontSize: '14px',
+                boxShadow: '0 4px 0 #180d19',
                 transition: 'all 0.08s ease',
               }}
             >
-              {"◀\uFE0E"}
+              {"\u25c0\uFE0E"}
             </button>
             <div
               style={{
                 position: 'absolute',
-                top: '28px',
-                left: '28px',
-                width: '28px',
-                height: '28px',
+                top: '36px',
+                left: '36px',
+                width: '36px',
+                height: '36px',
                 background: '#2d1b2d',
               }}
             />
@@ -192,21 +192,21 @@ export default function CodeScreen({ data, onComplete }) {
               onClick={handlePress}
               style={{
                 position: 'absolute',
-                top: '28px',
+                top: '36px',
                 right: '0',
-                width: '30px',
-                height: '28px',
+                width: '38px',
+                height: '36px',
                 background: '#2d1b2d',
                 color: '#fff',
                 border: 'none',
-                borderRadius: '0 6px 6px 0',
+                borderRadius: '0 8px 8px 0',
                 cursor: 'pointer',
-                fontSize: '11px',
-                boxShadow: '0 3px 0 #180d19',
+                fontSize: '14px',
+                boxShadow: '0 4px 0 #180d19',
                 transition: 'all 0.08s ease',
               }}
             >
-              {"▶\uFE0E"}
+              {"\u25b6\uFE0E"}
             </button>
             <button
               type="button"
@@ -215,29 +215,29 @@ export default function CodeScreen({ data, onComplete }) {
               style={{
                 position: 'absolute',
                 bottom: '0',
-                left: '28px',
-                width: '28px',
-                height: '30px',
+                left: '36px',
+                width: '36px',
+                height: '38px',
                 background: '#2d1b2d',
                 color: '#fff',
                 border: 'none',
-                borderRadius: '0 0 6px 6px',
+                borderRadius: '0 0 8px 8px',
                 cursor: 'pointer',
-                fontSize: '11px',
-                boxShadow: '0 3px 0 #180d19',
+                fontSize: '14px',
+                boxShadow: '0 4px 0 #180d19',
                 transition: 'all 0.08s ease',
               }}
             >
-              {"▼\uFE0E"}
+              {"\u25bc\uFE0E"}
             </button>
           </div>
 
-          {/* A/B Action Buttons Container (Shifted Right & Raised Up) */}
+          {/* A/B Action Buttons Container */}
           <div
             style={{
               position: 'absolute',
-              bottom: '40px',
-              right: '24px',
+              bottom: '48px',
+              right: '16px',
               display: 'flex',
               gap: '10px',
               alignItems: 'center',
@@ -250,13 +250,13 @@ export default function CodeScreen({ data, onComplete }) {
               onClick={handlePress}
               className="pixel-btn-ab"
               style={{
-                width: '42px',
-                height: '42px',
+                width: '52px',
+                height: '52px',
                 borderRadius: '50%',
                 background: 'linear-gradient(135deg, #ff4d7e 0%, #ff6584 100%)',
                 color: '#ffffff',
                 border: '3px solid #2d1b2d',
-                fontSize: '14px',
+                fontSize: '15px',
                 fontWeight: 'bold',
                 fontFamily: "'Press Start 2P', monospace",
                 cursor: 'pointer',
@@ -272,18 +272,18 @@ export default function CodeScreen({ data, onComplete }) {
               onClick={handlePress}
               className="pixel-btn-ab"
               style={{
-                width: '42px',
-                height: '42px',
+                width: '52px',
+                height: '52px',
                 borderRadius: '50%',
                 background: 'linear-gradient(135deg, #ff6584 0%, #ff8fa3 100%)',
                 color: '#ffffff',
                 border: '3px solid #2d1b2d',
-                fontSize: '14px',
+                fontSize: '15px',
                 fontWeight: 'bold',
                 fontFamily: "'Press Start 2P', monospace",
                 cursor: 'pointer',
                 boxShadow: '0 4px 0 #2d1b2d',
-                transform: 'translateY(-8px)',
+                transform: 'translateY(-10px)',
                 userSelect: 'none',
                 transition: 'transform 0.08s ease, box-shadow 0.08s ease',
               }}
