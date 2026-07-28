@@ -267,10 +267,12 @@ export default function CustomizerForm({ data, formRef, onChange, loading, onSub
         </div>
       )}
 
-      {/* เลือกอวาตาร์ (เฉพาะ retro) */}
-      {isRetro && (
+      {/* เลือกอวาตาร์ (เฉพาะ retro & recipe) */}
+      {(isRetro || isRecipe) && (
         <div className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-5">
-          <h3 className="text-lg font-semibold text-slate-900">เลือกอวาตาร์สำหรับเมนูเควส</h3>
+          <h3 className="text-lg font-semibold text-slate-900">
+            {isRecipe ? 'เลือกรูปอวาตาร์ประจำตัว (เชฟ / คนชิม)' : 'เลือกอวาตาร์สำหรับเมนูเควส'}
+          </h3>
           <p className="text-sm text-slate-500">เลื่อนดูรูปผู้ชายหรือผู้หญิง แล้วเลือกแบบที่ใช่</p>
           <div className="flex gap-3 overflow-x-auto py-2">
             {AVATAR_OPTIONS.map((avatar) => (

@@ -389,12 +389,14 @@ function Step3({ data, onChange, isRetro, isMinimal }) {
         </div>
       </div>
 
-      {/* Avatar section (retro only) */}
-      {isRetro && (
+      {/* Avatar section (retro & recipe) */}
+      {(isRetro || isRecipe) && (
         <div>
           <div className="flex items-center gap-2 mb-4">
             <span className="material-symbols-outlined text-[#725477] text-lg">face</span>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#725477]">Section 2: Avatar Customization</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#725477]">
+              {isRecipe ? 'Section 2: เลือกรูปอวาตาร์ประจำตัว (เชฟ / คนชิม)' : 'Section 2: Avatar Customization'}
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

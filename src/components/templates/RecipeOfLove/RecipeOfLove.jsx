@@ -153,6 +153,7 @@ function StageShell({ title, subtitle, children }) {
 }
 
 function ProgressRail({ stage }) {
+  if (!stage || stage === 0) return null;
   const steps = [
     { icon: "🧺", label: "เก็บวัตถุดิบ" },
     { icon: "🔪", label: "หั่น" },
@@ -162,7 +163,8 @@ function ProgressRail({ stage }) {
   return (
     <div className="flex items-center justify-center gap-1.5 sm:gap-3 py-3 sm:py-4 flex-wrap px-2">
       {steps.map((s, i) => {
-        const done = stage > i, active = stage === i;
+        const stepNum = i + 1;
+        const done = stage > stepNum, active = stage === stepNum;
         return (
           <div key={s.label} className="flex items-center gap-1.5 sm:gap-3">
             <div
@@ -183,6 +185,119 @@ function ProgressRail({ stage }) {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+/* ════════════════════ STAGE 0 · WELCOME KITCHEN COVER ════════════════════ */
+function WelcomeKitchenStage({ onStart, TASTER_NAME, TASTER_AVATAR }) {
+  return (
+    <div className="w-full max-w-xl mx-auto px-3 sm:px-4 py-3 sm:py-6 flex flex-col items-center text-center anim-fadeUp">
+      {/* Striped Canopy / Awning Roof */}
+      <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border-3 sm:border-4 border-[#8A5A33] shadow-2xl bg-[#FFFDF6]">
+        <div
+          className="h-10 sm:h-12 w-full"
+          style={{
+            backgroundImage: "repeating-linear-gradient(90deg, #F3C998 0 28px, #E5B47B 28px 56px)",
+            boxShadow: "inset 0 -4px 8px rgba(0,0,0,0.15)",
+          }}
+        />
+        {/* Scalloped Awning Trim */}
+        <div className="flex justify-between -mt-1 px-0.5 overflow-hidden">
+          {Array.from({ length: 14 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-5 sm:w-7 h-3.5 rounded-b-full bg-[#E5B47B] border-b-2 border-amber-900/30 shrink-0"
+            />
+          ))}
+        </div>
+
+        {/* Store Title Board */}
+        <div className="p-4 sm:p-7 flex flex-col items-center bg-[#FFFDF6]">
+          <div className="px-3 py-1 rounded-full bg-amber-100/80 border border-amber-300 text-amber-900 text-[10px] sm:text-xs font-black tracking-widest uppercase mb-2 shadow-xs">
+            ✨ PURRFECT KITCHEN TALE ✨
+          </div>
+
+          <h2
+            className="text-3xl sm:text-4xl md:text-5xl font-black text-[#4A2E14] leading-tight drop-shadow-xs"
+            style={{ fontFamily: "'Fraunces', 'Mali', 'Noto Sans Thai', Georgia, serif" }}
+          >
+            Recipe of Our Love
+          </h2>
+          <p
+            className="mt-1 text-sm sm:text-base text-[#8A5A33] font-bold"
+            style={{ fontFamily: "'Mali', 'Nunito', sans-serif" }}
+          >
+            🍳 ครัวสูตรลับความรักเพื่อคุณและ {TASTER_NAME} 💖
+          </p>
+
+          {/* Bakery / Kitchen Shelf Showcase */}
+          <div
+            className="mt-5 w-full max-w-sm rounded-2xl border-4 p-3.5 sm:p-4 flex flex-col items-center relative shadow-md"
+            style={{ ...WOOD, borderColor: "#5E3C1D" }}
+          >
+            <div className="w-full rounded-xl p-3 bg-[#FFF8EB]/95 border border-amber-300 flex items-center justify-around gap-2 shadow-inner">
+              {/* Left Item */}
+              <div className="flex flex-col items-center">
+                <span className="text-3xl sm:text-4xl anim-wiggle">🥐</span>
+                <span className="text-[10px] sm:text-xs font-bold text-[#6E4525] mt-1" style={{ fontFamily: "'Mali', sans-serif" }}>ครัวซองต์</span>
+              </div>
+
+              {/* Center Chef Avatar */}
+              <div className="relative flex flex-col items-center">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-amber-400 overflow-hidden bg-amber-100 shadow-md">
+                  <img
+                    src={TASTER_AVATAR || "/assets/girl4.png"}
+                    alt={TASTER_NAME}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform"
+                  />
+                </div>
+                {/* Chef Hat Badge */}
+                <div className="absolute -top-3 -right-2 text-2xl anim-pop">👨‍🍳</div>
+                <div className="mt-1.5 px-2.5 py-0.5 rounded-full bg-[#6E4525] text-amber-100 text-[10px] sm:text-[11px] font-black shadow-xs">
+                  เชฟ {TASTER_NAME}
+                </div>
+              </div>
+
+              {/* Right Item */}
+              <div className="flex flex-col items-center">
+                <span className="text-3xl sm:text-4xl anim-wiggle" style={{ animationDelay: "0.5s" }}>
+                  🍰
+                </span>
+                <span className="text-[10px] sm:text-xs font-bold text-[#6E4525] mt-1" style={{ fontFamily: "'Mali', sans-serif" }}>เค้กสตรอว์เบอร์รี</span>
+              </div>
+            </div>
+
+            {/* Bottom Shelf Wooden Plank */}
+            <div
+              className="w-full h-3 rounded-md mt-3"
+              style={{ ...WOOD_DARK, boxShadow: "0 4px 6px rgba(0,0,0,.3)" }}
+            />
+          </div>
+
+          {/* Welcome Message */}
+          <p
+            className="mt-4 text-xs sm:text-sm text-[#7A5A33] font-bold leading-relaxed max-w-xs"
+            style={{ fontFamily: "'Nunito','Noto Sans Thai',sans-serif" }}
+          >
+            ยินดีต้อนรับสู่ห้องครัวของเรา! พร้อมเข้าครัวมาเก็บวัตถุดิบและปรุงอาหารจานโปรดกันหรือยัง? 🥖
+          </p>
+
+          {/* Start CTA Button */}
+          <button
+            onClick={onStart}
+            className="mt-5 px-7 py-3 rounded-full font-black text-base sm:text-lg text-[#3A2A1A] shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2 border-2 border-amber-300 cursor-pointer"
+            style={{
+              background: "linear-gradient(180deg,#FBD064,#F0A93B)",
+              boxShadow: "0 5px 0 #B87A1E, 0 10px 20px rgba(120,70,10,.35)",
+              fontFamily: "'Mali', 'Nunito', 'Noto Sans Thai', sans-serif",
+            }}
+          >
+            <span>🍳 เข้าครัวกันเลย!</span>
+            <span className="text-xl sm:text-2xl anim-wiggle">✨</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -457,7 +572,7 @@ function ChopStage({ audio, onDone, INGREDIENTS, CHOPS_PER_INGREDIENT }) {
 
   return (
     <StageShell
-      title="หั่นความทรงจำให้ละเอียด"
+      title="หั่นรูปภาพให้ละเอียดเลยย"
       subtitle={done ? "หั่นเสร็จเรียบร้อยแล้ว พร้อมปรุงต่อ 🎉" : `เลื่อนมีดไปมาบน${ing.name} · ${idx + 1}/${INGREDIENTS.length}`}
     >
       <div className="flex flex-col items-center">
@@ -659,8 +774,8 @@ function CookStage({ audio, onDone, INGREDIENTS, STIR_ROTATIONS }) {
 
   return (
     <StageShell
-      title="คนด้วยความอดทน"
-      subtitle={cooked ? "เข้มข้น เงางาม เต็มไปด้วยความรัก ✨" : "กดค้างในหม้อแล้วคนเป็นวงกลม ดูสีมันเปลี่ยนเป็นสีทอง"}
+      title="ตั้งใจคนนะสู้ ๆ"
+      subtitle={cooked ? "โหห คนเข้ากันขนาดนี้ ดูเข้มข้น น่าทานมากก ✨" : "กดค้างในหม้อแล้วคนเป็นวงกลม ดูสีมันเปลี่ยนเป็นสีทอง"}
     >
       <div className="flex flex-col items-center">
         {/* progress ladle bar */}
@@ -908,8 +1023,8 @@ function TasteStage({ audio, onTasted, TASTER_NAME, TASTER_AVATAR, rootRef }) {
   return (
     <div ref={stageRef} className="relative w-full h-full">
       <StageShell
-        title="คำแรกที่ได้ชิม"
-        subtitle={tasted ? "อร่อยมาก… รสชาติเหมือนพวกเราเลย 💛" : `ลากช้อนไปให้${TASTER_NAME}เพื่อตัดสิน`}
+        title="ถึงเวลาอาหารแล้ว"
+        subtitle={tasted ? "อร่อยมาก… รสชาติเหมือนพวกเราเลย 💛" : `ลากช้อนไปหา${TASTER_NAME}เพื่อชิมฝีมือสักหน่อย`}
       >
         <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16 md:gap-24 mt-4">
           {/* little pot with the spoon */}
@@ -932,7 +1047,7 @@ function TasteStage({ audio, onTasted, TASTER_NAME, TASTER_AVATAR, rootRef }) {
                 </div>
               )}
             </div>
-            <div className="mt-2 text-sm sm:text-base font-extrabold text-[#5E3C1D]" style={{ fontFamily: "'Nunito','Noto Sans Thai',sans-serif" }}>หม้อน้อยของเรา</div>
+            <div className="mt-2 text-sm sm:text-base font-extrabold text-[#5E3C1D]" style={{ fontFamily: "'Nunito','Noto Sans Thai',sans-serif" }}>อาหารสุดอร่อย</div>
           </div>
 
           {/* taster avatar - รองรับรูปคน (Default: girl4.png) */}
@@ -1048,7 +1163,7 @@ function SurpriseModal({ onClose, SECRET_MESSAGE, VIDEO_URL }) {
             <div className="flex items-center gap-2">
               <span className="text-xl shrink-0">📜</span>
               <div className="text-left text-xs font-bold text-[#4A2E14]" style={{ fontFamily: "'Mali', sans-serif" }}>
-                สูตรลับความรักของเราปรุงเสร็จสมบูรณ์แล้ว ✨
+                สูตรลับของเราเป็นเสร็จแล้ว ✨
               </div>
             </div>
             <span className="text-xs shrink-0">♡</span>
@@ -1066,7 +1181,7 @@ function SurpriseModal({ onClose, SECRET_MESSAGE, VIDEO_URL }) {
               fontFamily: "'Mali', 'Nunito', 'Noto Sans Thai', sans-serif",
             }}
           >
-            <span>ดูใบเสร็จสูตรอาหารของเรา</span>
+            <span>ดูใบเสร็จ</span>
             <span className="text-lg">📜</span>
           </button>
         </div>
@@ -1105,36 +1220,37 @@ function RecipeCardStage({ onRestart, INGREDIENTS, SIGNATURE, TASTER_NAME }) {
         <div className="p-5 sm:p-6 flex flex-col gap-3">
           {/* Header Store Info */}
           <div className="text-center space-y-1">
-            <div className="text-2xl sm:text-3xl font-black tracking-wider text-[#3D2C2E]">
-              🧾 RECIPE OF LOVE
+            <div className="text-lg sm:text-xl font-black tracking-normal text-[#3D2C2E] whitespace-nowrap flex items-center justify-center gap-1.5">
+              <span>🧾</span>
+              <span>RECIPE OF LOVE</span>
             </div>
             <div className="text-xs font-bold text-[#8C6E75] tracking-widest uppercase">
               ใบเสร็จบันทึกความทรงจำ
             </div>
             <div className="text-[11px] text-[#6E555A]">
-              สาขา: หัวใจสองเรา · โต๊ะพิเศษ #01
+              สาขา: หัวใจเซ็นเตอร์ · โต๊ะพิเศษ #01
             </div>
           </div>
 
           <div className="border-b border-dashed border-[#C8B8B0] my-1" />
 
           {/* Transaction Metadata */}
-          <div className="text-[11px] sm:text-xs text-[#554245] space-y-0.5">
-            <div className="flex justify-between">
-              <span>เลขที่ใบเสร็จ:</span>
-              <span className="font-bold">#LOVE-20260728</span>
+          <div className="text-[11px] sm:text-xs text-[#554245] space-y-1">
+            <div className="flex justify-between items-start gap-2">
+              <span className="shrink-0">เลขที่ใบเสร็จ:</span>
+              <span className="font-bold text-right shrink-0">#LOVE-20260728</span>
             </div>
-            <div className="flex justify-between">
-              <span>วันที่ & เวลา:</span>
-              <span>{currentDate} ({currentTime} น.)</span>
+            <div className="flex justify-between items-start gap-2">
+              <span className="shrink-0">วันที่ & เวลา:</span>
+              <span className="text-right shrink-0">{currentDate} ({currentTime} น.)</span>
             </div>
-            <div className="flex justify-between">
-              <span>เชฟผู้ปรุง:</span>
-              <span className="font-bold">{SIGNATURE || "คนพิเศษของคุณ"}</span>
+            <div className="flex justify-between items-start gap-2">
+              <span className="shrink-0">เชฟผู้ปรุง:</span>
+              <span className="font-bold text-right leading-snug max-w-[65%] break-words">{SIGNATURE || "คนพิเศษของคุณ"}</span>
             </div>
-            <div className="flex justify-between">
-              <span>ผู้รับประทาน:</span>
-              <span className="font-bold text-[#B60E3D]">{TASTER_NAME}</span>
+            <div className="flex justify-between items-start gap-2">
+              <span className="shrink-0">ผู้รับประทาน:</span>
+              <span className="font-bold text-[#B60E3D] text-right leading-snug max-w-[65%] break-words">{TASTER_NAME}</span>
             </div>
           </div>
 
@@ -1195,7 +1311,7 @@ function RecipeCardStage({ onRestart, INGREDIENTS, SIGNATURE, TASTER_NAME }) {
           <div className="text-center space-y-2 border-t border-dashed border-[#C8B8B0] pt-3">
             <p className="text-[11px] text-[#6E555A] font-bold leading-relaxed">
               "ขอบคุณที่เข้ามาเป็นเรื่องราวดีๆ ในชีวิตนะ<br />
-              ขอให้พวกเรามีความสุขด้วยกันแบบนี้ในทุกๆ วันนะ ♡"
+              ขอให้มีความสุขด้วยกัน ♡"
             </p>
 
             {/* Fake Barcode SVG */}
@@ -1360,23 +1476,30 @@ export default function RecipeOfLoveTemplate({ orderData }) {
 
       <main className="min-h-[560px] sm:min-h-[600px]">
         {stage === 0 && (
+          <WelcomeKitchenStage
+            onStart={() => { audio.pop(); setStage(1); }}
+            TASTER_NAME={TASTER_NAME}
+            TASTER_AVATAR={TASTER_AVATAR}
+          />
+        )}
+        {stage === 1 && (
           <CollectStage
             collected={collected}
             onCollect={(id) => setCollected((c) => (c.includes(id) ? c : [...c, id]))}
             audio={audio}
-            onDone={() => { audio.ding(); setStage(1); }}
+            onDone={() => { audio.ding(); setStage(2); }}
             rootRef={rootRef}
             INGREDIENTS={INGREDIENTS}
           />
         )}
-        {stage === 1 && <ChopStage audio={audio} onDone={() => setStage(2)} INGREDIENTS={INGREDIENTS} CHOPS_PER_INGREDIENT={CHOPS_PER_INGREDIENT} />}
-        {stage === 2 && <CookStage audio={audio} onDone={() => setStage(3)} INGREDIENTS={INGREDIENTS} STIR_ROTATIONS={STIR_ROTATIONS} />}
-        {stage === 3 && <TasteStage audio={audio} onTasted={() => setShowModal(true)} TASTER_NAME={TASTER_NAME} TASTER_AVATAR={TASTER_AVATAR} rootRef={rootRef} />}
-        {stage === 4 && <RecipeCardStage onRestart={restart} INGREDIENTS={INGREDIENTS} SIGNATURE={SIGNATURE} TASTER_NAME={TASTER_NAME} />}
+        {stage === 2 && <ChopStage audio={audio} onDone={() => setStage(3)} INGREDIENTS={INGREDIENTS} CHOPS_PER_INGREDIENT={CHOPS_PER_INGREDIENT} />}
+        {stage === 3 && <CookStage audio={audio} onDone={() => setStage(4)} INGREDIENTS={INGREDIENTS} STIR_ROTATIONS={STIR_ROTATIONS} />}
+        {stage === 4 && <TasteStage audio={audio} onTasted={() => setShowModal(true)} TASTER_NAME={TASTER_NAME} TASTER_AVATAR={TASTER_AVATAR} rootRef={rootRef} />}
+        {stage === 5 && <RecipeCardStage onRestart={restart} INGREDIENTS={INGREDIENTS} SIGNATURE={SIGNATURE} TASTER_NAME={TASTER_NAME} />}
       </main>
 
       {/* Win Modal / Surprise */}
-      {showModal && <SurpriseModal onClose={() => { setShowModal(false); setStage(4); }} SECRET_MESSAGE={SECRET_MESSAGE} VIDEO_URL={VIDEO_URL} />}
+      {showModal && <SurpriseModal onClose={() => { setShowModal(false); setStage(5); }} SECRET_MESSAGE={SECRET_MESSAGE} VIDEO_URL={VIDEO_URL} />}
 
       {/* Speaker Toggle Button */}
       {youtubeUrl && (

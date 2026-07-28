@@ -227,9 +227,9 @@ export default function HomePage() {
 
         <div className="w-full grid md:grid-cols-2 gap-12 items-center relative z-10">
           <div className="space-y-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#3d2c2e] leading-tight tracking-tight">
-              สร้างเว็บไซต์บอกรักที่{' '}
-              <span className="bg-gradient-to-r from-[#ff5376] to-[#ff85a1] bg-clip-text text-transparent">
+            <h1 className="text-[34px] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#3d2c2e] leading-[1.22] tracking-tight">
+              สร้างเว็บไซต์บอกรักที่ <br className="block sm:hidden" />
+              <span className="bg-gradient-to-r from-[#ff5376] to-[#ff85a1] bg-clip-text text-transparent inline-block">
                 พิเศษที่สุด
               </span>{' '}
               ในไม่กี่นาที
