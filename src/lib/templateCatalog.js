@@ -28,6 +28,7 @@ export const TEMPLATE_CATALOG = [
       'นับวันรักอัตโนมัติ',
     ],
     previewImage: '/assets/firsttemplate.png',
+    previewClip: '/assets/examclip.gif',
     tier: 'premium',
   },
   {
@@ -47,7 +48,8 @@ export const TEMPLATE_CATALOG = [
       'ซ่อนข้อความเซอร์ไพรส์',
       'การ์ดสูตรอาหารบันทึกภาพได้',
     ],
-    previewImage: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80',
+    previewImage: '/assets/game2.jpg',
+    previewClip: '/assets/examclip2.gif',
     tier: 'standard',
   },
   {

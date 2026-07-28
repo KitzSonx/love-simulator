@@ -173,7 +173,7 @@ export default function HomePage() {
             <img
               src="/assets/pixellove.png"
               alt="Pixel Love Logo"
-              className="h-9 md:h-10 w-auto object-contain hover:scale-105 transition-transform duration-300"
+              className="h-9 md:h-10 w-auto object-contain rounded-xl hover:scale-105 transition-transform duration-300"
             />
             <span className="bg-gradient-to-r from-[#ff5376] to-[#ff7eb3] bg-clip-text text-transparent drop-shadow-sm font-extrabold">
               Pixel Love
@@ -370,7 +370,7 @@ export default function HomePage() {
                         onClick={() =>
                           openPreview(
                             `ตัวอย่างธีม ${template.name}`,
-                            hasClip ? '/assets/examclip.gif' : ''
+                            template.previewClip || '/assets/examclip.gif'
                           )
                         }
                         className="w-full py-2.5 rounded-xl font-bold text-xs border border-[#ffb3c1]/70 bg-[#ffe5ec]/60 text-[#ff477e] hover:bg-[#ffe5ec] hover:border-[#ff5376]/50 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
@@ -505,7 +505,7 @@ export default function HomePage() {
             <img
               src="/assets/pixellove.png"
               alt="Pixel Love Logo"
-              className="h-8 w-auto object-contain"
+              className="h-8 w-auto object-contain rounded-xl"
             />
             <span className="bg-gradient-to-r from-[#ff5376] to-[#ff7eb3] bg-clip-text text-transparent font-extrabold">
               Pixel Love

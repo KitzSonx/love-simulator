@@ -340,7 +340,7 @@ function Step2({ data, onChange }) {
 }
 
 /* ─── Step 3: Vibe & Style ─── */
-function Step3({ data, onChange, isRetro, isMinimal }) {
+function Step3({ data, onChange, isRetro, isMinimal, isRecipe }) {
   const [selectedMusic, setSelectedMusic] = useState('custom');
 
   return (
@@ -612,20 +612,31 @@ function Step4({ data, onChange, onCropOpen, isRecipe, isFree }) {
       {/* Recipe photos */}
       {isRecipe && (
         <div>
-          <p className={labelCls}>รูปภาพโมเมนต์ 6 รูป (วัตถุดิบ)</p>
-          <div className="grid grid-cols-3 gap-3">
+          <p className={labelCls}>วัตถุดิบ 6 ชนิด — รูป + ชื่อ + คำบรรยาย</p>
+          <p className="text-xs text-[#8e6f71] mb-4 -mt-2">ข้อความเหล่านี้จะแสดงในเกมตอนที่คนรับเล่น ✨</p>
+          <div className="flex flex-col gap-5">
             {Array.from({ length: 6 }, (_, i) => {
-              const photo = data.memoryPhotos[i];
+              const photo = data.memoryPhotos[i] || { caption: '', note: '', file: null, preview: '' };
+              const updateField = (field, value) => {
+                const next = [...data.memoryPhotos];
+                while (next.length <= i) next.push({ id: Date.now() + i, caption: '', note: '', file: null, preview: '' });
+                next[i] = { ...next[i], [field]: value };
+                onChange({ memoryPhotos: next });
+              };
               return (
-                <div key={i} className="relative bg-[#fbf1f1] rounded-2xl border-2 border-dashed border-[#e2bec0]/60 overflow-hidden aspect-square">
-                  <label className="block w-full h-full cursor-pointer">
-                    {photo?.preview ? (
-                      <img src={photo.preview} alt={`รูปที่ ${i + 1}`} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[#e2bec0]">
-                        <span className="text-sm font-bold text-[#8e6f71]">รูปที่ {i + 1}</span>
-                      </div>
-                    )}
+                <div key={i} className="flex gap-3 items-start bg-white rounded-2xl border border-[#e2bec0]/50 p-3 shadow-sm">
+                  {/* Thumbnail */}
+                  <label className="shrink-0 cursor-pointer">
+                    <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-[#fbf1f1] border-2 border-dashed border-[#e2bec0]/60 flex items-center justify-center">
+                      {photo.preview ? (
+                        <img src={photo.preview} alt={`วัตถุดิบ ${i + 1}`} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="flex flex-col items-center gap-1">
+                          <span className="material-symbols-outlined text-[#e2bec0] text-2xl">add_photo_alternate</span>
+                          <span className="text-[10px] font-bold text-[#c9a0a4]">รูปที่ {i + 1}</span>
+                        </div>
+                      )}
+                    </div>
                     <input
                       type="file"
                       accept="image/*"
@@ -633,6 +644,29 @@ function Step4({ data, onChange, onCropOpen, isRecipe, isFree }) {
                       onChange={(e) => onCropOpen(i, e.target.files?.[0] || null)}
                     />
                   </label>
+                  {/* Text fields */}
+                  <div className="flex-1 flex flex-col gap-2">
+                    <div>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-[#725477] mb-1 block">ชื่อวัตถุดิบ</label>
+                      <input
+                        type="text"
+                        value={photo.caption || ''}
+                        onChange={(e) => updateField('caption', e.target.value)}
+                        className="w-full text-xs font-semibold text-[#1f1b1b] bg-[#fbf1f1] border border-[#e2bec0]/60 rounded-lg px-3 py-1.5 focus:border-[#b60e3d] focus:outline-none transition-colors"
+                        placeholder={['เดทแรกของเรา', 'ทริปแรกด้วยกัน', 'รูปคู่ใบโปรด', 'โมเมนต์แสนหวาน', 'รอยยิ้มของเธอ', 'ความรักที่เบ่งบาน'][i]}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-[#725477] mb-1 block">คำบรรยาย</label>
+                      <input
+                        type="text"
+                        value={photo.note || ''}
+                        onChange={(e) => updateField('note', e.target.value)}
+                        className="w-full text-xs text-[#5a4042] bg-[#fbf1f1] border border-[#e2bec0]/60 rounded-lg px-3 py-1.5 focus:border-[#b60e3d] focus:outline-none transition-colors"
+                        placeholder={['รอยยิ้มแรกที่ทำให้ใจสั่น', 'หลงทางบ้างแต่ก็มีความสุข', 'รูปที่ถ่ายตอนเผลอๆ', 'ช่วงเวลาที่ได้อยู่ข้างเธอ', 'อบอุ่นเสมอเมื่อได้มอง', 'รดน้ำด้วยความใส่ใจ'][i]}
+                      />
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -971,7 +1005,7 @@ export default function WizardForm({
             <img
               src="/assets/pixellove.png"
               alt="Pixel Love Logo"
-              className="h-8 w-auto object-contain"
+              className="h-8 w-auto object-contain rounded-xl"
             />
             <span className="font-extrabold text-[#b60e3d] text-lg" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Pixel Love
@@ -1012,7 +1046,7 @@ export default function WizardForm({
               {step === 1 && <Step1 data={data} onChange={onChange} />}
               {step === 2 && <Step2 data={data} onChange={onChange} />}
               {step === 3 && (
-                <Step3 data={data} onChange={onChange} isRetro={isRetro} isMinimal={isMinimal} />
+                <Step3 data={data} onChange={onChange} isRetro={isRetro} isMinimal={isMinimal} isRecipe={isRecipe} />
               )}
               {step === 4 && (
                 <Step4
