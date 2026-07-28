@@ -38,9 +38,9 @@ export const TEMPLATE_CATALOG = [
     description:
       'สูตรลับความรักที่ต้องปลดล็อกด้วยความทรงจำแสนหวานของคุณทั้งคู่',
     price: 49,
-    badge: '🔒 เร็วๆ นี้',
+    badge: '✨ ใหม่',
     badgeColor: 'amber',
-    available: false,
+    available: true,
     features: [
       'มินิเกมทำอาหารโต้ตอบได้',
       'ระบบเสียงประกอบน่ารักๆ',
